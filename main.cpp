@@ -11,7 +11,18 @@ int main(int argc, char *argv[])
         string command = argv[1];
 
         if(CommandManager::check_command(command)){
-            cout << "commande correct";
+            if(command == "create-project"){
+
+            }
+            else if(command == "add-resource"){
+
+            }
+            else if(command == "runserver"){
+
+            }
+            else if(command == "help"){
+
+            }
         }
         else{
             Assistant::command_not_valid(command);
