@@ -2,6 +2,7 @@
 
 #include "src/assistant.cpp"
 #include "src/commandManager.cpp"
+#include "src/errors.cpp"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ int main(int arguments_length, char *arguments[])
         CommandManager::check_command(command) ?
             // --- execute the command if it is valid --- 
             CommandManager::execute_command(command, arguments_length, arguments) : 
-            // --- if it is not print command not valid message ---
-            Assistant::command_not_valid(command);
+            // --- if it is not notice the user ---
+            Errors::command_not_valid(command);
     }
 }
