@@ -1,3 +1,4 @@
 class Assistant{
-    static void akana_presentation();
-}
+    public:
+        static void akana_presentation();
+};
