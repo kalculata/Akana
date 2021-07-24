@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
         }
         else{
-            
+            Assistant::command_not_valid(command);
         }
     }
     else
