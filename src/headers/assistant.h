@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 class Assistant{
     public:
         static void akana_presentation();
