@@ -6,5 +6,5 @@ class Commands{
 
         static void runserver();
 
-        static void help_menu();
-}
+        static void help();
+};
