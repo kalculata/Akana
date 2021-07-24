@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
         string command = argv[1];
 
         if(CommandManager::check_command){
-
+            
         }
         else{
             Assistant::command_not_valid(command);
