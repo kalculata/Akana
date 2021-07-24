@@ -4,10 +4,7 @@
 
 using namespace std;
 
+// this method give a bref presentation of the framework
 void Assistant::akana_presentation(){
     cout << "Akana est un framework PHP, permettant de créer des API restful facilement.";
-}
-
-void Assistant::command_not_valid(string command){
-    cout << "La commande '" << command << "' que vous avez entre n'est pas valide";
 }

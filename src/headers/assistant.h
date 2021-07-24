@@ -1,8 +1,9 @@
 #include <iostream>
+
 using namespace std;
 
 class Assistant{
     public:
+        // this method give a bref presentation of the framework
         static void akana_presentation();
-        static void command_not_valid(string command);
 };
