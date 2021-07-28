@@ -25,3 +25,10 @@ void Assistant::help_menu(){
     cout << "   help                            : Print help menu." << endl;
     cout << endl;
 }
+
+void Assistant::name_rules(){
+    cout << "- It must start with a letter." << endl;
+    cout << "- It must end with a letter or a number." << endl;
+    cout << "- It must contain only lowercase letters." << endl;
+    cout << "- All characters are not allowed except underscore '_'." << endl;
+}

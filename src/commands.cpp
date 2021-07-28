@@ -1,13 +1,27 @@
 #include "headers/commands.h"
 
 #include <iostream>
+#include <regex>
 #include "assistant.cpp"
 
 using namespace std;
 
 // this method contain all instructions to create of a new project
 void Commands::create_project(string project_name){
-    cout << "command to create project " << project_name;
+    // check if the name is valid
+    // verifier s'il y a pas de dossier avec le meme nom
+    // creer le fichier du project
+    if(regex_match(project_name, regex("^[a-z]+[a-z0-9_]*[a-z0-9]+$"))){
+        cout << "match";
+    }
+    else{
+        cout << "Project name: '" << project_name << "' is not valid." << endl;
+        cout << endl << "Project name rules: " << endl;
+        
+
+        cout << endl;
+
+    }
 }
 
 // this method contain all instructions to add a resource in project project

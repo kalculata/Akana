@@ -4,4 +4,5 @@ class Assistant{
         // this method give a bref presentation of the framework
         static void akana_presentation();
         static void help_menu();
+        static void name_rules();
 };
