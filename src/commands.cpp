@@ -6,8 +6,8 @@
 using namespace std;
 
 // this method contain all instructions to create of a new project
-void Commands::create_project(){
-    std::cout << "command to create project" << std::endl;
+void Commands::create_project(string project_name){
+    cout << "command to create project " << project_name;
 }
 
 // this method contain all instructions to add a resource in project project

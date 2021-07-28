@@ -1,7 +1,8 @@
+
 class Commands{
     public:
         // this method contain all instructions to create of a new project
-        static void create_project();
+        static void create_project(string project_name);
 
         // this method contain all instructions to add a resource in project project
         static void add_resource();

@@ -1,9 +1,11 @@
 #include <iostream>
+#include <vector>
 
 #include "src/commandManager.cpp"
-#include "src/errors.cpp"
 
 using namespace std;
+
+void command_not_valid(string command);
 
 int main(int arguments_length, char *arguments[])
 {
@@ -22,6 +24,13 @@ int main(int arguments_length, char *arguments[])
             // --- execute the command if it is valid --- 
             CommandManager::execute_command(command, arguments_length, arguments) : 
             // --- if it is not notice the user ---
-            Errors::command_not_valid(command);
+            command_not_valid(command);
     }
+}
+
+// notice user that the command he entrered is not valid
+void command_not_valid(string command){
+    cout << "Command: '" << command << "' doesn't exist." << endl;
+    cout << endl << "Try command: 'akana help' to see list of commands." << endl;
+    cout << endl;
 }
