@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "src/assistant.cpp"
 #include "src/commandManager.cpp"
 #include "src/errors.cpp"
 

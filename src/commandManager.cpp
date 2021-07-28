@@ -39,7 +39,9 @@ void CommandManager::execute_command(string command, int arguments_length, char*
 
         // --- if the command has been executed with no option ---
         else{
-            cout << "La commande 'create-project' requis au une option correspondant au nom du project";
+            cout << "Command 'create-project' required project name option.";
+            cout << endl << "Usage: akana create-project <project_name>" << endl;
+            cout << endl;
         }
         
     }

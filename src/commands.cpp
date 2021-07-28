@@ -1,6 +1,7 @@
 #include "headers/commands.h"
 
 #include <iostream>
+#include "assistant.cpp"
 
 using namespace std;
 
@@ -21,6 +22,6 @@ void Commands::runserver(){
 
 // this method open help menu
 void Commands::help(){
-    std::cout << "command to print help " << std::endl;
+    Assistant::help_menu();
 }
 
