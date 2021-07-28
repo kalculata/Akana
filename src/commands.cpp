@@ -8,17 +8,15 @@ using namespace std;
 
 // this method contain all instructions to create of a new project
 void Commands::create_project(string project_name){
-    // check if the name is valid
     // verifier s'il y a pas de dossier avec le meme nom
     // creer le fichier du project
-    if(regex_match(project_name, regex("^[a-z]+[a-z0-9_]*[a-z0-9]+$"))){
-        cout << "match";
+    if(regex_match(project_name, regex("^[a-z]*[a-z0-9_]*[a-z0-9]+$"))){
+        cout << "let create the project";
     }
     else{
         cout << "Project name: '" << project_name << "' is not valid." << endl;
         cout << endl << "Project name rules: " << endl;
-        
-
+        Assistant::name_rules();
         cout << endl;
 
     }
