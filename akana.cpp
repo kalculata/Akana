@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-
 #include "src/commandManager.cpp"
 
 using namespace std;
