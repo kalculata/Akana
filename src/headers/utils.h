@@ -8,15 +8,17 @@ using namespace std;
 
 class Utils{
     public:
-        static bool name_is_valid(string name);
+        static bool name_is_valid(const string &name);
 
         static string to_camel_case(string value);
 
         static bool folder_exist(const string &file);
 
-        static void create_folder(string name);
+        static bool create_project(const string &project_name);
 
-        static void create_file(string name);
+        static void create_folder(const string &name);
+
+        static void create_file(const string &name);
 };
 
 #endif

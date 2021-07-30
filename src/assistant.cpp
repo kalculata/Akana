@@ -12,7 +12,7 @@ void Assistant::akana_presentation(){
             "in its own folder and to get data, the resources will use their endpoints and each endpoint will be\n"
             "associated with a controller that has the role of managing the generation and access to data." << endl;
 
-    cout << endl << "Try command: 'akana help' to see list of commands." << endl; 
+    cout << endl << "Try command 'akana help' to see list of commands." << endl; 
     cout << endl;
 }
 
