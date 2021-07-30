@@ -23,6 +23,9 @@ bool Utils::folder_exist(const string &file){
 }
 
 bool Utils::create_project(const string &project_name){
+    Utils::create_folder("akana", project_name);
+    Utils::create_folder("main", project_name);
+
     map<string, string> project_structure = {
         {"akana/pages/error.php", "bin/p_1"},
         {"akana/pages/home.php", "bin/p_2"},
@@ -38,20 +41,31 @@ bool Utils::create_project(const string &project_name){
         {"root_controller.php", "bin/p_9"},
         
     };
+
+    return true;
 }
 
-void Utils::create_folder(const string &name){
-    string command = "mkdir " + name;
-    system(command.c_str());
-}
+void Utils::create_folder(const string &name, const string &folder){
+    string command;
 
-void Utils::create_file(const string &name){
-    void print_map(std::string_view comment, const std::map<std::string, int>& m)
-{
-    std::cout << comment;
-    for (const auto& [key, value] : m) {
-        std::cout << key << " = " << value << "; ";
+    if(!folder.empty()){
+        command = "mkdir -p " + folder + "\\" + name;
+        system(command.c_str());
+        system("rmdir \"-p\"");
     }
-    std::cout << "\n";
+    else{
+        command = "mkdir " + name;
+        system(command.c_str());
+    }
 }
-}
+
+// void Utils::create_file(const string &name){
+//     void print_map(std::string_view comment, const std::map<std::string, int>& m)
+// {
+//     std::cout << comment;
+//     for (const auto& [key, value] : m) {
+//         std::cout << key << " = " << value << "; ";
+//     }
+//     std::cout << "\n";
+// }
+// }
