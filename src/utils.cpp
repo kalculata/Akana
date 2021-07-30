@@ -1,5 +1,6 @@
 #include <regex>
 #include <map>
+#include <fstream>
 #include <sys/stat.h>
 #include "headers/utils.h"
 
@@ -23,7 +24,8 @@ bool Utils::folder_exist(const string &file){
 }
 
 bool Utils::create_project(const string &project_name){
-    Utils::create_folder("akana", project_name);
+    if(Utils::create_folder("akana", project_name) == true)
+        Utils::create_folder(("pages", project_name + "/akana"));
     Utils::create_folder("main", project_name);
 
     map<string, string> project_structure = {
@@ -42,30 +44,36 @@ bool Utils::create_project(const string &project_name){
         
     };
 
+
+
+    // créer un fichier
+    for (pair<string, string> el: project_structure) {
+        Utils::create_file(el.first);
+    }
+    // recuperer le contenu à mettre dans ce fichier
+    // adapter le contenu au fichier du projet
+    // le mettre dans le fichier
+
     return true;
 }
 
-void Utils::create_folder(const string &name, const string &folder){
+bool Utils::create_folder(const string &name, const string &folder){
     string command;
+    bool status;
 
     if(!folder.empty()){
         command = "mkdir -p " + folder + "\\" + name;
-        system(command.c_str());
+        status = system(command.c_str());
         system("rmdir \"-p\"");
     }
     else{
         command = "mkdir " + name;
-        system(command.c_str());
+        status = system(command.c_str());
     }
+
+    return status;
 }
 
-// void Utils::create_file(const string &name){
-//     void print_map(std::string_view comment, const std::map<std::string, int>& m)
-// {
-//     std::cout << comment;
-//     for (const auto& [key, value] : m) {
-//         std::cout << key << " = " << value << "; ";
-//     }
-//     std::cout << "\n";
-// }
-// }
+void Utils::create_file(const string &file){
+    ofstream fichier(file.c_str());
+}

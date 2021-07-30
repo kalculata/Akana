@@ -9,9 +9,6 @@ using namespace std;
 
 // this method contain all instructions to create of a new project
 void Commands::create_project(string project_name){
-    // verifier s'il y a pas de dossier avec le meme nom
-    // creer le fichier du project
-    
     if(Utils::name_is_valid(project_name)){
         if(Utils::folder_exist(project_name)){
             cout << endl << "Try with another name for the project because there is already a folder "

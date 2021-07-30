@@ -16,7 +16,7 @@ class Utils{
 
         static bool create_project(const string &project_name);
 
-        static void create_folder(const string &name, const string &folder="");
+        static bool create_folder(const string &name, const string &folder="");
 
         static void create_file(const string &name);
 };
