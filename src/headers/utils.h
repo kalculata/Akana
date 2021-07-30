@@ -12,7 +12,7 @@ class Utils{
 
         static string to_camel_case(string value);
 
-        static bool file_exist(string file);
+        static bool folder_exist(const string &file);
 
         static void create_folder(string name);
 

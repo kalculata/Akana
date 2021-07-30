@@ -13,8 +13,15 @@ void Commands::create_project(string project_name){
     // creer le fichier du project
     
     if(Utils::name_is_valid(project_name)){
-        cout << "let create the project";
+        if(Utils::folder_exist(project_name)){
+            cout << "Le dossier existe deja";
+        }
+        else{
+            cout << "Le dossier n'existe pas deja";
+        }
+
     }
+
     else{
         cout << "Project name: '" << project_name << "' is not valid." << endl;
         cout << endl << "Project name rules: " << endl;
