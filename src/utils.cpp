@@ -2,7 +2,8 @@
 #include "headers/utils.h"
 
 bool Utils::name_is_valid(string name){
-    if(regex_match(name, regex("^[a-z]*[a-z0-9_]*[a-z0-9]+$"))){
+    if(regex_match(name, regex("^[a-z]*[a-z0-9_]*[a-z0-9]+$")) && name.length() <= 50){
+        cout << endl << "la taille du nom du project est: " << name.length() << endl;
         return true;
     }
     else{

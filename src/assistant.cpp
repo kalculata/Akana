@@ -31,4 +31,5 @@ void Assistant::name_rules(){
     cout << "- It must end with a letter or a number." << endl;
     cout << "- It must contain only lowercase letters." << endl;
     cout << "- All special characters are not allowed except underscore '_'." << endl;
+    cout << "- Maximum length is 50 characters." << endl;
 }
