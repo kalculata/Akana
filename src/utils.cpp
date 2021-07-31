@@ -45,28 +45,30 @@ bool Utils::create_project(const string &project_name){
     system(string("mkdir " + project_name + "\\main").c_str());
     
     for (pair<string, string> el: project_structure) {
-        // --- add the content in the created file ---
-        ofstream file(el.first.c_str());
         string content_copy;
-        ifstream file_copy(el.second.c_str());
 
-        // --- get the content of the file to copy ---
+        // --- create a project file ---
+        ofstream file(el.first.c_str());
+        
+        // --- open thee file to copy ---
+        ifstream file_copy(el.second.c_str());
         if(file_copy){
             string line;
             while(getline(file_copy, line))
                 content_copy += line + "\n";
         }
-        else
+
+        // --- if there was error occured while opening the file to copy ---
+        else{
+            cout << endl << "There was error while opening file '" << el.second << "' to copy it in '" << el.first << "'." << endl;
             return false;
+        }
 
+        // --- copy the content of the framework file in the file for the project ---
         file << content_copy;
-        cout << el.first << endl;
-                
 
-        // else{
-        //     cout << "There was an error while creating the file '', delete the project and create it again." << endl;
-        //     return false;
-        // }
+        // --- print the name of the created project file to notice the developper ---
+        cout << el.first << endl;
     }
 
     return true;
