@@ -20,7 +20,7 @@ void Commands::create_project(string project_name){
             // --- create a folder with the project name ---
             system(string("mkdir " + project_name).c_str());
 
-            // --- create the project ---
+            // --- generate all files for new akana project ---
             if(Utils::create_project(project_name) == true){
                 cout << endl << "Your project has been successfully created." << endl;
                 cout << endl << "To start the server" << endl;
@@ -32,7 +32,7 @@ void Commands::create_project(string project_name){
             }
             
             else{
-                cout << endl << "An error occurred while creating the project, please try to create it again." << endl;
+                cout << endl << "An error occurred while creating the project, please delete it and try to create it again." << endl;
             }
         }
 

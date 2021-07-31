@@ -39,25 +39,35 @@ bool Utils::create_project(const string &project_name){
         
     };
 
-    
+    // --- create all folder necesarry to merge a project files ---
     system(string("mkdir " + project_name + "\\akana").c_str());
     system(string("mkdir " + project_name + "\\akana\\pages").c_str());
     system(string("mkdir " + project_name + "\\main").c_str());
     
     for (pair<string, string> el: project_structure) {
+        // --- add the content in the created file ---
         ofstream file(el.first.c_str());
+        string content_copy;
+        ifstream file_copy(el.second.c_str());
+
+        // --- get the content of the file to copy ---
+        if(file_copy){
+            string line;
+            while(getline(file_copy, line))
+                content_copy += line + "\n";
+        }
+        else
+            return false;
+
+        file << content_copy;
         cout << el.first << endl;
+                
 
-        // if(Utils::add_content(file, el.second, project_name))
-        //     cout << el.first << endl;
-        // else
-        //     cout << "There was an error creating the file '', delete the project and create it again." << endl;
+        // else{
+        //     cout << "There was an error while creating the file '', delete the project and create it again." << endl;
+        //     return false;
+        // }
     }
-
-    
-    // recuperer le contenu à mettre dans ce fichier
-    // adapter le contenu au fichier du projet
-    // le mettre dans le fichier
 
     return true;
 }
@@ -68,6 +78,8 @@ void Utils::create_file(const string &file){
 }
 
 // this method a content in file of a new empty project
-static bool add_content(ofstream &file, const string &file_to_copy, const string &project_name){
+static bool add_content(){
+    
+
     return true;
 }

@@ -6,7 +6,6 @@ using namespace std;
 
 int main(){
    
-    system("mkdir folder_a");
-    system("mkdir folder_a\\folder_b");
+    cout << "hello friend";
     
 }

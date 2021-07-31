@@ -21,7 +21,7 @@ class Utils{
         static void create_file(const string &name);
 
         // this method a content in file of a new empty project
-        static bool add_content(ofstream &file, const string &file_to_copy, const string &project_name);
+        static bool add_content();
 };
 
 #endif
