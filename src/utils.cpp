@@ -78,10 +78,3 @@ bool Utils::create_project(const string &project_name){
 void Utils::create_file(const string &file){
     ofstream fichier(file.c_str());
 }
-
-// this method a content in file of a new empty project
-static bool add_content(){
-    
-
-    return true;
-}

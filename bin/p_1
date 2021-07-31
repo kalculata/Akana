@@ -1,1 +1,1 @@
-<h1>Erreur <?php echo $e->getExceptionName(); ?></h1>
+<h1>Error <?php echo $e->getExceptionName(); ?></h1>

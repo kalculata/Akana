@@ -19,9 +19,6 @@ class Utils{
 
         // this method create file
         static void create_file(const string &name);
-
-        // this method a content in file of a new empty project
-        static bool add_content();
 };
 
 #endif

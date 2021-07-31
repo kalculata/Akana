@@ -49,17 +49,17 @@ void Commands::create_project(string project_name){
 
 // this method contain all instructions to add a resource in project project
 void Commands::add_resource(){
-    std::cout << "command to add resource" << std::endl;
+    std::cout << "Not available for moment wait for the version 1.3.0" << std::endl;
 }
 
 // this method contain all instructions to runserver with the current project
 void Commands::runserver(){
-    std::cout << "command to runserver" << std::endl;
+    std::cout << "Not available for moment wait for the version 1.3.0" << std::endl;
 }
 
 void Commands::about(){
-    cout << endl << "Version    : 1.0.1 (Akana 0)" << endl;
-    cout << "Release at : 29/07/2021" << endl;
+    cout << endl << "Version    : 1.2.0 (Akana 0)" << endl;
+    cout << "Release at : 31/07/2021" << endl;
     cout << "Author     : Kubwacu Entreprise" << endl;
     cout << "GitHub     : http://www.github.com/kubwacu-entreprise/akana-framework/" << endl;
     cout << endl;

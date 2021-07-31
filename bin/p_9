@@ -9,9 +9,7 @@
                 [
                     "message" =>"Akana Framework",
                     "data"=> [
-                        "nom"=> "Huzaifa",
-                        "prenom"=> "Nimushimirimana",
-                        "username"=> "kalculata"
+                        "version"=> "1.2.0"
                     ],
                 ]
             ], HTTP_200_OK['code']);
