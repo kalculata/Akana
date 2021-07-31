@@ -12,10 +12,11 @@ void Assistant::akana_presentation(){
             "in its own folder and to get data, the resources will use their endpoints and each endpoint will be\n"
             "associated with a controller that has the role of managing the generation and access to data." << endl;
 
-    cout << endl << "Try command: 'akana help' to see list of commands." << endl; 
+    cout << endl << "Try command 'akana help' to see list of commands." << endl; 
     cout << endl;
 }
 
+// this method print the help menu
 void Assistant::help_menu(){
     cout << "Usage: akana <command>" << endl;
     cout << endl << "Commands: " << endl;
@@ -26,9 +27,11 @@ void Assistant::help_menu(){
     cout << endl;
 }
 
+// this method print project and resource name rules
 void Assistant::name_rules(){
     cout << "- It must start with a letter." << endl;
     cout << "- It must end with a letter or a number." << endl;
     cout << "- It must contain only lowercase letters." << endl;
     cout << "- All special characters are not allowed except underscore '_'." << endl;
+    cout << "- Maximum length is 50 characters." << endl;
 }

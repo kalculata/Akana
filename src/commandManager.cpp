@@ -9,6 +9,7 @@ vector<string> CommandManager::get_commands(){
     commands.push_back("create-project");
     commands.push_back("add-resource");
     commands.push_back("runserver");
+    commands.push_back("about");
     commands.push_back("help");
 
     return commands;
@@ -66,5 +67,9 @@ void CommandManager::execute_command(string command, int arguments_length, char*
 
     else if(command == "help"){
         Commands::help();
+    }
+
+    else if(command == "about"){
+        Commands::about();
     }
 }

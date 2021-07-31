@@ -10,6 +10,8 @@ class Commands{
         // this method contain all instructions to runserver with the current project
         static void runserver();
 
+        static void about();
+
         // this method open help menu
         static void help();
 };
