@@ -17,9 +17,10 @@ void Commands::create_project(string project_name){
         }
         
         else{
-            // ajouter les fichiers necessaires au bon fonctionnement d'un project
-            Utils::create_folder(project_name);
+            // --- create a folder with the project name ---
+            system(string("mkdir " + project_name).c_str());
 
+            // --- create the project ---
             if(Utils::create_project(project_name) == true){
                 cout << endl << "Your project has been successfully created." << endl;
                 cout << endl << "To start the server" << endl;

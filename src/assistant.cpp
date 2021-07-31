@@ -16,6 +16,7 @@ void Assistant::akana_presentation(){
     cout << endl;
 }
 
+// this method print the help menu
 void Assistant::help_menu(){
     cout << "Usage: akana <command>" << endl;
     cout << endl << "Commands: " << endl;
@@ -26,6 +27,7 @@ void Assistant::help_menu(){
     cout << endl;
 }
 
+// this method print project and resource name rules
 void Assistant::name_rules(){
     cout << "- It must start with a letter." << endl;
     cout << "- It must end with a letter or a number." << endl;

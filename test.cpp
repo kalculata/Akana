@@ -1,18 +1,12 @@
 #include <iostream>
+#include <fstream>
+#include <filesystem>
 
 using namespace std;
 
-void test(int a, string b ="");
-
-
-
 int main(){
-    cout << system("rmdir \"-p\"");
-    //system("rmdir -p");
+   
+    system("mkdir folder_a");
+    system("mkdir folder_a\\folder_b");
     
-}
-void test(int a, string b){
-    cout << a << endl;
-    cout << b << endl;
-
 }
