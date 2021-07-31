@@ -9,6 +9,7 @@ vector<string> CommandManager::get_commands(){
     commands.push_back("create-project");
     commands.push_back("add-resource");
     commands.push_back("runserver");
+    commands.push_back("about");
     commands.push_back("help");
 
     return commands;
@@ -34,12 +35,15 @@ void CommandManager::execute_command(string command, int arguments_length, char*
 
         // --- check if the command has been executed at least with one option ---
         if(arguments_length > 2){
-            Commands::create_project();
+            string project_name = arguments[2];
+            Commands::create_project(project_name);
         }
 
         // --- if the command has been executed with no option ---
         else{
-            cout << "La commande 'create-project' requis au une option correspondant au nom du project";
+            cout << "Command 'create-project' requires a parameter for the project name." << endl;
+            cout << endl << "Usage: akana create-project <project_name>." << endl;
+            cout << endl;
         }
         
     }
@@ -63,5 +67,9 @@ void CommandManager::execute_command(string command, int arguments_length, char*
 
     else if(command == "help"){
         Commands::help();
+    }
+
+    else if(command == "about"){
+        Commands::about();
     }
 }
