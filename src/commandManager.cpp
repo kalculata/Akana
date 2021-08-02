@@ -1,4 +1,4 @@
-#include "headers/commandManager.h"
+#include "../headers/commandManager.h"
 
 #include "commands.cpp"
 

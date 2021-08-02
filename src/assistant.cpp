@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "headers/assistant.h"
+#include "../headers/assistant.h"
 
 using namespace std;
 

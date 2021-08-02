@@ -1,7 +1,7 @@
 #include <iostream>
 #include <regex>
 
-#include "headers/commands.h"
+#include "../headers/commands.h"
 
 #include "assistant.cpp"
 #include "utils.cpp"

@@ -3,7 +3,8 @@
 #include <fstream>
 #include <filesystem>
 #include <sys/stat.h>
-#include "headers/utils.h"
+
+#include "../headers/utils.h"
 
 // this method check if the given respect project and resource name
 bool Utils::name_is_valid(const string &name){
