@@ -58,11 +58,7 @@ void Commands::runserver(){
 }
 
 void Commands::about(){
-    cout << endl << "Version    : 1.2.0 (Akana 0)" << endl;
-    cout << "Release at : 31/07/2021" << endl;
-    cout << "Author     : Kubwacu Entreprise" << endl;
-    cout << "GitHub     : http://www.github.com/kubwacu-entreprise/akana-framework/" << endl;
-    cout << endl;
+    Assistant::about_menu();
 }
 
 // this method open help menu

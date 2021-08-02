@@ -43,19 +43,23 @@ bool Utils::create_project(const string &project_name){
     system(string("mkdir " + project_name + "\\akana").c_str());
     system(string("mkdir " + project_name + "\\akana\\pages").c_str());
     system(string("mkdir " + project_name + "\\main").c_str());
+
+    // --- get akana location in environment variables ---
+    char* t = getenv("akana");
+    string akana_location = t == NULL ? "" : string(t) + "/";
     
     for (pair<string, string> el: project_structure) {
-        string content_copy;
-
-        // --- create a project file ---
-        ofstream file(el.first.c_str());
+        // --- create the project file in append mode ---
+        ofstream file(el.first.c_str(), ios::app);
         
         // --- open thee file to copy ---
-        ifstream file_copy(el.second.c_str());
+        ifstream file_copy((akana_location + el.second).c_str());
         if(file_copy){
             string line;
-            while(getline(file_copy, line))
-                content_copy += line + "\n";
+            while(getline(file_copy, line)){
+                // --- copy the content of the framework file in the file for the project ---
+                file << line + "\n";
+            }
         }
 
         // --- if there was error occured while opening the file to copy ---
@@ -63,9 +67,6 @@ bool Utils::create_project(const string &project_name){
             cout << endl << "There was error while opening file '" << el.second << "' to copy it in '" << el.first << "'." << endl;
             return false;
         }
-
-        // --- copy the content of the framework file in the file for the project ---
-        file << content_copy;
 
         // --- print the name of the created project file to notice the developper ---
         cout << el.first << endl;

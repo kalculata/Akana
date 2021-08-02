@@ -23,7 +23,17 @@ void Assistant::help_menu(){
     cout << "   create-project <project_name>   : Create a new project." << endl;
     cout << "   add-resource <project_name>     : Add a resource in project." << endl;
     cout << "   runserver                       : run the server." << endl;
+    cout << "   about                           : Display the version of the framework." << endl;
     cout << "   help                            : Print help menu." << endl;
+    cout << endl;
+}
+
+// this method print only about menu
+void Assistant::about_menu(){
+    cout << endl << "Version    : 1.2.2 (Akana 0)" << endl;
+    cout << "Release at : 31/07/2021" << endl;
+    cout << "Author     : Kubwacu Entreprise" << endl;
+    cout << "GitHub     : http://www.github.com/kubwacu-entreprise/akana-framework/" << endl;
     cout << endl;
 }
 
