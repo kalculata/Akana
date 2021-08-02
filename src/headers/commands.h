@@ -1,3 +1,5 @@
+#ifndef COMMANDS_H
+#define COMMANDS_H
 
 class Commands{
     public:
@@ -15,3 +17,5 @@ class Commands{
         // this method open help menu
         static void help();
 };
+
+#endif // !COMMANDS_H
