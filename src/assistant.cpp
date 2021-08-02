@@ -7,7 +7,7 @@ using namespace std;
 // this method give a bref presentation of the framework
 void Assistant::akana_presentation(){
     cout << endl << 
-            "Akana is a small framework of PHP, used to create only simple RestFul APIs. The main philosophy\n" 
+            "Akana is a PHP framework, used to create only simple RestFul APIs. The main philosophy\n" 
             "of the framework is that an application made by it will be made up of resources that each organizes\n" 
             "in its own folder and to get data, the resources will use their endpoints and each endpoint will be\n"
             "associated with a controller that has the role of managing the generation and access to data." << endl;
