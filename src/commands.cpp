@@ -2,9 +2,8 @@
 #include <regex>
 
 #include "../headers/commands.h"
-
-#include "assistant.cpp"
-#include "utils.cpp"
+#include "../headers/utils.h"
+#include "../headers/assistant.h"
 
 using namespace std;
 
@@ -13,7 +12,7 @@ void Commands::create_project(string project_name){
     if(Utils::name_is_valid(project_name)){
         if(Utils::folder_exist(project_name)){
             cout << endl << "Try with another name for the project because there is already a folder "
-                            "with the name '" << project_name << "/' in this directory." << endl;
+                            "with the name '" << project_name << "/' in the current directory." << endl;
             cout << endl;
         }
         

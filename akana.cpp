@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 
-#include "src/commandManager.cpp"
+#include "headers/commandManager.h"
+#include "headers/assistant.h"
 
 using namespace std;
 

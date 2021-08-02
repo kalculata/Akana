@@ -1,6 +1,10 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
+#include <string>
+
+using namespace std;
+
 class Commands{
     public:
         // this method contain all instructions to create of a new project

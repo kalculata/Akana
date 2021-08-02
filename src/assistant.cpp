@@ -30,10 +30,10 @@ void Assistant::help_menu(){
 
 // this method print only about menu
 void Assistant::about_menu(){
-    cout << endl << "Version    : 1.2.2 (Akana 0)" << endl;
-    cout << "Release at : 31/07/2021" << endl;
+    cout << endl << "Version    : 1.2.3 (Akana 0)" << endl;
+    cout << "Release at : 02/08/2021" << endl;
     cout << "Author     : Kubwacu Entreprise" << endl;
-    cout << "GitHub     : http://www.github.com/kubwacu-entreprise/akana-framework/" << endl;
+    cout << "GitHub     : http://www.github.com/kubwacu-entreprise/akana_framework/" << endl;
     cout << endl;
 }
 

@@ -1,6 +1,9 @@
-#include "../headers/commandManager.h"
+#include <iostream>
 
-#include "commands.cpp"
+#include "../headers/commandManager.h"
+#include "../headers/commands.h"
+
+using namespace std;
 
 // get all valid commands used in the framework
 vector<string> CommandManager::get_commands(){

@@ -2,6 +2,7 @@
 #define COMMANDMANAGER_H
 
 #include <vector>
+#include <string>
 
 using namespace std;
 
