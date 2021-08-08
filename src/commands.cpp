@@ -48,13 +48,46 @@ void Commands::create_project(string project_name){
 }
 
 // this method contain all instructions to add a resource in project project
-void Commands::add_resource(){
-    std::cout << "Not available for moment wait for the version 1.3.0" << std::endl;
+void Commands::add_resource(string resource_name){
+    if(Utils::name_is_valid(resource_name)){
+        if(Utils::folder_exist(resource_name)){
+            cout << endl << "Try with another name for the resource because there is already a folder "
+                            "with the name '" << resource_name << "/' in the current directory." << endl;
+            cout << endl;
+        }
+        
+        else{
+            // --- create a folder with the project name ---
+            system(string("mkdir " + resource_name).c_str());
+
+            // --- generate all files for new akana project ---
+            if(Utils::add_resource(resource_name) == true){
+                cout << endl << "Your resource has been successfully added." << endl;
+                cout << endl << "Now add your resource in APP_RESOURCES a constant array that list all resources in"
+                                "\nyour application, find APP_RESOURCES in (/project_name/config.php)." << endl;
+                cout << endl;
+            }
+            
+            else{
+                cout << endl << "An error occurred while adding the resource, please delete it and try to add it again." << endl;
+            }
+        }
+
+    }
+
+    // --- if resource name is not valid ---
+    else{
+        cout << "Resource name '" << resource_name << "' is not valid." << endl;
+        cout << endl << "Resource name rules: " << endl;
+        Assistant::name_rules();
+        cout << endl;
+
+    }
 }
 
 // this method contain all instructions to runserver with the current project
 void Commands::runserver(){
-    std::cout << "Not available for moment wait for the version 1.3.0" << std::endl;
+    std::cout << "Not available for moment wait for the version 1.4.0" << std::endl;
 }
 
 void Commands::about(){

@@ -55,7 +55,8 @@ void CommandManager::execute_command(string command, int arguments_length, char*
 
         // --- check if the command has been executed at least with one option ---
         if(arguments_length > 2){
-            Commands::add_resource();
+            string resource_name = arguments[2];
+            Commands::add_resource(resource_name);
         }
         
         // --- if the command has been executed with no option ---

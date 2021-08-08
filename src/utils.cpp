@@ -76,6 +76,45 @@ bool Utils::create_project(const string &project_name){
     return true;
 }
 
+// this method genereate the resource structure
+bool add_resource(const string &resource_name){
+    // --- this map contain all files to generate for a new project with their content ---
+    map<string, string> resource_structure = {
+        {resource_name + "/controller.php", "bin/r_1"},
+        {resource_name + "/endpoints.php", "bin/r_2"},
+    };
+
+    // --- get akana location in environment variables ---
+    char* t = getenv("akana");
+    string akana_location = t == NULL ? "" : string(t) + "/";
+    
+    for (pair<string, string> el: resource_structure) {
+        // --- create the resource file in append mode ---
+        ofstream file(el.first.c_str(), ios::app);
+        
+        // --- open thee file to copy ---
+        ifstream file_copy((akana_location + el.second).c_str());
+        if(file_copy){
+            string line;
+            while(getline(file_copy, line)){
+                // --- copy the content of the framework file in the file for the resource ---
+                file << line + "\n";
+            }
+        }
+
+        // --- if there was error occured while opening the file to copy ---
+        else{
+            cout << endl << "There was error while opening file '" << el.second << "' to copy it in '" << el.first << "'." << endl;
+            return false;
+        }
+
+        // --- print the name of the created resource file to notice the developper ---
+        cout << el.first << endl;
+    }
+
+    return true;
+}
+
 // this methode create file
 void Utils::create_file(const string &file){
     ofstream fichier(file.c_str());

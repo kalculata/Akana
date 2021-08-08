@@ -11,7 +11,7 @@ class Commands{
         static void create_project(string project_name);
 
         // this method contain all instructions to add a resource in project project
-        static void add_resource();
+        static void add_resource(string resource_name);
 
         // this method contain all instructions to runserver with the current project
         static void runserver();
