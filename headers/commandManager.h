@@ -1,4 +1,8 @@
+#ifndef COMMANDMANAGER_H
+#define COMMANDMANAGER_H
+
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -13,3 +17,5 @@ class CommandManager{
         // execute a command, this method will always called after the method 'check_command'
         static void execute_command(string command, int arguments_length, char *arguments[]);
 };
+
+#endif // !COMMANDMANAGER_H

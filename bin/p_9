@@ -1,17 +1,13 @@
 <?php
-    namespace RootController;
+    define('ROOT_ENDPOINT', true);
+    define('DEBUG', true);
 
-    use Akana\Utils\Response;
+    //define('ROOT_ENDPOINT_CONTROLLER', NULL);
+    define('ROOT_ENDPOINT_CONTROLLER', [
+        'file' => '../root_controller.php',
+        'controller' => '\App\RootController'
+    ]);
 
-    class RootController{
-        static function get(){
-            return new Response([
-                [
-                    "message" =>"Akana Framework",
-                    "data"=> [
-                        "version"=> "1.2.0"
-                    ],
-                ]
-            ], HTTP_200_OK['code']);
-        }
-    }
+    define('APP_RESOURCES', [
+        'users'
+    ]);

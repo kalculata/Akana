@@ -1,3 +1,5 @@
+#ifndef ASSISTANT_H
+#define ASSISTANT_H
 
 class Assistant{
     public:
@@ -7,6 +9,11 @@ class Assistant{
         // this method print the help menu
         static void help_menu();
 
+        // this method print only about menu
+        static void about_menu();
+
         // this method print project and resource name rules
         static void name_rules();
 };
+
+#endif // !ASSISTANT_H

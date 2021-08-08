@@ -1,13 +1,13 @@
 #include <iostream>
 
-#include "headers/assistant.h"
+#include "../headers/assistant.h"
 
 using namespace std;
 
 // this method give a bref presentation of the framework
 void Assistant::akana_presentation(){
     cout << endl << 
-            "Akana is a small framework of PHP, used to create only simple RestFul APIs. The main philosophy\n" 
+            "Akana is a PHP framework, used to create only simple RestFul APIs. The main philosophy\n" 
             "of the framework is that an application made by it will be made up of resources that each organizes\n" 
             "in its own folder and to get data, the resources will use their endpoints and each endpoint will be\n"
             "associated with a controller that has the role of managing the generation and access to data." << endl;
@@ -23,7 +23,17 @@ void Assistant::help_menu(){
     cout << "   create-project <project_name>   : Create a new project." << endl;
     cout << "   add-resource <project_name>     : Add a resource in project." << endl;
     cout << "   runserver                       : run the server." << endl;
+    cout << "   about                           : Display the version of the framework." << endl;
     cout << "   help                            : Print help menu." << endl;
+    cout << endl;
+}
+
+// this method print only about menu
+void Assistant::about_menu(){
+    cout << endl << "Version    : 1.3.0 (Akana 1)" << endl;
+    cout << "Release at : 02/08/2021" << endl;
+    cout << "Author     : Kubwacu Entreprise" << endl;
+    cout << "GitHub     : http://www.github.com/kubwacu-entreprise/akana_framework/" << endl;
     cout << endl;
 }
 

@@ -1,6 +1,9 @@
-#include "headers/commandManager.h"
+#include <iostream>
 
-#include "commands.cpp"
+#include "../headers/commandManager.h"
+#include "../headers/commands.h"
+
+using namespace std;
 
 // get all valid commands used in the framework
 vector<string> CommandManager::get_commands(){
@@ -52,12 +55,15 @@ void CommandManager::execute_command(string command, int arguments_length, char*
 
         // --- check if the command has been executed at least with one option ---
         if(arguments_length > 2){
-            Commands::add_resource();
+            string resource_name = arguments[2];
+            Commands::add_resource(resource_name);
         }
         
         // --- if the command has been executed with no option ---
         else{
-            cout << "La commande 'add-resource' requis au une option correspondant au nom du resource";
+            cout << "Command 'add-resource' requires a parameter for the resource name." << endl;
+            cout << endl << "Usage: akana add-resource <resource_name>." << endl;
+            cout << endl;
         }
     }
 

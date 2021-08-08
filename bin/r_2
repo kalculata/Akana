@@ -1,0 +1,7 @@
+<?php
+    define('ENDPOINTS', [
+        // add here your endpoints, please try to follow this syntatx:
+        // '/users/' => NameOfTheController,
+        // '/users/(id:int)/' => NameOfTheController,
+        // '/users/(username:str)' => NameOfTheController,
+    ]);
