@@ -2,7 +2,9 @@
     // change the namespace name with your resource, 
     // if you named it with an other name the framework may not work correctly
 
-    namespace [this_resource];
+    // namespace [this_resource];
+
+    // use akana\Response;
 
     // example
     /* class TestController{

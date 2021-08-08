@@ -61,7 +61,9 @@ void CommandManager::execute_command(string command, int arguments_length, char*
         
         // --- if the command has been executed with no option ---
         else{
-            cout << "La commande 'add-resource' requis au une option correspondant au nom du resource";
+            cout << "Command 'add-resource' requires a parameter for the resource name." << endl;
+            cout << endl << "Usage: akana add-resource <resource_name>." << endl;
+            cout << endl;
         }
     }
 

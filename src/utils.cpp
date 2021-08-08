@@ -77,7 +77,7 @@ bool Utils::create_project(const string &project_name){
 }
 
 // this method genereate the resource structure
-bool add_resource(const string &resource_name){
+bool Utils::add_resource(const string &resource_name){
     // --- this map contain all files to generate for a new project with their content ---
     map<string, string> resource_structure = {
         {resource_name + "/controller.php", "bin/r_1"},
