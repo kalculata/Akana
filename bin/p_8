@@ -1,13 +1,20 @@
 <?php
-    define('PROJECT_NAME', 'akana');
-    define('ROOT_ENDPOINT', true);
+    require '../config.php';
+    require '../akana/main.php';
+    require '../akana/status.php';  
+    require '../akana/response.php';
+    require '../akana/utils.php';
+    require '../akana/exceptions.php';
 
-    // const ROOT_ENDPOINT_CONTROLLER = NULL;
-    define('ROOT_ENDPOINT_CONTROLLER', [
-        '../root_controller.php',
-        '\RootController\RootController'
-    ]);
+    use Akana\Main;
 
-    define('APP_RESOURCES', [
-        'test_resource'
-    ]);
+    define('URI',  $_SERVER['REQUEST_URI']);
+    define('HTTP_VERB', strtolower($_SERVER['REQUEST_METHOD']));
+    
+    //--- execute resource ---
+    try {
+        // --- print the response if execution when good ---
+        echo URI == '/' ? Main::execute('/') : Main::execute(URI);
+    } catch (Exception $e) {
+        include_once('../akana/pages/error.php');
+    }

@@ -24,18 +24,19 @@ bool Utils::create_project(const string &project_name){
 
     // --- this map contain all files to generate for a new project with their content ---
     map<string, string> project_structure = {
-        {project_name + "/akana/pages/errors.php", "bin/p_1"},
+        {project_name + "/akana/pages/error.php", "bin/p_1"},
         {project_name + "/akana/pages/home.php", "bin/p_2"},
 
-        {project_name + "/akana/controller.php", "bin/p_3"},
-        {project_name + "/akana/exceptions.php", "bin/p_4"},
-        {project_name + "/akana/status.php", "bin/p_5"},
-        {project_name + "/akana/utils.php", "bin/p_6"},
+        {project_name + "/akana/main.php", "bin/p_3"},
+        {project_name + "/akana/response.php", "bin/p_4"},
+        {project_name + "/akana/exceptions.php", "bin/p_5"},
+        {project_name + "/akana/status.php", "bin/p_6"},
+        {project_name + "/akana/utils.php", "bin/p_7"},
 
-        {project_name + "/main/index.php", "bin/p_7"},
+        {project_name + "/main/index.php", "bin/p_8"},
 
-        {project_name + "/config.php", "bin/p_8"},
-        {project_name + "/root_controller.php", "bin/p_9"},
+        {project_name + "/config.php", "bin/p_9"},
+        {project_name + "/root_controller.php", "bin/p_10"},
         
     };
 

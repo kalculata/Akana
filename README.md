@@ -2,13 +2,14 @@
 Akana is a PHP framework used to create restful APIs. This tool will help you to generate files for a empty project, add resources in project, make database migrations, etc...
 
 # Installation
-- Create a folder 'akana/' folder in computer.
+- Clone to projet in your local `git clone https://www.github.com/kubwacu-entreprise/akana`
+- Create 'akana/' folder in computer.
 - Compile the project by following instructions given in 'Commands for compilation' section (use command 1).
 - Copy the executable file (.exe) and the folder 'bin/' into your folder.
-- Create a new environment variables 'akana' with value of path to your folder.
-- Add also in "PATH" the path to your folder.
-- Then restart your computer (if you don't, akana might not work good).
-- To test if akana has been installed in your computer, open cmd and tap:
+- Create a new environment variables 'akana' with path to your folder as value (folder 'akana/').
+- Add also in "PATH" the path to your folder (folder 'akana/').
+- Then restart your computer (if you don't akana might not work correctly).
+- To test if akana has been installed in your computer after restart, open cmd and tap:
 
     `akana`
 
