@@ -78,10 +78,22 @@
             foreach($fields as $k => $v){
                 try{
                     if($k != "params"){
-                        $this->$k = $data[$k];
+                        try{
+                            $type = $fields_params[$k]['type'];
+                        }
+                        catch(ErrorException $e){
+                            throw new ORMException("You did not specify type of field '".$k."' in it params");
+                        }
+                        $value = $data[$k];
+                        if($data[$k] != NULL){
+                            if(strtolower($type) == "int" || strtolower($type) == "integer"){
+                                $value = intval($data[$k]);
+                            }
+                        }
+                        $this->$k = $value;
                     }
                 }
-                catch(\ErrorException $e){
+                catch(ErrorException $e){
                     $message = "field '".$k."' do not have any related field in database in table";
                     throw new ORMException($message);
                 }
@@ -125,7 +137,7 @@
                             $data['data'][$k] = $object->$k;
                         }
                     }
-                    catch(\ErrorException $e){
+                    catch(ErrorException $e){
                         $message = "field '".$k."' do not have any related field in database in table serializer";
                         throw new ORMException($message);
                     }
