@@ -6,9 +6,9 @@
     use Akana\Response\status;
     use Akana\Exceptions\NotSerializableException;
     use Akana\Utils;
-use ErrorException;
+    use ErrorException;
 
-abstract class Models{
+    abstract class Models{
         /* 
         get one data in database using id or other column
         return false if there isn't any data correspond 
@@ -64,10 +64,22 @@ abstract class Models{
 
         private function hydrate_object(Array $data){
             $fields = get_class_vars(get_called_class());
+            $fields_params = $fields["params"];
+
+            // check if each fields has params
+            foreach($fields as $k => $v){
+                if($k != "params"){
+                    if(!key_exists($k, $fields_params)){
+                        throw new ORMException("field '".$k."' do not have params");
+                    }
+                }
+            }
             
             foreach($fields as $k => $v){
                 try{
-                    $this->$k = $data[$k];
+                    if($k != "params"){
+                        $this->$k = $data[$k];
+                    }
                 }
                 catch(\ErrorException $e){
                     $message = "field '".$k."' do not have any related field in database in table";
@@ -105,11 +117,13 @@ abstract class Models{
             }
             $object_fields = get_class_vars(get_class($object));
 
-            // if fields method return all serializer all fields
+            // if fields method return all fields in serialized data
             if($serialize_fields == 'all'){
                 foreach($object_fields as $k => $v){
                     try{
-                        $data['data'][$k] = $object->$k;
+                        if($k != "params"){
+                            $data['data'][$k] = $object->$k;
+                        }
                     }
                     catch(\ErrorException $e){
                         $message = "field '".$k."' do not have any related field in database in table serializer";

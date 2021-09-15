@@ -39,7 +39,7 @@
                 return new Response(['message' => 'user with id "'.$id.'" do not exist'], status::HTTP_404_NOT_FOUND);
 
             $serializer = UserSerializer::serialize($data);
-                          
+            echo gettype($data->pk);      
             return new Response($serializer['data'], status::HTTP_200_OK);
         }
 

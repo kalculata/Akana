@@ -5,6 +5,6 @@
 
     class UserSerializer extends Serializer{
         // this method return fields to serializer
-        public static $fiel = 'all';
+        public static $fields = 'all';
         
     }
