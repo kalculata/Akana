@@ -1,0 +1,33 @@
+<?php
+    require '../config.php';
+    require '../akana/main.php';
+    require '../akana/database.php';
+    require '../akana/status.php';  
+    require '../akana/response.php';
+    require '../akana/utils.php';
+    require '../akana/exceptions.php';
+    require '../akana/orm.php';
+
+    use Akana\Database;
+    use Akana\Main;
+    use Akana\ORM\Models;
+
+    define('URI',  $_SERVER['REQUEST_URI']);
+    define('HTTP_VERB', strtolower($_SERVER['REQUEST_METHOD']));
+    
+    function stop_error_handler($errno, $errstr, $errfile, $errline, array $errcontext){
+        if (0 === error_reporting()) {
+            return false; 
+        }
+        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+    }
+
+    //--- execute resource ---
+    try {
+        // --- print the response if execution when good ---
+        set_error_handler('stop_error_handler');
+        echo URI == '/' ? Main::execute('/') : Main::execute(URI);
+    } catch (Exception $e) {
+        include_once('../akana/pages/error.php');
+    }
+    
