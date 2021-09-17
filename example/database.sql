@@ -6,7 +6,7 @@ CREATE TABLE `akana_example_db`.`users__user` (
     `first_name` VARCHAR(50) NOT NULL , 
     `last_name` VARCHAR(50) NOT NULL , 
     `email` VARCHAR(50) NOT NULL , 
-    `phone` INT(8) NULL,
+    `phone` VARCHAR(20) NULL,
     `password` VARCHAR(100) NOT NULL , 
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
     PRIMARY KEY (`pk`)
@@ -47,3 +47,19 @@ CREATE TABLE `akana_example_db`.`orders__order` (
     `excepted_at` datetime NOT NULL,
     PRIMARY KEY (`pk`)
 );
+
+insert 
+    into users__user(
+        first_name, 
+        last_name, 
+        email, 
+        phone, 
+        password
+    ) 
+    values(
+        "Huzaifa", 
+        "Nimushimirimana", 
+        "nprincehuzaifa@gmail.com", 
+        "+25761618465", 
+        "123456789"
+    );
