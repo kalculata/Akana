@@ -18,7 +18,6 @@
             if(!is_array($value) && !is_numeric($value))
                 throw new ORMException("get must be array or int");
             
-            
             // if it an array it must have one element
             if(is_array($value) && count($value) != 1)
                 throw new ORMException("get must have 1 argument");
@@ -85,6 +84,7 @@
                             throw new ORMException("You did not specify type of field '".$k."' in it params");
                         }
                         $value = $data[$k];
+
                         if($data[$k] != NULL){
                             if(strtolower($type) == "int" || strtolower($type) == "integer"){
                                 $value = intval($data[$k]);
