@@ -40,7 +40,7 @@
                     
                 }
                 else{
-                    throw new NoRootEndPointException();
+                    throw new NoRootEndPointException("Your application do have root endpoint.");
                 }
             }
 
@@ -79,13 +79,13 @@
                         }
 
                         else{
-                            throw new EndpointNotFoundException("Endpoint '". $endpoint ."' is not found in resource '". $resource ."'.");
+                            throw new EndpointNotFoundException("Endpoint '".$endpoint."' is not found in resource '". $resource ."'.");
                         }
 
                     }
 
                     else{
-                        throw new ResourceNotFoundException($resource);
+                        throw new ResourceNotFoundException("Resource '".$resource."' do not exist in your application");
                     }
                 }
             }
