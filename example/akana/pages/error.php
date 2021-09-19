@@ -1,6 +1,6 @@
 <?php
     use Akana\Response;
-    use Akana\Status;
+    use Akana\Response\Status;
 
     if(!DEBUG){
         switch($e->getExceptionName()){
@@ -26,8 +26,20 @@
     else{
 ?>
 
-<h1>Error: <?php echo $e->getExceptionName() . ": ".$e->getMessage(); ?></h1>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akana</title>
+</head>
+<body>
+    <h1>You have an issue   : <?= $e->getMessage() ?></h1>
+    <h2>In file             : <?= $e->getFile() ?></h2>
+    <h2>On line             : <?= $e->getLine() ?></h2>
+</body>
+</html>
 <?php
     }
 ?>

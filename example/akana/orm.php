@@ -5,20 +5,18 @@
     use Akana\Database;
     use Akana\Response\status;
     use Akana\Exceptions\NotSerializableException;
-    use Akana\Utils;
     use ErrorException;
+use Exception;
 
-    abstract class Models{
+abstract class Models{
         /* 
-        get one data in database using id or other column
-        return false if there isn't any data correspond 
+            get one data in database using id or other column
+            return false if there isn't any data correspond 
         */
         static function get($value){
-            // value must be array or int
             if(!is_array($value) && !is_numeric($value))
                 throw new ORMException("get must be array or int");
             
-            // if it an array it must have one element
             if(is_array($value) && count($value) != 1)
                 throw new ORMException("get must have 1 argument");
             
@@ -58,6 +56,34 @@
             $object = new $class_name();
             call_user_func_array([$object, 'hydrate_object'], [$data]);
             return $object;
+
+        }
+
+        /*
+            get all data in database
+        */
+        static function get_all(){
+            $class_name = get_called_class();
+            $table = self::get_table_name($class_name);
+            $database_con = new DataBase();
+
+            $data =  $database_con->get_all($table);
+            $output_data = [];
+
+            if(empty($data)){
+                echo "data is empty";
+            }
+
+            if(!empty($data)){
+                for($i=0; $i<count($data); $i++){
+                    $object = new $class_name();
+                    call_user_func_array([$object, 'hydrate_object'], [$data[$i]]);
+                    array_push($output_data, $object);
+                }
+
+            }
+
+            return $output_data;
 
         }
 
@@ -109,13 +135,10 @@
     abstract class Serializer{
         static public function serialize($object): Array {
             // check given value is not object, only object can be serialize
-            if(!is_object($object))
-                throw new NotSerializableException("Before serialize check if object from databas is not empty"); 
+            if(!is_object($object) && !is_array($object))
+                throw new NotSerializableException("Only an instance of model or an array of them can be serialized"); 
 
-            $data = [
-                'data' => [],
-                'status' => ''
-            ];
+            $data = ['data' => [],'status' => ''];
             
             // get serializer class, fields to serializer and current object fields
             $serialize_class = get_called_class();
@@ -127,23 +150,58 @@
             catch (\ReflectionException $e){
                 $serialize_fields = 'all';
             }
-            $object_fields = get_class_vars(get_class($object));
 
-            // if fields method return all fields in serialized data
+            try{
+                // get object to serialized fields
+                if(is_array($object))
+                    $object_fields = get_class_vars(get_class($object[0]));
+                else
+                    $object_fields = get_class_vars(get_class($object));
+            }
+            catch(ErrorException $e){
+                throw new ORMException("Only an instance of model or an array of them can be serialized");
+            }
+
             if($serialize_fields == 'all'){
-                foreach($object_fields as $k => $v){
-                    try{
-                        if($k != "params"){
-                            $data['data'][$k] = $object->$k;
-                        }
+                // when user is serializing many data
+                if(is_array($object)){
+                    for($i=0; $i<count($object); $i++){
+                        array_push($data['data'], self::serializer($object_fields, $object[$i]));
                     }
-                    catch(ErrorException $e){
-                        $message = "field '".$k."' do not have any related field in database in table serializer";
-                        throw new ORMException($message);
+                }
+                elseif(is_object($object)){
+                    foreach($object_fields as $k => $v){
+                        try{
+                            if($k != "params"){
+                                $data['data'][$k] = $object->$k;
+                            }
+                        }
+                        catch(ErrorException $e){
+                            $message = "field '".$k."' do not have any related field in database in table serializer";
+                            throw new ORMException($message);
+                        }
                     }
                 }
             }
             $data['status'] = status::HTTP_200_OK;
             return $data;
+        }
+
+        static private function serializer($object_fields, $object): Array{
+            $serialized_data = [];
+
+            foreach($object_fields as $k => $v){
+                try{
+                    if($k != "params"){
+                        $serialized_data[$k] = $object->$k;
+                    }
+                }
+                catch(ErrorException $e){
+                    $message = "field '".$k."' do not have any related field in database in table serializer";
+                    throw new ORMException($message);
+                }
+            }
+
+            return $serialized_data;
         }
     }

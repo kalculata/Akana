@@ -51,6 +51,30 @@
                 throw new DatabaseException($e->getMessage());
             }
         }
+        // get all objets in table
+        public function get_all($table){
+            try{
+                $q = NULL;
+                $output_data = [];
+
+                $q = $this->_database_con->query('SELECT * FROM '.$table);
+                
+                if($q->rowCount() == 0){
+                    return $output_data;
+                }
+
+                while($data = $q->fetch())
+                    array_push($output_data, $data);
+                    
+                $q->closeCursor();
+
+                return $output_data;
+                
+            }
+            catch(Exception $e){
+                throw new DatabaseException($e->getMessage());
+            }
+        }
 
         
     }

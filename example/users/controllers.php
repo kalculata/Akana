@@ -21,11 +21,17 @@
         }
 
         static function get(){
-            return new Response(
-                [
-                    'message' => 'get list of all users'
-                ]
-            );
+            $data = User::get_all();
+
+            if(empty($data)){
+                return new Response([
+                    'message' => 'not data found'],
+                    Status::HTTP_404_NOT_FOUND
+                );
+            }
+
+            $serializer = UserSerializer::serialize($data);
+            return new Response($serializer['data'], Status::HTTP_200_OK);
         }
     }
     
@@ -39,7 +45,6 @@
                 return new Response(['message' => 'user with id "'.$id.'" do not exist'], status::HTTP_404_NOT_FOUND);
 
             $serializer = UserSerializer::serialize($data);
-            echo gettype($data->pk);      
             return new Response($serializer['data'], status::HTTP_200_OK);
         }
 
