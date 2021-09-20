@@ -69,12 +69,19 @@
                 $q->closeCursor();
 
                 return $output_data;
-                
             }
             catch(Exception $e){
                 throw new DatabaseException($e->getMessage());
             }
         }
 
+        public function delete($table, $pk): bool{
+            try {
+                return ($this->_database_con->exec('DELETE FROM '.$table.' WHERE pk='.$pk))? true : false;
+            } 
+            catch (Exception $e) {
+                throw new DatabaseException($e->getMessage());
+            }
+        }
         
     }

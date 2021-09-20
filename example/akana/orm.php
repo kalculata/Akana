@@ -8,7 +8,7 @@
     use ErrorException;
 use Exception;
 
-abstract class Models{
+abstract class Model{
         /* 
             get one data in database using id or other column
             return false if there isn't any data correspond 
@@ -85,6 +85,14 @@ abstract class Models{
 
             return $output_data;
 
+        }
+
+        public function delete(): bool{
+            $class_name = get_called_class();
+            $table = self::get_table_name($class_name);
+            $database_con = new DataBase();
+
+            return $database_con->delete($table, $this->pk);
         }
 
         private function hydrate_object(Array $data){

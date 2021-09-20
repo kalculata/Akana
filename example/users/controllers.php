@@ -57,10 +57,17 @@
         }
 
         static function delete($user_id){
-            return new Response(
-                [
-                    'message' => 'delete a specific user'
-                ]
+            // get user from database using his id
+            $data = User::get($user_id);
+
+            if($data == NULL)
+                return new Response(['message' => 'user with id "'.$user_id.'" do not exist'], status::HTTP_404_NOT_FOUND);
+            
+            $data->delete();
+            
+            return new Response([
+                'message' => 'user with id "'.$user_id.'" has been deleted'],
+                status::HTTP_200_OK
             );
         }
     }

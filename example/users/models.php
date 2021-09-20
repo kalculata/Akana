@@ -1,9 +1,9 @@
 <?php
     namespace users\Models;
 
-    use Akana\ORM\Models;
+    use Akana\ORM\Model;
 
-    class User extends Models{
+    class User extends Model{
         public $pk;
         public $first_name;
         public $last_name;
