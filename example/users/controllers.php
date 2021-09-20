@@ -42,7 +42,8 @@
             $data = User::get($id);
 
             if($data == NULL)
-                return new Response(['message' => 'user with id "'.$id.'" do not exist'], status::HTTP_404_NOT_FOUND);
+                return new Response(['message' => 'user with id "'.$id.'" do not exist'], 
+                status::HTTP_404_NOT_FOUND);
 
             $serializer = UserSerializer::serialize($data);
             return new Response($serializer['data'], status::HTTP_200_OK);
@@ -61,7 +62,9 @@
             $data = User::get($user_id);
 
             if($data == NULL)
-                return new Response(['message' => 'user with id "'.$user_id.'" do not exist'], status::HTTP_404_NOT_FOUND);
+                return new Response([
+                    'message' => 'user with id "'.$user_id.'" do not exist'], 
+                    status::HTTP_404_NOT_FOUND);
             
             $data->delete();
             
