@@ -57,7 +57,7 @@
             );
         }
 
-        static function delete($user_id){
+        function delete($user_id){
             // get user from database using his id
             $data = User::get($user_id);
 

@@ -7,10 +7,12 @@
     use Akana\Exceptions\EmptyAppResourcesException;
     use Akana\Exceptions\ResourceNotFoundException;
     use Akana\Exceptions\EndpointNotFoundException;
-    use Akana\Response;
+use Akana\Exceptions\MethodNotStaticException;
+use Akana\Response;
     use Akana\Utils;
+use ErrorException;
 
-    class Main{
+class Main{
         // this method help to run the request
         static function execute(string $uri): Response{
             $resource = '';
@@ -70,7 +72,12 @@
                             // --- check if controller exists and that it is static and execute it with arguments
                             // they exists ---
                             if(method_exists($controller, HTTP_VERB)){
-                                return call_user_func_array(array($controller, HTTP_VERB), $t['args']);
+                                try{
+                                    return call_user_func_array(array($controller, HTTP_VERB), $t['args']);
+                                }
+                                catch(ErrorException $e){
+                                    throw new MethodNotStaticException("method '".HTTP_VERB."' in controller '".$controller."' is not static");
+                                }
                             }
 
                             else{
