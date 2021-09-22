@@ -7,14 +7,14 @@
     use Akana\Exceptions\EmptyAppResourcesException;
     use Akana\Exceptions\ResourceNotFoundException;
     use Akana\Exceptions\EndpointNotFoundException;
-use Akana\Exceptions\MethodNotStaticException;
-use Akana\Response;
+    use Akana\Exceptions\MethodNotStaticException;
+    use Akana\Response;
     use Akana\Utils;
-use ErrorException;
+    use ErrorException;
 
 class Main{
         // this method help to run the request
-        static function execute(string $uri): Response{
+        static function execute(string $uri, $request): Response{
             $resource = '';
             $endpoint = '';
             
@@ -73,6 +73,7 @@ class Main{
                             // they exists ---
                             if(method_exists($controller, HTTP_VERB)){
                                 try{
+                                    array_unshift($t['args'], $request);
                                     return call_user_func_array(array($controller, HTTP_VERB), $t['args']);
                                 }
                                 catch(ErrorException $e){

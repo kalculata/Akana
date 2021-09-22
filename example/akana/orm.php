@@ -70,10 +70,6 @@ abstract class Model{
             $data =  $database_con->get_all($table);
             $output_data = [];
 
-            if(empty($data)){
-                echo "data is empty";
-            }
-
             if(!empty($data)){
                 for($i=0; $i<count($data); $i++){
                     $object = new $class_name();

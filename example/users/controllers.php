@@ -12,7 +12,9 @@
 
     // users/
     class UsersController{
-        static function post(){
+        static function post($request){
+            var_dump($request['data']);
+
             return new Response(
                 [
                     'message' => 'create an account'
@@ -20,7 +22,7 @@
             );
         }
 
-        static function get(){
+        static function get($request){
             $data = User::get_all();
 
             if(empty($data)){
@@ -37,7 +39,7 @@
     
     // users/<user_id>/ 
     class ManageUserController{
-        static function get($id){
+        static function get($request, $id){
             // get user from database using his id
             $data = User::get($id);
 
@@ -49,7 +51,7 @@
             return new Response($serializer['data'], status::HTTP_200_OK);
         }
 
-        static function patch($user_id){
+        static function patch($request, $user_id){
             return new Response(
                 [
                     'message' => 'modify a specific user'
@@ -57,7 +59,7 @@
             );
         }
 
-        static function delete($user_id){
+        static function delete($request, $user_id){
             // get user from database using his id
             $data = User::get($user_id);
 

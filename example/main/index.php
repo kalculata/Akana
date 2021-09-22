@@ -14,7 +14,11 @@
 
     define('URI',  $_SERVER['REQUEST_URI']);
     define('HTTP_VERB', strtolower($_SERVER['REQUEST_METHOD']));
+    $request = [
+        'data' => json_decode(file_get_contents('php://input'))
+    ];
     
+    // allow php to enable errors and handle them with try catch
     function stop_error_handler($errno, $errstr, $errfile, $errline, array $errcontext){
         if (0 === error_reporting()) {
             return false; 
@@ -26,7 +30,7 @@
     try {
         // --- print the response if execution when good ---
         set_error_handler('stop_error_handler');
-        echo URI == '/' ? Main::execute('/') : Main::execute(URI);
+        echo URI == '/' ? Main::execute('/', $request) : Main::execute(URI, $request);
     } catch (Exception $e) {
         include_once('../akana/pages/error.php');
     }
