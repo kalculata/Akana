@@ -217,7 +217,7 @@ use Exception;
                     throw new ORMException($message);
                 }
             }
-            $serialized_data['pk'] = $object->pk;
+            $serialized_data = ['pk' => $object->pk] + $serialized_data;
 
             return $serialized_data;
         }
