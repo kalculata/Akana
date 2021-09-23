@@ -15,7 +15,7 @@
     define('URI',  $_SERVER['REQUEST_URI']);
     define('HTTP_VERB', strtolower($_SERVER['REQUEST_METHOD']));
     $request = [
-        'data' => json_decode(file_get_contents('php://input'))
+        'data' => json_decode(file_get_contents('php://input'), true)
     ];
     
     // allow php to enable errors and handle them with try catch

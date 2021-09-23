@@ -13,13 +13,12 @@
     // users/
     class UsersController{
         static function post($request){
-            var_dump($request['data']);
-
-            return new Response(
-                [
-                    'message' => 'create an account'
-                ]
-            );
+            $data = new User($request['data']);
+            echo $data->first_name;
+            //$data->save();
+            
+            //$serializer = UserSerializer::serialize($data);
+            return new Response(['test']);
         }
 
         static function get($request){

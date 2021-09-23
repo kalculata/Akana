@@ -8,7 +8,11 @@
     use ErrorException;
 use Exception;
 
-abstract class Model{
+    abstract class Model{
+        public function __construct($data = NULL){
+            if ($data != NULL)
+                $this->hydrate_object($data);
+        }
         /* 
             get one data in database using id or other column
             return false if there isn't any data correspond 
