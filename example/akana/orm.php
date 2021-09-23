@@ -9,6 +9,8 @@
 use Exception;
 
     abstract class Model{
+        public $pk;
+
         public function __construct($data = NULL){
             if ($data != NULL)
                 $this->hydrate_object($data);
@@ -98,10 +100,15 @@ use Exception;
         private function hydrate_object(Array $data){
             $fields = get_class_vars(get_called_class());
             $fields_params = $fields["params"];
+            
+            // check if field 'pk' or 'id' is provided
+            if(key_exists('id', $fields)){
+                throw new ORMException("remove field 'pk' or 'id' in your model there are already used as primary key");
+            }
 
             // check if each fields has params
             foreach($fields as $k => $v){
-                if($k != "params"){
+                if($k != "params" && $k != "pk"){
                     if(!key_exists($k, $fields_params)){
                         throw new ORMException("field '".$k."' do not have params");
                     }
@@ -110,7 +117,7 @@ use Exception;
             
             foreach($fields as $k => $v){
                 try{
-                    if($k != "params"){
+                    if($k != "params" && $k != "pk"){
                         try{
                             $type = $fields_params[$k]['type'];
                         }
@@ -132,6 +139,7 @@ use Exception;
                     throw new ORMException($message);
                 }
             }
+            $this->pk = intval($data['pk']);
         }
 
         private static function get_table_name(String $class): String{
@@ -209,6 +217,7 @@ use Exception;
                     throw new ORMException($message);
                 }
             }
+            $serialized_data['pk'] = $object->pk;
 
             return $serialized_data;
         }
