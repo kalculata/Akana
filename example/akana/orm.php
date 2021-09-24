@@ -234,17 +234,7 @@
                 }
 
                 elseif(is_object($object)){
-                    foreach($object_fields as $k => $v){
-                        try{
-                            if($k != "params"){
-                                $data['data'][$k] = $object->$k;
-                            }
-                        }
-                        catch(ErrorException $e){
-                            $message = "field '".$k."' do not have any related field in database in table serializer";
-                            throw new ORMException($message);
-                        }
-                    }
+                    $data['data'] = self::serializer($object_fields, $object);
                 }
             }
             $data['status'] = status::HTTP_200_OK;
