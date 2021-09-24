@@ -135,4 +135,34 @@
             throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
         }
 
+        static function get_keys($array){
+            $keys = [];
+
+            foreach($array as $k => $v){
+                array_push($keys, $k);
+            }
+
+            return $keys;
+        }
+        
+        static function get_values($array){
+            $values = [];
+
+            foreach($array as $k => $v){
+                array_push($values, $v);
+            }
+
+            return $values;
+        }
+        
+        static function array_to_string($array){
+            $string = "";
+
+            foreach($array as $k){
+                $string += "";
+            }
+
+            return $string;
+        }
+
     }

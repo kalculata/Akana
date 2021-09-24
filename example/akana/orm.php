@@ -5,8 +5,9 @@
     use Akana\Database;
     use Akana\Response\status;
     use Akana\Exceptions\NotSerializableException;
+    use Akana\Utils;
     use ErrorException;
-use Exception;
+    use Exception;
 
     abstract class Model{
         public $pk;
@@ -14,6 +15,27 @@ use Exception;
         public function __construct($data = NULL){
             if ($data != NULL)
                 $this->hydrate_object($data, true);
+        }
+
+        public function save(){
+            $class_name = get_called_class();
+            $table = self::get_table_name($class_name);
+
+            $fields = get_class_vars(get_called_class());
+            $fields_params = $fields["params"];
+            $fields_keys = Utils::get_keys($fields);
+
+            $data = [];
+
+            for ($i=0; $i < count($fields_keys); $i++) { 
+                if($fields_keys[$i] != "params"){
+                    $t = $fields_keys[$i];
+                    $data += array($t => $this->$t);
+                }
+            }
+
+            $database_con = new DataBase();
+            $database_con->save($table, $data, $fields_params);
         }
         /* 
             get one data in database using id or other column
@@ -133,7 +155,8 @@ use Exception;
                             $default_value = NULL;
                         }
                             
-                        if($is_nullable == false || ($data[$k] == NULL && $default_value != NULL)){
+                        if($is_nullable == false || ($data[$k] == NULL && $default_value != NULL)
+                            || ($is_nullable == true && $data[$k] != NULL)){
                             try {
                                 $type = $fields_params[$k]['type'];
                             } 
@@ -209,7 +232,7 @@ use Exception;
                         array_push($data['data'], self::serializer($object_fields, $object[$i]));
                     }
                 }
-                
+
                 elseif(is_object($object)){
                     foreach($object_fields as $k => $v){
                         try{

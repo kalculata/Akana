@@ -83,5 +83,37 @@
                 throw new DatabaseException($e->getMessage());
             }
         }
+        public function save($table, $data, $params){
+            $keys = "";
+            $values = "";
+            $counter = 0;
+            
+            foreach($data as $k => $v){
+                if($v != NULL){
+                    if($params[$k]['type'] == "str"){
+                        $v = '"'.$v.'"';
+                    }
+
+                    if($counter == 0){
+                        $keys = $k;
+                        $values = $v;
+                    }
+                    else{
+                        $keys .= ",".$k;
+                        $values .= ",".$v;
+                    }
+                }
+                $counter++;
+            }
+
+            try {
+                $query = 'INSERT INTO '.$table.'('.$keys.') VALUES('.$values.')';
+                return ($this->_database_con->exec($query))? true : false;
+
+            } 
+            catch (Exception $e) {
+                throw new DatabaseException($e->getMessage());
+            }
+        }
         
     }

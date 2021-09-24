@@ -14,11 +14,10 @@
     class UsersController{
         static function post($request){
             $data = new User($request['data']);
-            echo $data->created_at;
-            //$data->save();
-            
-            //$serializer = UserSerializer::serialize($data);
-            return new Response(['test']);
+            $data->save();
+
+            $serializer = UserSerializer::serialize($data);
+            return new Response($serializer['data']);
         }
 
         static function get($request){
