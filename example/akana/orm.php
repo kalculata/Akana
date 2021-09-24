@@ -13,7 +13,7 @@ use Exception;
 
         public function __construct($data = NULL){
             if ($data != NULL)
-                $this->hydrate_object($data);
+                $this->hydrate_object($data, true);
         }
         /* 
             get one data in database using id or other column
@@ -97,7 +97,7 @@ use Exception;
             return $database_con->delete($table, $this->pk);
         }
 
-        private function hydrate_object(Array $data){
+        private function hydrate_object(Array $data, $ignore=false){
             $fields = get_class_vars(get_called_class());
             $fields_params = $fields["params"];
             
@@ -115,31 +115,55 @@ use Exception;
                 }
             }
             
+            // hydrate the object with given data
             foreach($fields as $k => $v){
                 try{
                     if($k != "params" && $k != "pk"){
                         try{
-                            $type = $fields_params[$k]['type'];
+                            $is_nullable = $fields_params[$k]['nullable'];
                         }
                         catch(ErrorException $e){
-                            throw new ORMException("You did not specify type of field '".$k."' in it params");
+                            $is_nullable = false;
                         }
-                        $value = $data[$k];
 
-                        if($data[$k] != NULL){
-                            if(strtolower($type) == "int" || strtolower($type) == "integer"){
-                                $value = intval($data[$k]);
-                            }
+                        try {
+                            $default_value = $fields_params[$k]['default'];
+                        } 
+                        catch(ErrorException $e) {
+                            $default_value = NULL;
                         }
-                        $this->$k = $value;
+                            
+                        if($is_nullable == false || ($data[$k] == NULL && $default_value != NULL)){
+                            try {
+                                $type = $fields_params[$k]['type'];
+                            } 
+                            catch (ErrorException $th) {
+                                throw new ORMException("You did not specify type of field '".$k."' in it params");
+                            }
+                            
+                            $value = $data[$k];
+                            if($data[$k] != NULL){
+                                if(strtolower($type) == "int" || strtolower($type) == "integer"){
+                                    $value = intval($value);
+                                }
+                            }
+                            $this->$k = $value;
+                        }
+                        
                     }
                 }
                 catch(ErrorException $e){
-                    $message = "field '".$k."' do not have any related field in database in table";
-                    throw new ORMException($message);
+                    if($ignore == true){
+                        continue;
+                    }
+
+                    throw new ORMException("field '".$k."' doesn't have releted data in given data");
                 }
             }
-            $this->pk = intval($data['pk']);
+
+            if($ignore != true){
+                $this->pk = intval($data['pk']);
+            }
         }
 
         private static function get_table_name(String $class): String{
@@ -185,6 +209,7 @@ use Exception;
                         array_push($data['data'], self::serializer($object_fields, $object[$i]));
                     }
                 }
+                
                 elseif(is_object($object)){
                     foreach($object_fields as $k => $v){
                         try{

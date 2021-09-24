@@ -38,6 +38,7 @@
     <h1>You have an issue   : <?= $e->getMessage() ?></h1>
     <h2>In file             : <?= $e->getFile() ?></h2>
     <h2>On line             : <?= $e->getLine() ?></h2>
+    <h2>Trace               : <?= $e->getTraceAsString() ?></h2>
 </body>
 </html>
 <?php
