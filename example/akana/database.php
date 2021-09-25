@@ -108,7 +108,14 @@
 
             try {
                 $query = 'INSERT INTO '.$table.'('.$keys.') VALUES('.$values.')';
-                return ($this->_database_con->exec($query))? true : false;
+                $this->_database_con->exec($query);
+
+                if($this->_database_con->exec($query)){
+                    return intval($this->_database_con->lastInsertId());
+                }
+                else{
+                    throw new DatabaseException("they was an issue while saving this object, try again");
+                } 
 
             } 
             catch (Exception $e) {

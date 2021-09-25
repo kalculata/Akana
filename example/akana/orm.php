@@ -35,7 +35,12 @@
             }
 
             $database_con = new DataBase();
-            $database_con->save($table, $data, $fields_params);
+            $pk = $database_con->save($table, $data, $fields_params);
+           
+            $data =  $database_con->get($table, "pk", $pk);
+
+            call_user_func_array([$this, 'hydrate_object'], [$data]);
+
         }
         /* 
             get one data in database using id or other column
@@ -233,7 +238,7 @@
                     }
                 }
 
-                elseif(is_object($object)){
+                else if(is_object($object)){
                     $data['data'] = self::serializer($object_fields, $object);
                 }
             }
@@ -243,6 +248,17 @@
 
         static private function serializer($object_fields, $object): Array{
             $serialized_data = [];
+
+            try{
+                $fields_params = new \ReflectionProperty(get_class($object), 'params');
+                $fields_params = $fields_params->getValue();
+            }
+            catch (\ReflectionException $e){
+               
+            }
+
+            //var_dump($fields_params);  
+
 
             foreach($object_fields as $k => $v){
                 try{

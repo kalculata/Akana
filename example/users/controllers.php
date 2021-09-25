@@ -14,7 +14,7 @@
     class UsersController{
         static function post($request){
             $data = new User($request['data']);
-            $data->save();
+            //$data->save();
 
             $serializer = UserSerializer::serialize($data);
             return new Response($serializer['data']);
