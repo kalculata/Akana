@@ -82,3 +82,7 @@
     class NotSerializableException extends CustomException{
         protected $exception_name = 'NotSerializableException';
     }
+
+    class SerializerException extends CustomException{
+        protected $exception_name = 'SerializerException';
+    }  

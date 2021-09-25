@@ -17,6 +17,6 @@
             "email" => ["type" => "str", "max_length" => 50],
             "phone" => ["type" => "str", "max_length" => 20, 'nullable' => true],
             "password" => ["type" => "str", "max_length" => 100],
-            "created_at" => ["type" => "datetime", "default" => "now"]
+            "created_at" => ["type" => "datetime", "default" => "now"],
         ];
     }

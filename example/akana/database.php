@@ -108,7 +108,6 @@
 
             try {
                 $query = 'INSERT INTO '.$table.'('.$keys.') VALUES('.$values.')';
-                $this->_database_con->exec($query);
 
                 if($this->_database_con->exec($query)){
                     return intval($this->_database_con->lastInsertId());

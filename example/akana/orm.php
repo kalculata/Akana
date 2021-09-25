@@ -5,8 +5,9 @@
     use Akana\Database;
     use Akana\Response\status;
     use Akana\Exceptions\NotSerializableException;
-    use Akana\Utils;
-    use ErrorException;
+use Akana\Exceptions\SerializerException;
+use Akana\Utils;
+use ErrorException;
     use Exception;
 
     abstract class Model{
@@ -125,12 +126,18 @@
         }
 
         private function hydrate_object(Array $data, $ignore=false){
-            $fields = get_class_vars(get_called_class());
-            $fields_params = $fields["params"];
-            
-            // check if field 'pk' or 'id' is provided
-            if(key_exists('id', $fields)){
-                throw new ORMException("remove field 'pk' or 'id' in your model there are already used as primary key");
+            $class = get_called_class();
+            $fields = get_class_vars($class);
+
+            try{
+                $fields_params = $fields["params"];
+            }
+            catch(ErrorException $e){
+                throw new ORMException("model '".$class."' doesn't params");
+            }
+       
+            if(key_exists('id', $fields['params']) || key_exists('pk', $fields['params'])){      
+                throw new ORMException("remove field 'pk' or 'id' in your model '".$class."' is inserted by default");
             }
 
             // check if each fields has params
@@ -254,16 +261,28 @@
                 $fields_params = $fields_params->getValue();
             }
             catch (\ReflectionException $e){
-               
+               throw new ORMException("model '".get_class($object)."' doesn't have params");
             }
-
-            //var_dump($fields_params);  
-
+ 
 
             foreach($object_fields as $k => $v){
                 try{
                     if($k != "params"){
-                        $serialized_data[$k] = $object->$k;
+                        try{
+                            $is_nullable = $fields_params[$k]['nullable'];
+                        }
+                        catch(ErrorException $e){
+                            $is_nullable = false;
+                        }
+
+                        if($object->$k == NULL && $is_nullable == false){ 
+                            echo $k."=".$object->$k."| ";
+                            echo $is_nullable? "nullable": "not nullable";
+                            throw new SerializerException("field '".$k."' can't be null");
+                        }
+                        else{
+                            $serialized_data[$k] = $object->$k;
+                        }
                     }
                 }
                 catch(ErrorException $e){
