@@ -129,5 +129,44 @@
                 throw new DatabaseException($e->getMessage());
             }
         }
+
+        public function update($table, $pk, $data, $params){
+            $keys = "";
+            $values = "";
+            $counter = 0;
+            $keys_values = "";
+            
+            foreach($data as $k => $v){
+                if($v != NULL){
+                    if($params[$k]['type'] == "str"){
+                        $v = '"'.$v.'"';
+                    }
+
+                    if($counter == 0){
+                        $keys_values = $k."=".$v;
+                    }
+                    else{
+                        $keys_values .= ",".$k."=".$v;
+                    }
+                }
+                $counter++;
+            }
+
+            try {
+                $query = 'UPDATE '.$table.' SET '.$keys_values.' WHERE pk='.$pk;
+                $result = $this->_database_con->exec($query);
+                
+                if($result >= 0){
+                    return $pk;
+                }
+                else{
+                    throw new DatabaseException("they was an issue while updating this object, try again");
+                } 
+
+            } 
+            catch (Exception $e) {
+                throw new DatabaseException($e->getMessage());
+            }
+        }
         
     }

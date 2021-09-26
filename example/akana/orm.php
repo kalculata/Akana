@@ -145,6 +145,27 @@ use ErrorException;
 
         }
 
+        public function update(Array $data){
+            $class_name = get_called_class();
+            $fields = get_class_vars($class_name);
+            $fields_params = $fields['params'];
+            $fields_keys = Utils::get_keys($fields);
+
+            foreach($data as $k => $v){
+                if(!in_array($k, $fields_keys)){
+                    throw new ORMException("field '".$k."' do no exist in model '".$class_name."'");
+                }
+            }
+            
+            $table = self::get_table_name($class_name);
+            $database_con = new DataBase();
+            $database_con->update($table, $this->pk, $data, $fields_params);
+            
+            $data =  $database_con->get($table, "pk", $this->pk);
+            call_user_func_array([$this, 'hydrate_object'], [$data]);
+            
+        }
+
         public function delete(): bool{
             $class_name = get_called_class();
             $table = self::get_table_name($class_name);
@@ -161,7 +182,7 @@ use ErrorException;
             return $database_con->empty($table);
         }
 
-        private function hydrate_object(Array $data, $ignore=false){
+        private function hydrate_object(Array $data, bool $ignore=false){
             $class = get_called_class();
             $fields = get_class_vars($class);
 

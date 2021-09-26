@@ -50,9 +50,20 @@
         }
 
         static function patch($request, $user_id){
+            $user_modify = User::get($user_id);
+
+            if(!$user_modify){
+                return new Response([
+                    "message" => "user with id '".$user_id."' do not exist"], 
+                    Status::HTTP_404_NOT_FOUND);
+            }
+
+            $user_modify->update($request['data']);
+            $serializer = UserSerializer::serialize($user_modify);
             return new Response(
                 [
-                    'message' => 'modify a specific user'
+                    'message' => 'user "'.$user_id.'" have been modified',
+                    'data' => $serializer['data']
                 ]
             );
         }

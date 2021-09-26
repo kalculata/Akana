@@ -1,3 +1,4 @@
-- check if a model has field params except when it has no field
-- use field params to convert ouput data
-- auto field 'pk'
+- update method
+- refactoring the code
+- manage error
+- update akana cli
