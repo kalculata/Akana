@@ -11,15 +11,15 @@
 
     // users/
     class UsersController{
-        static function post($request){
-            $data = new User($request['data']);
+        static function post(){
+            $data = new User(REQUEST['data']);
             $data->save();
 
             $serializer = UserSerializer::serialize($data);
             return new Response($serializer['data']);
         }
 
-        static function get($request){
+        static function get(){
             
             $data = User::get_all();
 
@@ -37,7 +37,7 @@
     
     // users/<user_id>/ 
     class ManageUserController{
-        static function get($request, $id){
+        static function get($id){
             // get user from database using his id
             $data = User::get($id);
 
@@ -49,7 +49,7 @@
             return new Response($serializer['data'], STATUS_200_OK);
         }
 
-        static function patch($request, $user_id){
+        static function patch($user_id){
             $user_modify = User::get($user_id);
 
             if(!$user_modify){
@@ -58,7 +58,7 @@
                     STATUS_404_NOT_FOUND);
             }
 
-            $user_modify->update($request['data']);
+            $user_modify->update(REQUEST['data']);
             $serializer = UserSerializer::serialize($user_modify);
             return new Response(
                 [
@@ -68,7 +68,7 @@
             );
         }
 
-        static function delete($request, $user_id){
+        static function delete($user_id){
             // get user from database using his id
             $data = User::get($user_id);
 

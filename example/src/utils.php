@@ -1,6 +1,8 @@
 <?php
     namespace Akana;
 
+    use Akana\Exceptions\JSONException;
+
     class Utils{
         // change type as json and response code (by default: 200)
         static function set_content_to_json(int $status = 200){
@@ -165,12 +167,28 @@
             return $string;
         }
 
-        static  function json_validator($data=NULL) {
+        static function json_validator($data=NULL) {
             if(!empty($data)) {
                 json_decode($data);
                 return (json_last_error() === JSON_ERROR_NONE);
             }
             return true;
+        }
+
+        static function get_request_data(){
+            $json_data = file_get_contents('php://input');
+
+            if(Utils::json_validator($json_data) == false)
+                throw new JsonException("your json content contain errors");
+        
+            $request_data = json_decode($json_data, true);
+
+            if(empty($request_data) && !empty($_POST)){
+                $request_data = $_POST;
+            }
+
+            return $request_data;
+            
         }
 
     }

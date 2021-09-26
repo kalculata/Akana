@@ -27,7 +27,7 @@
         protected $name = 'CustomException';
         protected $level = 'low';
 
-        public function __construct($message=null, $code=STATUS_500_INTERNAL_SERVER_ERROR){
+        public function __construct($message=null, $code=0){
             parent::__construct($message, $code);
         }
 

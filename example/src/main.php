@@ -13,7 +13,7 @@
 
     class Main{
         // this method help to run the request
-        static function execute(string $uri, $request): Response{
+        static function execute(string $uri): Response{
             $resource = '';
             $endpoint = '';
             
@@ -72,7 +72,6 @@
                             // they exists ---
                             if(method_exists($controller, HTTP_VERB)){
                                 try{
-                                    array_unshift($t['args'], $request);
                                     return call_user_func_array(array($controller, HTTP_VERB), $t['args']);
                                 }
                                 catch(ErrorException $e){
