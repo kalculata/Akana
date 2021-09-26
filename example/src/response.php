@@ -13,7 +13,12 @@
         }
 
         public function __toString() : string{
-            Utils::set_content_to_json($this->_code);
+            $this->set_content_to_json($this->_code);
             return json_encode($this->_data);
+        }
+
+        private function set_content_to_json(int $status = STATUS_200_OK){
+            http_response_code($status);
+            header('Content-Type: application/json');
         }
     }

@@ -3,14 +3,7 @@
 
     use Akana\Exceptions\JSONException;
 
-    class Utils{
-        // change type as json and response code (by default: 200)
-        static function set_content_to_json(int $status = 200){
-            http_response_code($status);
-
-            header('Content-Type: application/json');
-        }
-
+    abstract class Utils{
         // remove some characters in given string
         static function remove_char(string $word, $index=0): string{
             $output = "";
@@ -190,5 +183,9 @@
             return $request_data;
             
         }
+
+    }
+
+    abstract class URI{
 
     }

@@ -11,6 +11,7 @@
     use Akana\Utils;
     use ErrorException;
 
+
     class Main{
         // this method help to run the request
         static function execute(string $uri): Response{
@@ -46,7 +47,7 @@
             }
 
             // --- if the uri do not pointed to root endpoint ---
-            else{
+            else if($uri != '/'){
                 // --- check if there is not resouce in APP_RESOURCES array set in config.php ---
                 if(count(APP_RESOURCES) == 0){
                     throw new EmptyAppResourcesException("your application do not have any resources registred in config.php");
