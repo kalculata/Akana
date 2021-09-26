@@ -5,8 +5,6 @@
     - comment in good way methods and the code
     - simpify and organize the code
     - refactoring utils methods
-    - change name of the akana to 'src'
-    - change name of the main to 'akana'
     - change configuration files to yaml
 - update akana cli
     - add version option
