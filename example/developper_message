@@ -1,5 +1,4 @@
 - refactoring the code
-    - add all status
     - manage errors (serialization)
     - separate model and serializer class
     - create html page for errors 

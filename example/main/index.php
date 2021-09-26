@@ -1,12 +1,12 @@
 <?php
     require '../config.php';
-    require '../akana/main.php';
-    require '../akana/database.php';
-    require '../akana/status.php';  
-    require '../akana/response.php';
-    require '../akana/utils.php';
-    require '../akana/exceptions.php';
-    require '../akana/orm.php';
+    require '../src/main.php';
+    require '../src/database.php';
+    require '../src/status.php';  
+    require '../src/response.php';
+    require '../src/utils.php';
+    require '../src/exceptions.php';
+    require '../src/orm.php';
 
     use Akana\Main;
     use Akana\Utils;
@@ -22,7 +22,7 @@
             throw new JsonException("your json content contain errors");
     }
     catch(Exception $e){
-        include_once('../akana/pages/error.php');
+        include_once('../src/pages/error.php');
     }
     
     $request = [
@@ -44,6 +44,6 @@
         echo Main::execute(URI, $request);
     } 
     catch (Exception $e) {
-        include_once('../akana/pages/error.php');
+        include_once('../src/pages/error.php');
     }
     
