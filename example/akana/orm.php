@@ -305,7 +305,7 @@
                     $data['data'] = self::serializer($object_fields, $object);
                 }
             }
-            $data['status'] = status::HTTP_200_OK;
+            $data['status'] = STATUS_200_OK;
             return $data;
         }
 

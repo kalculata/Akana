@@ -1,3 +1,46 @@
 - refactoring the code
-- manage error
+    - add all status
+    - manage errors (serialization)
+    - separate model and serializer class
+    - create html page for errors 
+    - comment in good way methods and the code
+    - simpify and organize the code
+    - refactoring utils methods
+    - change name of the akana to 'src'
+    - change name of the main to 'akana'
+    - change configuration files to yaml
 - update akana cli
+    - add version option
+    - add option 'config-example'
+    - add option 'template 1'
+    - add option 'analyse-project'
+    - simplify code in main file
+
+    project main files:
+        configuration files:
+            - env.php
+            - root.php
+            - config.php
+        
+        home file:
+            - src/html/home.php
+        
+        framework files:
+            - src/error_manager.php
+            - src/database.php
+            - src/exceptions.php
+            - src/main/php
+            - src/model.php
+            - src/serializer.php
+            - src/response.php
+            - src/status.php
+            - src/utils.php
+        
+        main file:
+            - akana/index.php
+    
+    resource main files:
+        - controllers.php
+        - endpoints.php
+        - models.php
+        - serializers.php
