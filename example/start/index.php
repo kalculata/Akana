@@ -23,11 +23,17 @@
             throw new JsonException("your json content contain errors");
     }
     catch(Exception $e){
-        include_once('../src/pages/error.php');
+        include_once('../src/errors_manager.php');
     }
     
+    $request_data = json_decode($json_data, true);
+
+    if(empty($request_data) && !empty($_POST)){
+        $request_data = $_POST;
+    }
+
     $request = [
-        'data' => json_decode($json_data, true)
+        'data' => $request_data
     ];
 
     
