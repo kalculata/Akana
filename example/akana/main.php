@@ -1,7 +1,6 @@
 <?php
     namespace Akana;
 
-    use Exception;
     use Akana\Exceptions\NoRootEndpointException;
     use Akana\Exceptions\HttpVerbNotAuthorizedException;
     use Akana\Exceptions\EmptyAppResourcesException;
@@ -12,7 +11,7 @@
     use Akana\Utils;
     use ErrorException;
 
-class Main{
+    class Main{
         // this method help to run the request
         static function execute(string $uri, $request): Response{
             $resource = '';
@@ -21,9 +20,9 @@ class Main{
             // --- if the uri is pointed to root endpoint '/' ---
             if($uri == '/'){
                 // --- check if the root endpoint is set in 'config.php' ---
-                if(ROOT_ENDPOINT == true && ROOT_ENDPOINT_CONTROLLER != NULL){
-                    $root_endpoint_controller_path =  ROOT_ENDPOINT_CONTROLLER['file'];
-                    $root_endpoint_controller = ROOT_ENDPOINT_CONTROLLER['controller'];
+                if(ROOT == true && ROOT_CONTROLLER != NULL){
+                    $root_endpoint_controller_path =  ROOT_CONTROLLER['file'];
+                    $root_endpoint_controller = ROOT_CONTROLLER['controller'];
                     
                     // --- import file of root endpoint controller ---
                     require $root_endpoint_controller_path;

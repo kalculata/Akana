@@ -5,10 +5,10 @@
     use Akana\Database;
     use Akana\Response\status;
     use Akana\Exceptions\NotSerializableException;
-use Akana\Exceptions\SerializerException;
-use Akana\Utils;
-use ErrorException;
-    use Exception;
+    use Akana\Exceptions\SerializerException;
+    use Akana\Utils;
+    
+    use ErrorException;
 
     abstract class Model{
         public $pk;

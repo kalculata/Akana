@@ -1,10 +1,10 @@
 <?php
     require '../env.php';
 
-    define('ROOT_ENDPOINT', false);
+    define('ROOT', false);
     define('DEBUG', true);
 
-    define('ROOT_ENDPOINT_CONTROLLER', ['file' => '../root_controller.php', 'controller' => '\App\RootController']);
+    define('ROOT_CONTROLLER', ['file' => '../root.php', 'controller' => '\App\RootController']);
 
     define('APP_RESOURCES', [
         'users',

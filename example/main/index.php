@@ -8,9 +8,7 @@
     require '../akana/exceptions.php';
     require '../akana/orm.php';
 
-    use Akana\Database;
     use Akana\Main;
-    use Akana\ORM\Models;
     use Akana\Utils;
     use Akana\Exceptions\JSONException;
 
@@ -40,12 +38,12 @@
         throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
-    //--- execute resource ---
     try {
-        // --- print the response if execution when good ---
         set_error_handler('stop_error_handler');
-        echo URI == '/' ? Main::execute('/', $request) : Main::execute(URI, $request);
-    } catch (Exception $e) {
+
+        echo Main::execute(URI, $request);
+    } 
+    catch (Exception $e) {
         include_once('../akana/pages/error.php');
     }
     
