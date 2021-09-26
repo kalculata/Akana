@@ -1,7 +1,7 @@
 <?php
     namespace users\Serializers;
 
-    use Akana\ORM\Serializer;
+    use Akana\Serializer;
 
     class UserSerializer extends Serializer{
         // this method return fields to serializer

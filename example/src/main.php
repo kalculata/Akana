@@ -66,7 +66,7 @@
                         $controller = empty($t) ? "" : '\\'.$resource.'\\Controllers\\'.$t['method'];
                         
                         if(!empty($controller)){
-                            require '../'. $resource .'/controllers.php';
+                            require '../res/'. $resource .'/controllers.php';
                             
                             // --- check if controller exists and that it is static and execute it with arguments
                             // they exists ---

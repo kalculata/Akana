@@ -83,7 +83,7 @@
         // check if a specific endpoint exist in ENDPOINTS constanr array of specific resource, and return the
         // name of the method associated with the endpoint and an array of arguments for the method ---
         static function endpoint_exist(string $resource, string $endpoint): array{
-            require '../'. $resource . '/endpoints.php';
+            require '../res/'. $resource . '/endpoints.php';
             
             foreach(ENDPOINTS as $ep => $controller){
                 if(self::is_dynamic($ep) == true){

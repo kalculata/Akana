@@ -1,12 +1,16 @@
 <?php
     require '../config.php';
-    require '../src/main.php';
-    require '../src/database.php';
     require '../src/status.php';  
-    require '../src/response.php';
     require '../src/utils.php';
+    require '../src/database.php';
     require '../src/exceptions.php';
-    require '../src/orm.php';
+    require '../src/model.php';
+    require '../src/serializer.php';
+    require '../src/response.php';
+    require '../src/main.php';
+    
+    
+    
 
     use Akana\Main;
     use Akana\Utils;

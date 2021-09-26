@@ -1,8 +1,8 @@
 <?php
     namespace users\Controllers;
 
-    require '../users/models.php';
-    require '../users/serializers.php';
+    require '../res/users/models.php';
+    require '../res/users/serializers.php';
 
     use Akana\Response;
 

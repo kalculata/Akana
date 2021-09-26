@@ -1,7 +1,7 @@
 <?php
     namespace users\Models;
 
-    use Akana\ORM\Model;
+    use Akana\Model;
 
     class User extends Model{
         public $first_name;
