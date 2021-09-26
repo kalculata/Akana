@@ -245,7 +245,6 @@ use ErrorException;
 
     abstract class Serializer{
         static public function serialize($object): Array {
-            // check given value is not object, only object can be serialize
             if(!is_object($object) && !is_array($object))
                 throw new NotSerializableException("Only an instance of model or an array of them can be serialized"); 
 
@@ -277,7 +276,6 @@ use ErrorException;
                 // when user is serializing many data
                 if(is_array($object)){
                     for($i=0; $i<count($object); $i++){
-                        echo $object[$i]->pk." | ";
                         array_push($data['data'], self::serializer($object_fields, $object[$i]));
                     }
                 }
