@@ -1,6 +1,5 @@
 - refactoring the code
     - manage errors (serialization)
-    - create html page for errors 
     - comment in good way methods and the code
     - simpify and organize the code
     - refactoring utils methods

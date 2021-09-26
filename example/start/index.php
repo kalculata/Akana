@@ -8,9 +8,6 @@
     require '../src/serializer.php';
     require '../src/response.php';
     require '../src/main.php';
-    
-    
-    
 
     use Akana\Main;
     use Akana\Utils;
@@ -48,6 +45,6 @@
         echo Main::execute(URI, $request);
     } 
     catch (Exception $e) {
-        include_once('../src/pages/error.php');
+        include_once('../src/errors_manager.php');
     }
     

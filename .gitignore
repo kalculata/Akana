@@ -7,3 +7,4 @@ assistant.o
 commandManager.o
 commands.o
 utils.o
+developper_message

@@ -14,7 +14,8 @@
         public function __toString();
         public function __construct($message=null, $code=0);
 
-        public function getExceptionName();
+        public function getName();
+        public function getLevel();
     }
 
     abstract class CustomException extends Exception implements ExceptionInterface{
@@ -23,69 +24,76 @@
         protected $file;
         protected $line;
         protected $trace;
-        protected $exception_name = 'CustomException';
+        protected $name = 'CustomException';
+        protected $level = 'low';
 
-        public function __construct($message=null, $code=0){
+        public function __construct($message=null, $code=STATUS_500_INTERNAL_SERVER_ERROR){
             parent::__construct($message, $code);
         }
 
-        // public function __toString(){
-        //     return get_class($this). "'".$this.message."' in ".$this->file($this->line)."\n".$this->getTraceAsString();
-        // }
-
-        public function getExceptionName(){
-            return $this->exception_name;
+        public function getName(){
+            return $this->name;
         }
-
-        public function setExceptionName($value){
-            $this->exception_name = $value;
+        public function getLevel(){
+            return $this->level;
         }
-
     }
 
     class NoRootEndpointException extends CustomException{
-        protected $exception_name = 'NoRootEndpointException';
+        protected $name = 'NoRootEndpointException';
+        protected $code = STATUS_404_NOT_FOUND;
     }
 
     class EmptyAppResourcesException extends CustomException{
-        protected $exception_name = 'EmptyAppResourcesException';
+        protected $name = 'EmptyAppResourcesException';
+        protected $code = STATUS_404_NOT_FOUND;
     }
 
     class ResourceNotFoundException extends CustomException{
-        protected $exception_name = 'ResourceNotFoundException';
+        protected $name = 'ResourceNotFoundException';
+        protected $code = STATUS_404_NOT_FOUND;
     }
 
     class EndpointNotFoundException extends CustomException{
-        protected $exception_name = 'EndpointNotFoundException';
-    }
-
-    class ControllerNotFoundException extends CustomException{
-        protected $exception_name = 'ControllerNotFoundException';
+        protected $name = 'EndpointNotFoundException';
+        protected $code = STATUS_404_NOT_FOUND;
     }
 
     class HttpVerbNotAuthorizedException extends CustomException{
-        protected $exception_name = 'HttpVerbNotAuthorizedException';
+        protected $name = 'HttpVerbNotAuthorizedException';
+        protected $code = STATUS_401_UNAUTHORIZED;
+    }
+    class SerializerException extends CustomException{
+        protected $name = 'SerializerException';
+        protected $code = STATUS_400_BAD_REQUEST;
+    }  
+    class JSONException extends CustomException{
+        protected $name = 'JSONException';
+        protected $code = STATUS_400_BAD_REQUEST;
+    } 
+
+    class ControllerNotFoundException extends CustomException{
+        protected $name = 'ControllerNotFoundException';
+        protected $level = 'hight';
     }
 
     class MethodNotStaticException extends CustomException{
-        protected $exception_name = 'MethodNotStaticException';
+        protected $name = 'MethodNotStaticException';
+        protected $level = 'hight';
     }
 
     class DatabaseException extends CustomException{
-        protected $exception_name = 'DatabaseException';
+        protected $name = 'DatabaseException';
+        protected $level = 'hight';
     }
 
     class ORMException extends CustomException{
-        protected $exception_name = 'ORMException';
+        protected $name = 'ORMException';
+        protected $level = 'hight';
     }
 
     class NotSerializableException extends CustomException{
-        protected $exception_name = 'NotSerializableException';
+        protected $name = 'NotSerializableException';
+        protected $level = 'hight';
     }
-
-    class SerializerException extends CustomException{
-        protected $exception_name = 'SerializerException';
-    }  
-    class JSONException extends CustomException{
-        protected $exception_name = 'JSONException';
-    }  
+ 
