@@ -13,7 +13,6 @@
     // users/
     class UsersController{
         static function post($request){
-            User::delete_all();
             $data = new User($request['data']);
             $data->save();
 

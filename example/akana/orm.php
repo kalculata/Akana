@@ -37,12 +37,24 @@ use ErrorException;
 
             //check if data are in good format
             foreach($fields_keys as $k){
-                if($k != "params"){
+                if($k != "params" && $k != "pk" && $k != "id"){
                     try{
                         $is_nullable = $fields_params[$k]['is_nullable'];
+        
                     }
                     catch(ErrorException $e){
                         $is_nullable = false;
+                    }
+                    try{
+                        $default_value = $fields_params[$k]['default'];
+                    }
+                    catch(ErrorException $e){
+                        $default_value = NULL;
+                        
+                    }
+
+                    if($default_value != NULL){
+                        continue;
                     }
 
                     if($this->$k == NULL && $is_nullable == false){
