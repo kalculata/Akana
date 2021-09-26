@@ -11,12 +11,26 @@
     use Akana\Database;
     use Akana\Main;
     use Akana\ORM\Models;
+    use Akana\Utils;
+    use Akana\Exceptions\JSONException;
 
     define('URI',  $_SERVER['REQUEST_URI']);
     define('HTTP_VERB', strtolower($_SERVER['REQUEST_METHOD']));
+
+    $json_data = file_get_contents('php://input');
+
+    try{
+        if(Utils::json_validator($json_data) == false)
+            throw new JsonException("your json content contain errors");
+    }
+    catch(Exception $e){
+        include_once('../akana/pages/error.php');
+    }
+    
     $request = [
-        'data' => json_decode(file_get_contents('php://input'), true)
+        'data' => json_decode($json_data, true)
     ];
+
     
     // allow php to enable errors and handle them with try catch
     function stop_error_handler($errno, $errstr, $errfile, $errline, array $errcontext){

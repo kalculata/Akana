@@ -4,6 +4,7 @@
     use PDO;
     use Exception;
     use Akana\Exceptions\DatabaseException;
+    use \ErrorException;
 
     class Database{
         private $_database_con;
@@ -83,6 +84,12 @@
                 throw new DatabaseException($e->getMessage());
             }
         }
+
+        public function empty($table){
+            $query = 'TRUNCATE TABLE '.$table;
+            return $this->_database_con->exec($query)? true: false;
+        }
+
         public function save($table, $data, $params){
             $keys = "";
             $values = "";
@@ -90,6 +97,7 @@
             
             foreach($data as $k => $v){
                 if($v != NULL){
+
                     if($params[$k]['type'] == "str"){
                         $v = '"'.$v.'"';
                     }

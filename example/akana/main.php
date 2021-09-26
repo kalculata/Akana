@@ -82,7 +82,7 @@ class Main{
                             }
 
                             else{
-                                throw new HttpVerbNotAuthorizedException("Http verb '".HTTP_VERB." is not authorized on this endpoint '".$uri."'");
+                                throw new HttpVerbNotAuthorizedException("Http verb '".HTTP_VERB."' is not authorized on this endpoint '".$uri."'");
                             } 
                         }
 

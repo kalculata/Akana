@@ -35,6 +35,22 @@ use ErrorException;
                 }
             }
 
+            //check if data are in good format
+            foreach($fields_keys as $k){
+                if($k != "params"){
+                    try{
+                        $is_nullable = $fields_params[$k]['is_nullable'];
+                    }
+                    catch(ErrorException $e){
+                        $is_nullable = false;
+                    }
+
+                    if($this->$k == NULL && $is_nullable == false){
+                        throw new ORMException("field '".$k."' can not be null");
+                    }  
+                }
+            }
+
             $database_con = new DataBase();
             $pk = $database_con->save($table, $data, $fields_params);
            
@@ -123,6 +139,14 @@ use ErrorException;
             $database_con = new DataBase();
 
             return $database_con->delete($table, $this->pk);
+        }
+
+        static function delete_all(): bool{
+            $class_name = get_called_class();
+            $table = self::get_table_name($class_name);
+            $database_con = new DataBase();
+
+            return $database_con->empty($table);
         }
 
         private function hydrate_object(Array $data, $ignore=false){
@@ -241,6 +265,7 @@ use ErrorException;
                 // when user is serializing many data
                 if(is_array($object)){
                     for($i=0; $i<count($object); $i++){
+                        echo $object[$i]->pk." | ";
                         array_push($data['data'], self::serializer($object_fields, $object[$i]));
                     }
                 }
@@ -276,8 +301,6 @@ use ErrorException;
                         }
 
                         if($object->$k == NULL && $is_nullable == false){ 
-                            echo $k."=".$object->$k."| ";
-                            echo $is_nullable? "nullable": "not nullable";
                             throw new SerializerException("field '".$k."' can't be null");
                         }
                         else{

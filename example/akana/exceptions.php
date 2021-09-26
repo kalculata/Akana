@@ -86,3 +86,6 @@
     class SerializerException extends CustomException{
         protected $exception_name = 'SerializerException';
     }  
+    class JSONException extends CustomException{
+        protected $exception_name = 'JSONException';
+    }  
