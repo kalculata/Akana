@@ -3,7 +3,7 @@
 
     define('ROOT', false);
     define('DEBUG', true);
-    define('ROOT_CONTROLLER', ['file' => '../root.php', 'controller' => '\App\RootController']);
+    define('ROOT_CONTROLLER', ['file' => 'root.php', 'class' => '\App\RootController']);
     define('APP_RESOURCES', [
         'users',
         'products',

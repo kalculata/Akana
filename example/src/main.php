@@ -13,88 +13,74 @@
 
 
     class Main{
-        // this method help to run the request
-        static function execute(string $uri): Response{
-            $resource = '';
-            $endpoint = '';
-            
-            // --- if the uri is pointed to root endpoint '/' ---
+        static public function execute(string $uri): Response{
             if($uri == '/'){
-                // --- check if the root endpoint is set in 'config.php' ---
-                if(ROOT == true && ROOT_CONTROLLER != NULL){
-                    $root_endpoint_controller_path =  ROOT_CONTROLLER['file'];
-                    $root_endpoint_controller = ROOT_CONTROLLER['controller'];
-                    
-                    // --- import file of root endpoint controller ---
-                    require $root_endpoint_controller_path;
-                    
-                    // --- check if there is a method with 'http_verb' in root enpoint controller ---
-                    if(method_exists($root_endpoint_controller, HTTP_VERB)){
-                        
-                        // --- execute method with verb name in root endpoint controller ---
-                        return call_user_func(array($root_endpoint_controller, HTTP_VERB));
-                    }
-                    // -- throw HttpVerbNotAuthorizedException if there is not method with 'http_verb' in root 
-                    // enpoint controller ---
-                    else{
-                        throw new HttpVerbNotAuthorizedException();
-                    }
-                    
+                if(!self::root_isset()){
+                    $message = "resource '/' not found.";
+                    throw new NoRootEndPointException($message); 
                 }
+                
                 else{
-                    throw new NoRootEndPointException("Your application do have root endpoint.");
+                    $root_controller_file =  ROOT_CONTROLLER['file'];
+                    $root_controller_class = ROOT_CONTROLLER['class'];
+                    
+                    require '../'.$root_controller_file;
+                    
+                    if(method_exists($root_controller_class, HTTP_VERB))
+                        return call_user_func(array($root_controller_class, HTTP_VERB));
+                    else
+                        throw new HttpVerbNotAuthorizedException();
                 }
             }
 
-            // --- if the uri do not pointed to root endpoint ---
             else if($uri != '/'){
-                // --- check if there is not resouce in APP_RESOURCES array set in config.php ---
                 if(count(APP_RESOURCES) == 0){
-                    throw new EmptyAppResourcesException("your application do not have any resources registred in config.php");
+                    $message = "this application doesn't have any resource registred in config.php.";
+                    throw new EmptyAppResourcesException($message);
                 }
 
                 else{
                     $resource = Utils::get_resource($uri);
-                    
-                    // --- check if the given resource exist in APP_RESOURCES array set in config.php ---
-                    if(Utils::resource_exist($resource)){
 
-                        // --- remove resource in the uri and get only endpoint ---
-                        $endpoint = Utils::get_endpoint($resource, $uri);
-                        
-                        // --- check if the given endpoint exist in RESOURCE_FOLDER/endpoints.php ---
+                    if(!Utils::resource_exist($resource)){
+                        $message = "resource '".$resource."' not found.";
+                        throw new ResourceNotFoundException($message);
+                    }
+
+                    else{
+                        $endpoint = Utils::get_endpoint($resource, $uri); 
                         $t = Utils::endpoint_exist($resource, $endpoint);
                         $controller = empty($t) ? "" : '\\'.$resource.'\\Controllers\\'.$t['method'];
                         
-                        if(!empty($controller)){
+                        if(empty($controller)){
+                            $message = "endpoint '".$endpoint."' not found in resource '".$resource.".";
+                            throw new EndpointNotFoundException($message);
+                        }
+
+                        else{
                             require '../res/'. $resource .'/controllers.php';
                             
-                            // --- check if controller exists and that it is static and execute it with arguments
-                            // they exists ---
-                            if(method_exists($controller, HTTP_VERB)){
+                            if(!method_exists($controller, HTTP_VERB)){
+                                $message = "method '".HTTP_VERB."' is not authorized to this uri '".URI."'.";
+                                throw new HttpVerbNotAuthorizedException($message);
+                            }
+
+                            else{
                                 try{
                                     return call_user_func_array(array($controller, HTTP_VERB), $t['args']);
                                 }
                                 catch(ErrorException $e){
-                                    throw new MethodNotStaticException("method '".HTTP_VERB."' in controller '".$controller."' is not static");
+                                    $message = "method '".HTTP_VERB."' in controller '".$controller."' is not static.";
+                                    throw new MethodNotStaticException($message);
                                 }
-                            }
-
-                            else{
-                                throw new HttpVerbNotAuthorizedException("Http verb '".HTTP_VERB."' is not authorized on this endpoint '".$uri."'");
                             } 
                         }
-
-                        else{
-                            throw new EndpointNotFoundException("Endpoint '".$endpoint."' is not found in resource '". $resource ."'.");
-                        }
-
-                    }
-
-                    else{
-                        throw new ResourceNotFoundException("Resource '".$resource."' do not exist in your application");
                     }
                 }
             }
+        }
+
+        static public function root_isset(){
+            return ROOT == true && ROOT_CONTROLLER != NULL;
         }
     }
