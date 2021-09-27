@@ -3,6 +3,7 @@
 
     use Akana\Exceptions\ORMException;
     use Akana\Database;
+    use Akana\Exceptions\ModelizationException;
     use Akana\Utils;
     use ErrorException;
 
@@ -14,170 +15,127 @@
                 $this->hydrate_object($data, true);
         }
 
+        static private function get_model_fields(array $model_vars): array{
+            $model_fields = [];
+
+            foreach($model_vars as $var){
+                if($var != 'params')
+                    array_push($model_fields, $var);  
+            }
+
+            return $model_fields;
+
+        }
+
+        static private function get_table_name(String $class): String{
+            $t = explode('\\', $class);
+            return strtolower($t[0]).'__'.strtolower($t[count($t)-1]);
+        }
+
+        static private function get_model(string $model_class): array{
+            $model = ['class' => $model_class, 'table' => self::get_table_name($model_class)];
+
+            $model_vars = get_class_vars($model_class);
+
+            try{
+                $model_params = $model_vars['params'];
+                $model_fields = self::get_model_fields(Utils::get_keys($model_vars));
+
+                $model += ['fields' => $model_fields]; 
+                $model += ['params' => $model_params]; 
+
+                self::validate_model($model);
+
+                return $model;
+            }
+            catch(ErrorException $e){
+                throw new ModelizationException("model '".$model_class."' doesn't have parameters.");
+            }
+        }
+
+        static public function validate_model(array $model): void{
+            // every model field must have params
+            // every model field must have param 'type'
+            // param 'type' must be type of "str"
+            // param 'type' can have values between 'int', 'str', 'integer', 'string', 
+            //       'datetime', 'txt', 'text', 'email'
+            // param 'nullable' must be type of 'bool'
+            // param 'max_length' must be type of 'int'
+            // param 'min_length' must be type of 'int'
+            // param 'datetime' can have value as default 'now' only
+
+            // if type is 'datetime' or string: you associate params like: max_length, min_length
+        }
+
+        static public function data_validation(array $model, array $data): void{
+            // check data respect modelization
+        } 
+
         public function save(){
-            $class_name = get_called_class();
-            $table = self::get_table_name($class_name);
-
-            $fields = get_class_vars(get_called_class());
-            $fields_params = $fields["params"];
-            $fields_keys = Utils::get_keys($fields);
-
             $data = [];
+            $model = self::get_model(get_called_class());
+            foreach($model['fields'] as $field) {$data += [$field => $this->$field];}
 
-            for ($i=0; $i < count($fields_keys); $i++) { 
-                if($fields_keys[$i] != "params"){
-                    $t = $fields_keys[$i];
-                    $data += array($t => $this->$t);
-                }
-            }
+            self::data_validation($model, $data);
 
-            //check if data are in good format
-            foreach($fields_keys as $k){
-                if($k != "params" && $k != "pk" && $k != "id"){
-                    try{
-                        $is_nullable = $fields_params[$k]['is_nullable'];
-        
-                    }
-                    catch(ErrorException $e){
-                        $is_nullable = false;
-                    }
-                    try{
-                        $default_value = $fields_params[$k]['default'];
-                    }
-                    catch(ErrorException $e){
-                        $default_value = NULL;
-                        
-                    }
+            // //check if data are in good format
+            // foreach($fields_keys as $k){
+            //     if($k != "params" && $k != "pk" && $k != "id"){
+            //         try{
+            //             $is_nullable = $fields_params[$k]['is_nullable'];
+            //         }
+            //         catch(ErrorException $e){
+            //             $is_nullable = false;
+            //         }
+            //         try{
+            //             $default_value = $fields_params[$k]['default'];
+            //         }
+            //         catch(ErrorException $e){
+            //             $default_value = NULL;   
+            //         }
 
-                    if($default_value != NULL){
-                        continue;
-                    }
+            //         if($default_value != NULL){
+            //             continue;
+            //         }
 
-                    if($this->$k == NULL && $is_nullable == false){
-                        throw new ORMException("field '".$k."' can not be null");
-                    }  
-                }
-            }
+            //         if($this->$k == NULL && $is_nullable == false){
+            //             throw new ORMException("field '".$k."' can not be null");
+            //         }  
+            //     }
+            // }
 
             $database_con = new DataBase();
-            $pk = $database_con->save($table, $data, $fields_params);
-           
-            $data =  $database_con->get($table, "pk", $pk);
+            $pk = $database_con->save($model['table'], $data, $model['fields']);
 
+            $data =  $database_con->get($model['table'], "pk", $pk);
             call_user_func_array([$this, 'hydrate_object'], [$data]);
-
-        }
-        /* 
-            get one data in database using id or other column
-            return false if there isn't any data correspond 
-        */
-        static function get($value){
-            if(!is_array($value) && !is_numeric($value))
-                throw new ORMException("get must be array or int");
-            
-            if(is_array($value) && count($value) != 1)
-                throw new ORMException("get must have 1 argument");
-            
-            $class_name = get_called_class();
-            $table = self::get_table_name($class_name);
-            $database_con = new DataBase();
-
-            $col = '';
-            $val = '';
-
-            if(is_numeric($value)){
-                $col = 'pk';
-                $val = $value;
-            }
-            
-            else{
-                foreach($value as $k=>$v) $col = $k; $val = $v;
-                
-                if(is_numeric($col)){
-                    $col = 'pk';
-                    if(!is_numeric($val)) throw new ORMException("get if is one is must int");
-                }
-
-                else if($col == 'id')
-                    $col = 'pk';
-        
-            }
-
-            // get data from database
-            $data =  $database_con->get($table, $col, $val);
-
-            // check if data retrieved are not empty
-            if(!$data)
-                return NULL;
-
-            // create, hydrate and return model object
-            $object = new $class_name();
-            call_user_func_array([$object, 'hydrate_object'], [$data]);
-            return $object;
-
-        }
-
-        /*
-            get all data in database
-        */
-        static function get_all(){
-            $class_name = get_called_class();
-            $table = self::get_table_name($class_name);
-            $database_con = new DataBase();
-
-            $data =  $database_con->get_all($table);
-            $output_data = [];
-
-            if(!empty($data)){
-                for($i=0; $i<count($data); $i++){
-                    $object = new $class_name();
-                    call_user_func_array([$object, 'hydrate_object'], [$data[$i]]);
-                    array_push($output_data, $object);
-                }
-
-            }
-
-            return $output_data;
-
         }
 
         public function update(Array $data){
-            $class_name = get_called_class();
-            $fields = get_class_vars($class_name);
-            $fields_params = $fields['params'];
-            $fields_keys = Utils::get_keys($fields);
+            $class = get_called_class();
+            $model = self::get_model($class);
 
             foreach($data as $k => $v){
-                if(!in_array($k, $fields_keys)){
-                    throw new ORMException("field '".$k."' do no exist in model '".$class_name."'");
-                }
+                if(!in_array($k, $model['fields']))
+                    throw new ORMException("field '".$k."' doesn't exist in model '".$class."'");
             }
             
-            $table = self::get_table_name($class_name);
             $database_con = new DataBase();
-            $database_con->update($table, $this->pk, $data, $fields_params);
+            $database_con->update($model['table'], $this->pk, $data, $model['params']);
             
-            $data =  $database_con->get($table, "pk", $this->pk);
+            $data =  $database_con->get($model['table'], "pk", $this->pk);
             call_user_func_array([$this, 'hydrate_object'], [$data]);
             
         }
 
         public function delete(): bool{
-            $class_name = get_called_class();
-            $table = self::get_table_name($class_name);
+            $model = self::get_model(get_called_class());
             $database_con = new DataBase();
 
-            return $database_con->delete($table, $this->pk);
+            return $database_con->delete($$model['table'], $this->pk);
         }
-
-        static function delete_all(): bool{
-            $class_name = get_called_class();
-            $table = self::get_table_name($class_name);
-            $database_con = new DataBase();
-
-            return $database_con->empty($table);
-        }
-
+        
+        // not done
         private function hydrate_object(Array $data, bool $ignore=false){
             $class = get_called_class();
             $fields = get_class_vars($class);
@@ -254,8 +212,77 @@
             }
         }
 
-        private static function get_table_name(String $class): String{
-            $t = explode('\\', $class);
-            return strtolower($t[0]).'__'.strtolower($t[count($t)-1]);
+        // not done
+        static public function get($value){
+            if(!is_array($value) && !is_numeric($value))
+                throw new ORMException("get must be array or int");
+            
+            if(is_array($value) && count($value) != 1)
+                throw new ORMException("get must have 1 argument");
+            
+            $class_name = get_called_class();
+            $table = self::get_table_name($class_name);
+            $database_con = new DataBase();
+
+            $col = '';
+            $val = '';
+
+            if(is_numeric($value)){
+                $col = 'pk';
+                $val = $value;
+            }
+            
+            else{
+                foreach($value as $k=>$v) $col = $k; $val = $v;
+                
+                if(is_numeric($col)){
+                    $col = 'pk';
+                    if(!is_numeric($val)) throw new ORMException("get if is one is must int");
+                }
+
+                else if($col == 'id')
+                    $col = 'pk';
+        
+            }
+
+            // get data from database
+            $data =  $database_con->get($table, $col, $val);
+
+            // check if data retrieved are not empty
+            if(!$data)
+                return NULL;
+
+            // create, hydrate and return model object
+            $object = new $class_name();
+            call_user_func_array([$object, 'hydrate_object'], [$data]);
+            return $object;
+
         }
+
+        static public function get_all(){
+            $output_data = [];
+            $model = self::get_model(get_called_class());
+
+            $database_con = new DataBase();
+            $data =  $database_con->get_all($model['table']);
+
+            if(!empty($data)){
+                for($i=0; $i<count($data); $i++){
+                    $object = new $model['class']();
+                    call_user_func_array([$object, 'hydrate_object'], [$data[$i]]);
+                    array_push($output_data, $object);
+                }
+
+            }
+
+            return $output_data;
+
+        }
+
+        static public function delete_all(): bool{
+            $model = self::get_model(get_called_class());
+            $database_con = new DataBase();
+
+            return $database_con->empty($model['table']);
+        }  
     }

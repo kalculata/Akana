@@ -20,7 +20,7 @@
 
     abstract class CustomException extends Exception implements ExceptionInterface{
         protected $message;
-        protected $code = 0;
+        protected $code = STATUS_500_INTERNAL_SERVER_ERROR;
         protected $file;
         protected $line;
         protected $trace;
@@ -89,6 +89,11 @@
 
     class ORMException extends CustomException{
         protected $name = 'ORMException';
+        protected $level = 'hight';
+    }
+
+    class ModelizationException extends CustomException{
+        protected $name = 'ModelizationException';
         protected $level = 'hight';
     }
 
