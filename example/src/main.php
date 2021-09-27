@@ -8,7 +8,6 @@
     use Akana\Exceptions\EndpointNotFoundException;
     use Akana\Exceptions\MethodNotStaticException;
     use Akana\Response;
-    use Akana\Utils;
     use ErrorException;
 
 
@@ -40,17 +39,19 @@
                 }
 
                 else{
-                    $resource = Utils::get_resource($uri);
+                    $resource = URI::extract_resource($uri);
 
-                    if(!Utils::resource_exist($resource)){
+                    if(!Resource::is_exist($resource)){
                         $message = "resource '".$resource."' not found.";
                         throw new ResourceNotFoundException($message);
                     }
 
                     else{
-                        $endpoint = Utils::get_endpoint($resource, $uri); 
-                        $t = Utils::endpoint_exist($resource, $endpoint);
-                        $controller = empty($t) ? "" : '\\'.$resource.'\\Controllers\\'.$t['method'];
+                        $endpoint = URI::extract_endpoint($resource, $uri); 
+                        $endpoint_details = Endpoint::details($resource, $endpoint);
+                        $controller = empty($endpoint_details) ? 
+                            "" : 
+                            '\\'.$resource.'\\Controllers\\'.$endpoint_details['controller'];
                         
                         if(empty($controller)){
                             $message = "endpoint '".$endpoint."' not found in resource '".$resource.".";
@@ -67,7 +68,7 @@
 
                             else{
                                 try{
-                                    return call_user_func_array(array($controller, HTTP_VERB), $t['args']);
+                                    return call_user_func_array(array($controller, HTTP_VERB), $endpoint_details['args']);
                                 }
                                 catch(ErrorException $e){
                                     $message = "method '".HTTP_VERB."' in controller '".$controller."' is not static.";
