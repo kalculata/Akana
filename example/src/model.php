@@ -86,7 +86,6 @@
             }
 
             return $output_data;
-
         }
 
         public function update(Array $data){
@@ -100,8 +99,8 @@
             
             $database_con = new DataBase();
             $database_con->update($model['table'], $this->pk, Database::update_query_data($data, $model['params']));
+            
             $data =  $database_con->get($model['table'], "pk", $this->pk);
-
             call_user_func_array([$this, 'hydrate_object'], [$model, $data]);
         }
 
@@ -119,31 +118,21 @@
             return $database_con->empty($model['table']);
         }  
 
-        private function hydrate_object(array $model, array $data, bool $creation=false){
-            if(!$creation)
-                $this->pk = intval($data['pk']);
-                
+        private function hydrate_object(array $model, array $data){     
             foreach($model['fields'] as $field){
-                if($field == 'pk') continue;
-
-                $nullable = $model['params'][$field]['nullable'];
-                $default = $model['params'][$field]['default'];
+                if($field == 'pk'){
+                    $this->pk = intval($data['pk']);
+                    continue;
+                }
                 
                 try{
                     $value = $data[$field];
                 }
                 catch(ErrorException $e){
-                    if(!$creation){
-                        $message = "in model '".$model['class']."' field '".$field."' doesn't exist in database on table '".$model['table']."'.";
-                        throw new ModelizationException($message);
-                    }
-
-                    $value = NULL;
-                }
-                if(!$nullable && $value == NULL && $default == NULL){
-                    $message = "model '".$model['class']."' required field '".$field."' to not be null.";
+                    $message = "in model '".$model['class']."' field '".$field."' doesn't exist in database on table '".$model['table']."'.";
                     throw new ModelizationException($message);
                 }
+                
 
                 if($value != NULL)
                     if($model['params'][$field]['type'] == "int") 
