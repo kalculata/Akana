@@ -32,41 +32,105 @@
             return strtolower($t[0]).'__'.strtolower($t[count($t)-1]);
         }
 
+        static public function validate_model(array $model): void{
+            // remove pk field because it has been added automatically
+            unset($model['fields'][count($model['fields'])-1]);
+
+            $valid_types = ['int', 'str', 'datetime'];
+            
+            // every model field must have params
+            foreach($model['fields'] as $field){
+                if(!key_exists($field, $model['params'])){
+                    $message = "in model '".$model['class']."' field '".$field."' doesn't have parameters.";
+                    throw new ModelizationException($message);
+                }
+            }
+
+            foreach($model['params'] as $field => $params){
+                // type parameter
+                if(!key_exists('type', $params)){
+                    $message = "in model '".$model['class']."' field '".$field."' doesn't have 'type' parameter.";
+                    throw new ModelizationException($message);
+                }
+                else{
+                    if(!is_string($params['type'])){
+                        $message = "in model '".$model['class']."' at field '".$field."' parameter 'type' must be a string.";
+                        throw new ModelizationException($message);
+                    }
+                    else{
+                        if(!in_array($params['type'], $valid_types)){
+                            $message = "in model '".$model['class']."' type '".$params['type']."' of field '".$field."' is not valid, use one of those: ".json_encode($valid_types);
+                            throw new ModelizationException($message);  
+                        }
+                    }
+                }
+
+                //type = datetime
+                if($params['type'] == 'datetime'){
+                    if(isset($params['default']) && $params['default'] != 'now'){
+                        $message = "in model '".$model['class']."' at field '".$field."' if field type is eqaul to 'datetime' default value can be only 'now'.";
+                        throw new ModelizationException($message);
+                    }
+                    if(isset($params['max_length']) || isset($params['min_length'])){
+                        $message = "in model '".$model['class']."' at field '".$field."' if field type is equal to 'datetime' parameters 'max_length' and 'min_length' are not authorized.";
+                        throw new ModelizationException($message);
+                    }
+                }
+
+                // nullable parameter
+                if(!key_exists('nullable', $params))
+                    $model['params'][$field]['nullable'] = false;
+                
+                else{
+                    if(!is_bool($params['nullable'])){
+                        $message = "in model '".$model['class']."' at field '".$field."' parameter 'nullable' must be a boolean.";
+                        throw new ModelizationException($message);
+                    }
+                }
+
+                //max_length parameter
+                if(isset($params['max_length'])){
+                    if(!is_int($params['max_length'])){
+                        $message = "in model '".$model['class']."' at field '".$field."' parameter 'max_length' must be an integer.";
+                        throw new ModelizationException($message);
+                    }
+                }
+
+                //min_length parameter
+                if(isset($params['min_length'])){
+                    if(!is_int($params['min_length'])){
+                        $message = "in model '".$model['class']."' at field '".$field."' parameter 'min_length' must be an integer.";
+                        throw new ModelizationException($message);
+                    }
+                }
+            }
+
+            // re-add field pk after validate the model
+            array_unshift($model['fields'], 'pk');
+        }
+
         static private function get_model(string $model_class): array{
             $model = ['class' => $model_class, 'table' => self::get_table_name($model_class)];
-
             $model_vars = get_class_vars($model_class);
 
             try{
                 $model_params = $model_vars['params'];
-                $model_fields = self::get_model_fields(Utils::get_keys($model_vars));
-
-                $model += ['fields' => $model_fields]; 
-                $model += ['params' => $model_params]; 
-
-                self::validate_model($model);
-
-                return $model;
             }
             catch(ErrorException $e){
                 throw new ModelizationException("model '".$model_class."' doesn't have parameters.");
             }
+
+            $model_fields = self::get_model_fields(Utils::get_keys($model_vars));
+            $model += ['fields' => $model_fields]; 
+            $model += ['params' => $model_params]; 
+  
+            self::validate_model($model);
+
+            return $model;
+            
         }
 
-        static public function validate_model(array $model): void{
-            // every model field must have params
-            // every model field must have param 'type'
-            // param 'type' must be type of "str"
-            // param 'type' can have values between 'int', 'str', 'integer', 'string', 
-            //       'datetime', 'txt', 'text', 'email'
-            // param 'nullable' must be type of 'bool'
-            // param 'max_length' must be type of 'int'
-            // param 'min_length' must be type of 'int'
-            // param 'datetime' can have value as default 'now' only
-
-            // if type is 'datetime' or string: you associate params like: max_length, min_length
-        }
-
+        // not done
         static public function data_validation(array $model, array $data): void{
             // check data respect modelization
         } 
@@ -272,7 +336,6 @@
                     call_user_func_array([$object, 'hydrate_object'], [$data[$i]]);
                     array_push($output_data, $object);
                 }
-
             }
 
             return $output_data;

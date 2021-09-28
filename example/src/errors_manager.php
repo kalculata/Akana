@@ -62,7 +62,7 @@
 
     <style>
         :root{
-            --main_color: #d50000;
+            --main_color: rgb(32,77,142);
             --third_color: #eee;
         }
         *{
@@ -79,12 +79,6 @@
             font-weight: lighter;
             margin-bottom: 0.8em;
         }
-        h1{
-            font-size: 1em;
-        }
-        h1 strong{
-            font-size: 1.2em;
-        }
         h2{
             font-size: 1em;
             border-bottom: 1px solid;
@@ -94,10 +88,18 @@
             color: #fff;
             padding: 20px 50px;
             margin-bottom: 20px;
+            letter-spacing: 1px;
         }
         header ul{
             font-size: .9em;
             color: var(--third_color);
+        }
+
+        header h1{
+            font-size: 1.1em;
+        }
+        header h1 strong{
+            font-size: 1.3em;
         }
         main{
             margin: 0px 50px
