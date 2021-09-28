@@ -87,11 +87,6 @@
         protected $level = 'hight';
     }
 
-    class ORMException extends CustomException{
-        protected $name = 'ORMException';
-        protected $level = 'hight';
-    }
-
     class ModelizationException extends CustomException{
         protected $name = 'ModelizationException';
         protected $level = 'hight';

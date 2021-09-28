@@ -12,7 +12,7 @@
     // users/
     class UsersController{
         static function post(){
-            $data = new User(REQUEST['data']);
+            $data = new User();
             $data->save();
 
             $serializer = UserSerializer::serialize($data);
@@ -20,19 +20,17 @@
         }
 
         static function get(){
-            User::get_all();
-            return new Response(["the model is correct"]);
-            // $data = User::get_all();
+            $data = User::get_all();
 
-            // if(empty($data)){
-            //     return new Response([
-            //         'message' => 'not data found'],
-            //         STATUS_404_NOT_FOUND
-            //     );
-            // }
+            if(empty($data)){
+                return new Response([
+                    'message' => 'not data found'],
+                    STATUS_404_NOT_FOUND
+                );
+            }
 
-            // $serializer = UserSerializer::serialize($data);
-            // return new Response($serializer['data'], STATUS_200_OK);
+            $serializer = UserSerializer::serialize($data);
+            return new Response($serializer['data'], STATUS_200_OK);
         }
     }
     

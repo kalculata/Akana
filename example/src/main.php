@@ -72,7 +72,7 @@
                                 }
                                 catch(ErrorException $e){
                                     $message = "method '".HTTP_VERB."' in controller '".$controller."' is not static.";
-                                    throw new MethodNotStaticException($message);
+                                throw new MethodNotStaticException($message);
                                 }
                             } 
                         }

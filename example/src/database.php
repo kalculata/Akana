@@ -27,25 +27,86 @@
             }
         }
 
+        static public function insert_query_data(array $data, array $params): array{
+            $query_data = [];
+            $columns = NULL;
+            $values = NULL;
+            $counter = 0;
+            
+            foreach($data as $k => $v){
+                if($v != NULL){
+
+                    if($params[$k]['type'] == "str") $v = '"'.$v.'"';
+
+                    if($counter == 0){$columns = $k; $values = $v;}
+                    
+                    else{$columns .= ",".$k; $values .= ",".$v;}
+                    
+                }
+                $counter++;
+            }
+            $query_data['columns'] = $columns;
+            $query_data['values'] = $values;
+
+            return $query_data;
+        }
+        static public function update_query_data(array $data, array $params): string{
+            $query_data = NULL;
+            $counter = 0;
+            
+            foreach($data as $k => $v){
+                if($v != NULL){
+                    if($params[$k]['type'] == "str"){
+                        $v = '"'.$v.'"';
+                    }
+
+                    if($counter == 0){
+                        $query_data = $k."=".$v;
+                    }
+                    else{
+                        $query_data .= ",".$k."=".$v;
+                    }
+                }
+                $counter++;
+            }
+
+            return $query_data;
+        }
+
+        public function save(string $table, array $query_data): int{
+            try {
+                $query = 'INSERT INTO '.$table.'('.$query_data['columns'].') VALUES('.$query_data['values'].')';
+                $result = $this->_database_con->exec($query);
+
+                if($result)
+                    return intval($this->_database_con->lastInsertId());
+                
+                else
+                    throw new DatabaseException("they was an issue while saving this object, try again");
+
+            } 
+            catch (Exception $e) {
+                throw new DatabaseException($e->getMessage());
+            }
+        }
+
         // get one object in database using id or other column
         public function get($table, $col, $val){
             try{
-                $q = NULL;
+                $query = 'SELECT * FROM '.$table.' WHERE '.$col.'=:val';
                 $output_data = NULL;
 
-                $q = $this->_database_con->prepare('SELECT * FROM '.$table.' WHERE '.$col.'=:val');
+                $q = $this->_database_con->prepare($query);
                 $q->execute([':val'=> $val]);
                 
-                if($q->rowCount() == 0){
-                    return false;
+                if($q->rowCount() > 0){
+                    while($data = $q->fetch())
+                        $output_data = $data;
+                        
+                    $q->closeCursor();
+
+                    return $output_data;
                 }
-
-                while($data = $q->fetch())
-                    $output_data = $data;
-                    
-                $q->closeCursor();
-
-                return $output_data;
                 
             }
             catch(Exception $e){
@@ -53,21 +114,19 @@
             }
         }
         // get all objets in table
-        public function get_all($table){
+        public function get_all(string $table){
             try{
-                $q = NULL;
+                $query = 'SELECT * FROM '.$table;
                 $output_data = [];
 
-                $q = $this->_database_con->query('SELECT * FROM '.$table);
+                $q = $this->_database_con->query($query);
                 
-                if($q->rowCount() == 0){
-                    return $output_data;
+                if($q->rowCount() > 0){
+                    while($data = $q->fetch())
+                        array_push($output_data, $data);
+                        
+                    $q->closeCursor();
                 }
-
-                while($data = $q->fetch())
-                    array_push($output_data, $data);
-                    
-                $q->closeCursor();
 
                 return $output_data;
             }
@@ -76,92 +135,31 @@
             }
         }
 
-        public function delete($table, $pk): bool{
+        public function delete(string $table, int $pk): bool{
             try {
-                return ($this->_database_con->exec('DELETE FROM '.$table.' WHERE pk='.$pk))? true : false;
+                $query = 'DELETE FROM '.$table.' WHERE pk='.$pk;
+                return ($this->_database_con->exec($query))? true : false;
             } 
             catch (Exception $e) {
                 throw new DatabaseException($e->getMessage());
             }
         }
 
-        public function empty($table){
+        public function empty(string $table): bool{
             $query = 'TRUNCATE TABLE '.$table;
             return $this->_database_con->exec($query)? true: false;
         }
 
-        public function save($table, $data, $params){
-            $keys = "";
-            $values = "";
-            $counter = 0;
-            
-            foreach($data as $k => $v){
-                if($v != NULL){
-
-                    if($params[$k]['type'] == "str"){
-                        $v = '"'.$v.'"';
-                    }
-
-                    if($counter == 0){
-                        $keys = $k;
-                        $values = $v;
-                    }
-                    else{
-                        $keys .= ",".$k;
-                        $values .= ",".$v;
-                    }
-                }
-                $counter++;
-            }
-
+        public function update(string $table, $pk, string $query_data): int{
             try {
-                $query = 'INSERT INTO '.$table.'('.$keys.') VALUES('.$values.')';
-
-                if($this->_database_con->exec($query)){
-                    return intval($this->_database_con->lastInsertId());
-                }
-                else{
-                    throw new DatabaseException("they was an issue while saving this object, try again");
-                } 
-
-            } 
-            catch (Exception $e) {
-                throw new DatabaseException($e->getMessage());
-            }
-        }
-
-        public function update($table, $pk, $data, $params){
-            $keys = "";
-            $values = "";
-            $counter = 0;
-            $keys_values = "";
-            
-            foreach($data as $k => $v){
-                if($v != NULL){
-                    if($params[$k]['type'] == "str"){
-                        $v = '"'.$v.'"';
-                    }
-
-                    if($counter == 0){
-                        $keys_values = $k."=".$v;
-                    }
-                    else{
-                        $keys_values .= ",".$k."=".$v;
-                    }
-                }
-                $counter++;
-            }
-
-            try {
-                $query = 'UPDATE '.$table.' SET '.$keys_values.' WHERE pk='.$pk;
+                $query = 'UPDATE '.$table.' SET '.$query_data.' WHERE pk='.$pk;
                 $result = $this->_database_con->exec($query);
                 
-                if($result >= 0){
+                if($result >= 0) 
                     return $pk;
-                }
-                else{
+                
+                else
                     throw new DatabaseException("they was an issue while updating this object, try again");
-                } 
 
             } 
             catch (Exception $e) {
