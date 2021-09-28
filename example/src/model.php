@@ -10,6 +10,30 @@
     abstract class Model{
         public $pk;
 
+        private function hydrate_object(array $model, array $data){     
+            foreach($model['fields'] as $field){
+                if($field == 'pk'){
+                    $this->pk = intval($data['pk']);
+                    continue;
+                }
+                
+                try{
+                    $value = $data[$field];
+                }
+                catch(ErrorException $e){
+                    $message = "in model '".$model['class']."' field '".$field."' doesn't exist in database on table '".$model['table']."'.";
+                    throw new ModelizationException($message);
+                }
+                
+
+                if($value != NULL)
+                    if($model['params'][$field]['type'] == "int") 
+                        $value = intval($value);
+
+                $this->$field = $value;      
+            }  
+        }
+    
         public function save(): void{
             $data = REQUEST['data'];
             $model = ModelUtils::get_model(get_called_class());
@@ -21,6 +45,29 @@
             
             $data =  $database_con->get($model['table'], "pk", $pk);
             call_user_func_array([$this, 'hydrate_object'], [$model, $data]);            
+        }
+
+        public function update(Array $data){
+            $class = get_called_class();
+            $model = ModelUtils::get_model($class);
+
+            foreach($data as $k => $v){
+                if(!in_array($k, $model['fields']))
+                    throw new SerializerException("field '".$k."' doesn't exist in model '".$class."'");
+            }
+            
+            $database_con = new DataBase();
+            $database_con->update($model['table'], $this->pk, Database::update_query_data($data, $model['params']));
+            
+            $data =  $database_con->get($model['table'], "pk", $this->pk);
+            call_user_func_array([$this, 'hydrate_object'], [$model, $data]);
+        }
+
+        public function delete(): bool{
+            $model = ModelUtils::get_model(get_called_class());
+            $database_con = new DataBase();
+
+            return $database_con->delete($model['table'], $this->pk);
         }
 
         static public function get($value){
@@ -88,61 +135,12 @@
             return $output_data;
         }
 
-        public function update(Array $data){
-            $class = get_called_class();
-            $model = ModelUtils::get_model($class);
-
-            foreach($data as $k => $v){
-                if(!in_array($k, $model['fields']))
-                    throw new SerializerException("field '".$k."' doesn't exist in model '".$class."'");
-            }
-            
-            $database_con = new DataBase();
-            $database_con->update($model['table'], $this->pk, Database::update_query_data($data, $model['params']));
-            
-            $data =  $database_con->get($model['table'], "pk", $this->pk);
-            call_user_func_array([$this, 'hydrate_object'], [$model, $data]);
-        }
-
-        public function delete(): bool{
-            $model = ModelUtils::get_model(get_called_class());
-            $database_con = new DataBase();
-
-            return $database_con->delete($model['table'], $this->pk);
-        }
-
         static public function delete_all(): bool{
             $model = ModelUtils::get_model(get_called_class());
             $database_con = new DataBase();
 
             return $database_con->empty($model['table']);
         }  
-
-        private function hydrate_object(array $model, array $data){     
-            foreach($model['fields'] as $field){
-                if($field == 'pk'){
-                    $this->pk = intval($data['pk']);
-                    continue;
-                }
-                
-                try{
-                    $value = $data[$field];
-                }
-                catch(ErrorException $e){
-                    $message = "in model '".$model['class']."' field '".$field."' doesn't exist in database on table '".$model['table']."'.";
-                    throw new ModelizationException($message);
-                }
-                
-
-                if($value != NULL)
-                    if($model['params'][$field]['type'] == "int") 
-                        $value = intval($value);
-
-                $this->$field = $value;      
-            }
-
-            
-        }
     }
 
     abstract class ModelUtils{
