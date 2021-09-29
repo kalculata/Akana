@@ -47,7 +47,7 @@ void Commands::add_resource(string resource_name){
         }
         
         else{
-            system(string("mkdir " + resource_name).c_str());
+            system(string("mkdir res\\" + resource_name).c_str());
 
             if(Utils::gen_resource_struct(resource_name) == true){
                 cout << endl << "Your resource has been successfully added." << endl;
@@ -76,11 +76,14 @@ void Commands::runserver(){
 }
 
 void Commands::about(){
-    cout << endl << "Version    : 1.2.4 (Akana 1)" << endl;
-    cout << "Release at : 1/10/2021" << endl;
+    cout << endl << "Version    : " << Commands::getVersion() << endl;
     cout << "Author     : Kubwacu Entreprise" << endl;
     cout << "GitHub     : http://www.github.com/kubwacu-entreprise/akana_framework/" << endl;
     cout << endl;
+}
+
+void Commands::version(){
+    cout << "Version: " << Commands::getVersion() << endl;
 }
 
 void Commands::help(){

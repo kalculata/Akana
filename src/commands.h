@@ -18,6 +18,11 @@ class Commands{
         static void version();
 
         static void help();
+
+    private:
+        static string getVersion(){
+            return "1.2.4 (Akana 1) (release at : 1/10/2021)";
+        }
 };
 
 #endif // !COMMANDS_H

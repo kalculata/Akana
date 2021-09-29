@@ -20,8 +20,6 @@ class Utils{
         // generate resource structure
         static bool gen_resource_struct(const string &resource_name);
 
-        static void create_file(const string &name);
-
         // get all commands used in the framework
         static vector<string> get_commands();
 

@@ -6,8 +6,7 @@
 using namespace std;
 
 
-int main(int arguments_length, char *arguments[])
-{
+int main(int arguments_length, char *arguments[]){
     // check if the program has been runned with no command 
     if(arguments_length == 1) Commands::help();
     

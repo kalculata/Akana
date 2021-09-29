@@ -2,7 +2,6 @@
     - manage errors (serialization)
     - comment in good way methods and the code
     - simpify and organize the code
-    - refactoring utils methods
     - change configuration files to yaml
 - update akana cli
     - add version option

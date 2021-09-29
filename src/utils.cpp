@@ -8,7 +8,6 @@
 bool Utils::name_isvalid(const string &name){
     if(regex_match(name, regex("^[a-z]*[a-z0-9_]*[a-z0-9]+$")) && name.length() <= 50) return true;
     else return false;
-    
 }
 
 bool Utils::folder_exist(const string &file){
@@ -47,30 +46,28 @@ bool Utils::gen_project_struct(const string &project_name){
 
     //  get akana location in environment variables 
     char* t = getenv("akana");
-    string akana_location = t == NULL ? "" : string(t) + "/";
+    string akana_location = (t == NULL)? "" : string(t) + "/";
     
     for (pair<string, string> el: project_structure) {
-        // create the project file in append mode 
-        ofstream file(el.first.c_str(), ios::app);
-        
-        // open the file to copy 
-        ifstream file_copy((akana_location + el.second).c_str());
-        if(file_copy){
-            string line;
-            while(getline(file_copy, line)){
-                //  copy the content of the framework file in the file for the project 
-                file << line + "\n";
-            }
-        }
+        string project_file_name = el.first;
+        string template_file_name = akana_location + el.second;
 
-        //  if there was error occured while opening the file to copy 
+        // create a file in append mode 
+        ofstream project_file(project_file_name.c_str(), ios::app);
+        ifstream template_file(template_file_name.c_str());
+
+        cout << project_file_name << endl;
+
+        if(template_file){
+            string line;
+
+            while(getline(template_file, line))
+                project_file << line + "\n";
+        }
         else{
-            cout << endl << "There was error while opening file '" << el.second << "' to copy it in '" << el.first << "'." << endl;
+            cout << endl << "There was error while opening file '" << template_file_name << "' to copy it in '" << project_file_name << "'." << endl;
             return false;
         }
-
-        //  print the name of the created project file to notice the developper 
-        cout << el.first << endl;
     }
 
     return true;
@@ -78,45 +75,42 @@ bool Utils::gen_project_struct(const string &project_name){
 
 bool Utils::gen_resource_struct(const string &resource_name){
     map<string, string> resource_structure = {
-        {"res" + resource_name + "/controllers.php", "bin/resource/controllers"},
-        {"res" + resource_name + "/endpoints.php", "bin/resource/endpoints"},
-        {"res" + resource_name + "/models.php", "bin/resource/models"},
-        {"res" + resource_name + "/serializers.php", "bin/resource/serializers"},
+        {"res/" + resource_name + "/controllers.php", "bin/resource/controllers"},
+        {"res/" + resource_name + "/endpoints.php", "bin/resource/endpoints"},
+        {"res/" + resource_name + "/models.php", "bin/resource/models"},
+        {"res/" + resource_name + "/serializers.php", "bin/resource/serializers"},
     };
 
-    //  get akana location in environment variables 
+    //get akana location in environment variables 
     char* t = getenv("akana");
-    string akana_location = t == NULL ? "" : string(t) + "/";
-    
+    string akana_location = (t == NULL)? "" : string(t) + "/";
+
     for (pair<string, string> el: resource_structure) {
-        //  create the resource file in append mode 
-        ofstream file(el.first.c_str(), ios::app);
-        
-        //  open thee file to copy 
-        ifstream file_copy((akana_location + el.second).c_str());
-        if(file_copy){
+        string resource_file_name = el.first;
+        string template_file_name = akana_location + el.second;
+
+        //create a file in append mode 
+        ofstream resource_file(resource_file_name.c_str(), ios::app);
+        ifstream template_file(template_file_name.c_str());
+
+        cout << resource_file_name << endl;
+
+        if(template_file){
             string line;
-            while(getline(file_copy, line)){
-                //  copy the content of the framework file in the file for the resource 
-                file << line + "\n";
+
+            while(getline(template_file, line)){
+                // check if line contains [__Resource_name__] and replace it with resource name capitalize
+                // check if line contains [__resource_name__] and replace it with resource name
+                resource_file << line + "\n";
             }
         }
-
-        //  if there was error occured while opening the file to copy 
         else{
-            cout << endl << "There was error while opening file '" << el.second << "' to copy it in '" << el.first << "'." << endl;
+            cout << endl << "There was error while opening file '" << template_file_name << "' to copy it in '" << resource_file_name << "'." << endl;
             return false;
         }
-
-        //  print the name of the created resource file to notice the developper 
-        cout << el.first << endl;
     }
 
     return true;
-}
-
-void Utils::create_file(const string &file){
-    ofstream fichier(file.c_str());
 }
 
 vector<string> Utils::get_commands(){
@@ -181,6 +175,10 @@ void Utils::execute_command(string command, int arguments_length, char* argument
 
     else if(command == "about"){
         Commands::about();
+    }
+
+    else if(command == "version"){
+        Commands::version();
     }
 }
 
