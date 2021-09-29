@@ -4,7 +4,6 @@
     use PDO;
     use Exception;
     use Akana\Exceptions\DatabaseException;
-    use \ErrorException;
 
     class Database{
         private $_database_con;

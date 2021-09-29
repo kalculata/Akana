@@ -1,8 +1,6 @@
 <?php
     namespace Akana;
 
-    use Akana\Utils;
-
     class Response{
         private $_data;
         private $_code;

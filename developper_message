@@ -32,7 +32,7 @@
             - src/utils.php
         
         main file:
-            - akana/index.php
+            - start/index.php
     
     resource main files:
         - controllers.php

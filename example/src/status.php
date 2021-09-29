@@ -60,4 +60,3 @@
     define('STATUS_510_NOT_EXTENDE', 510);
     define('STATUS_511_NETWORK_AUTHENTICATION_REQUIRE', 511);
     
-    

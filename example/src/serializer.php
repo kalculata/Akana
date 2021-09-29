@@ -1,11 +1,8 @@
 <?php
     namespace Akana;
 
-use Akana\Exceptions\ModelizationException;
-use Akana\Exceptions\ORMException;
-    use Akana\Exceptions\SerializerException;
     use Akana\Exceptions\SerializationException;
-    use ErrorException;
+    use  \ErrorException;
 
     abstract class Serializer{
         static public function get_serialization_rules(string $serializer_class): array{

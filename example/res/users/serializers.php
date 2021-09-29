@@ -7,5 +7,4 @@
         public static $rules = [
             'fields' => 'all'
         ];
-        
     }
