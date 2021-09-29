@@ -3,6 +3,10 @@
     
     $trace = $e->getTrace();
     $first_trace = $trace[0];
+    $message = $e->getMessage();
+
+    if($e->getName() == 'SerializerException')
+        $message = json_decode($message);
 
     if(!DEBUG || $e->getLevel() == 'low'){
         if($e->getName() == 'NoRootEndpointException' || $e->getName() == 'NoRootEndpointException' ||
@@ -113,7 +117,7 @@
 </head>
 <body>
     <header>
-        <h1><strong><?= $e->getName() ?></strong>: <?= $e->getMessage() ?></h1>
+        <h1><strong><?= $e->getName() ?></strong>: <?= $message?></h1>
         <ul>
             <?php
                 if(isset($first_trace['file']))

@@ -92,8 +92,8 @@
         protected $level = 'hight';
     }
 
-    class NotSerializableException extends CustomException{
-        protected $name = 'NotSerializableException';
+    class SerializationException extends CustomException{
+        protected $name = 'SerializationException';
         protected $level = 'hight';
     }
  
