@@ -3,6 +3,11 @@
 
 #include <iostream>
 #include <string>
+#include <regex>
+#include <map>
+#include <fstream>
+#include <sys/stat.h>
+#include <vector>
 
 using namespace std;
 

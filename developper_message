@@ -1,15 +1,3 @@
-- refactoring the code
-    - manage errors (serialization)
-    - comment in good way methods and the code
-    - simpify and organize the code
-    - change configuration files to yaml
-- update akana cli
-    - add version option
-    - add option 'config-example'
-    - add option 'template 1'
-    - add option 'analyse-project'
-    - simplify code in main file
-
     project main files:
         configuration files:
             - env.php

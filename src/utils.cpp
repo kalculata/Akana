@@ -1,7 +1,3 @@
-#include <regex>
-#include <map>
-#include <fstream>
-#include <sys/stat.h>
 #include "utils.h"
 #include "commands.h"
 
@@ -99,8 +95,7 @@ bool Utils::gen_resource_struct(const string &resource_name){
             string line;
 
             while(getline(template_file, line)){
-                // check if line contains [__Resource_name__] and replace it with resource name capitalize
-                // check if line contains [__resource_name__] and replace it with resource name
+                line = regex_replace(line, regex("\\[__resource_name__\\]"), resource_name);
                 resource_file << line + "\n";
             }
         }
@@ -165,21 +160,14 @@ void Utils::execute_command(string command, int arguments_length, char* argument
         }
     }
 
-    else if(command == "runserver"){
-        Commands::runserver();
-    }
+    else if(command == "runserver") Commands::runserver();
+    
 
-    else if(command == "help"){
-        Commands::help();
-    }
+    else if(command == "help") Commands::help();
 
-    else if(command == "about"){
-        Commands::about();
-    }
+    else if(command == "about") Commands::about();
 
-    else if(command == "version"){
-        Commands::version();
-    }
+    else if(command == "version") Commands::version();
 }
 
 void Utils::get_name_rules(){
