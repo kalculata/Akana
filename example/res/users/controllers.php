@@ -16,14 +16,15 @@
             $data->save();
 
             $serializer = UserSerializer::serialize($data);
+
             return new Response($serializer['data']);
         }
 
         static function get(){
             $data = User::get_all();
             $serializer = UserSerializer::serialize($data);
+
             return new Response($serializer['data'], STATUS_200_OK);
-            return new Response(['test']);
         }
     }
     
@@ -36,6 +37,7 @@
                 return new Response(['message' => 'user with id "'.$user_id.'" do not exist'], STATUS_404_NOT_FOUND);
 
             $serializer = UserSerializer::serialize($data);
+
             return new Response($serializer['data'], STATUS_200_OK);
         }
 
@@ -47,6 +49,7 @@
             
             $user_modify->update(REQUEST['data']);
             $serializer = UserSerializer::serialize($user_modify);
+            
             return new Response(
                 [
                     'message' => 'user "'.$user_id.'" have been modified',
