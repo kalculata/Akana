@@ -1,4 +1,12 @@
 <?php
+    /*
+    * This file is part of the akana framework files.
+    *
+    * (c) Kubwacu Entreprise
+    *
+    * @author (kalculata) Huzaifa Nimushimirimana <nprincehuzaifa@gmail.com>
+    *
+    */
     namespace Akana;
 
     use Akana\Exceptions\JSONException;
@@ -74,7 +82,6 @@
 
             return $values;
         }
-
     }
 
     abstract class URI{

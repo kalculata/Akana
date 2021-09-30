@@ -47,6 +47,7 @@ bool Utils::gen_project_struct(const string &project_name){
     for (pair<string, string> el: project_structure) {
         string project_file_name = el.first;
         string template_file_name = akana_location + el.second;
+        string line;
 
         // create a file in append mode 
         ofstream project_file(project_file_name.c_str(), ios::app);
@@ -54,16 +55,13 @@ bool Utils::gen_project_struct(const string &project_name){
 
         cout << project_file_name << endl;
 
-        if(template_file){
-            string line;
-
-            while(getline(template_file, line))
-                project_file << line + "\n";
-        }
-        else{
+        if(!template_file){
             cout << endl << "There was error while opening file '" << template_file_name << "' to copy it in '" << project_file_name << "'." << endl;
             return false;
         }
+        
+        while(getline(template_file, line))
+                project_file << line + "\n";
     }
 
     return true;
@@ -84,6 +82,7 @@ bool Utils::gen_resource_struct(const string &resource_name){
     for (pair<string, string> el: resource_structure) {
         string resource_file_name = el.first;
         string template_file_name = akana_location + el.second;
+        string line;
 
         //create a file in append mode 
         ofstream resource_file(resource_file_name.c_str(), ios::app);
@@ -91,17 +90,15 @@ bool Utils::gen_resource_struct(const string &resource_name){
 
         cout << resource_file_name << endl;
 
-        if(template_file){
-            string line;
-
-            while(getline(template_file, line)){
-                line = regex_replace(line, regex("\\[__resource_name__\\]"), resource_name);
-                resource_file << line + "\n";
-            }
-        }
-        else{
+        if(!template_file){
             cout << endl << "There was error while opening file '" << template_file_name << "' to copy it in '" << resource_file_name << "'." << endl;
             return false;
+        }
+            
+
+        while(getline(template_file, line)){
+            line = regex_replace(line, regex("\\[__resource_name__\\]"), resource_name);
+            resource_file << line + "\n";
         }
     }
 
@@ -141,10 +138,8 @@ void Utils::execute_command(string command, int arguments_length, char* argument
 
         else{
             cout << "Command 'create-project' requires a parameter for the project name." << endl;
-            cout << endl << "Usage: akana create-project <project_name>." << endl;
-            cout << endl;
+            cout << endl << "Usage: akana create-project <project_name>." << endl << endl;
         }
-        
     }
 
     else if(command == "add-resource"){
@@ -155,14 +150,12 @@ void Utils::execute_command(string command, int arguments_length, char* argument
         
         else{
             cout << "Command 'add-resource' requires a parameter for the resource name." << endl;
-            cout << endl << "Usage: akana add-resource <resource_name>." << endl;
-            cout << endl;
+            cout << endl << "Usage: akana add-resource <resource_name>." << endl << endl;
         }
     }
 
     else if(command == "runserver") Commands::runserver();
     
-
     else if(command == "help") Commands::help();
 
     else if(command == "about") Commands::about();
@@ -175,5 +168,5 @@ void Utils::get_name_rules(){
     cout << "- It must end with a letter or a number." << endl;
     cout << "- It must contain only lowercase letters." << endl;
     cout << "- All special characters are not allowed except underscore '_'." << endl;
-    cout << "- Maximum length is 50 characters." << endl;
+    cout << "- Maximum length is 50 characters." << endl<< endl;
 }

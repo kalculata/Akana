@@ -1,12 +1,10 @@
 <?php
-    namespace products;
+    namespace products\Controllers;
 
-    require '../products/models.php';
+    require '../res/products/models.php';
+    require '../res/products/serializers.php';
 
     use Akana\Response;
-    use Akana\Response\Status;
-
-    use products\Models\Product;
 
     // products/
     class ProductsController{

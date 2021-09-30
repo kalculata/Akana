@@ -1,56 +1,47 @@
 <?php
+    /*
+    * This file is part of the akana framework files.
+    *
+    * (c) Kubwacu Entreprise
+    *
+    * @author (kalculata) Huzaifa Nimushimirimana <nprincehuzaifa@gmail.com>
+    *
+    */
     use Akana\Response;
     
+    $exception = explode('\\', get_class($e))[2];
     $trace = $e->getTrace();
     $first_trace = $trace[0];
-    $message = $e->getMessage();
 
-    if($e->getName() == 'SerializerException')
-        $message = json_decode($message);
-
-    if(!DEBUG || $e->getLevel() == 'low'){
-        if($e->getName() == 'NoRootEndpointException' || $e->getName() == 'NoRootEndpointException' ||
-            $e->getName() == 'EmptyAppResourcesException' || $e->getName() == 'ResourceNotFoundException' ||
-            $e->getName() == 'EndpointNotFoundException' || $e->getName() == 'HttpVerbNotAuthorizedException' ||
-            $e->getName() == 'SerializerException' || $e->getName() == 'JSONException'){
-                echo new Response(["message" => $e->getMessage()], $e->getCode());
-                return;
-            }
+    if(!DEBUG || $exception == 'SerializerException'){
+        if($exception == 'SerializerException'){
+            echo new Response(["message" => json_decode($e->getMessage())], $e->getCode());
+            return;
+        }
+        $general_response = new Response([
+            "message" => "there is an internal server error, please contact us to report this issue"], 
+            STATUS_500_INTERNAL_SERVER_ERROR
+        );
         switch($e->getName()){
-            // 'NoRootEndpointException'
-            // 'EmptyAppResourcesException';
-            // 'ResourceNotFoundException';
-            // 'EndpointNotFoundException';
-            // 'HttpVerbNotAuthorizedException';
-            // 'SerializerException';
-            // 'JSONException';
-
-            // 'ControllerNotFoundException'
-            // 'MethodNotStaticException';
-            // 'DatabaseException';
-            // 'ORMException';
-            // 'NotSerializableException'
-            
             case 'ControllerNotFoundException':
-                echo new Response(["message" => "there is an internal server error, please contact us to report this issue"], STATUS_501_NOT_IMPLEMENTE);
+                echo $general_response;
                 break;
             case 'MethodNotStaticException':
-                echo new Response(["message" => "there is an internal server error, please contact us to report this issue"], STATUS_500_INTERNAL_SERVER_ERROR);
+                echo $general_response;
                 break;
             case 'DatabaseException':
-                echo new Response(["message" => "there is an internal server error, please contact us to report this issue"], STATUS_500_INTERNAL_SERVER_ERROR);
+                echo $general_response;
                 break;
             case 'ORMException':
-                echo new Response(["message" => "there is an internal server error, please contact us to report this issue"], STATUS_500_INTERNAL_SERVER_ERROR);
+                echo $general_response;
                 break;
             case 'NotSerializableException':
-                echo new Response(["message" => "there is an internal server error, please contact us to report this issue"], STATUS_500_INTERNAL_SERVER_ERROR);
+                echo $general_response;
                 break;
             
             default:
-                echo new Response(["message" => "there is an internal server error, please contact us to report this issue"], STATUS_500_INTERNAL_SERVER_ERROR);
+                echo new Response(["message" => $e->getMessage()], $e->getCode());
                 break;
-            
         }
     }
     else{
@@ -117,7 +108,7 @@
 </head>
 <body>
     <header>
-        <h1><strong><?= $e->getName() ?></strong>: <?= $message?></h1>
+        <h1><strong><?= $exception ?></strong>: <?= $message?></h1>
         <ul>
             <?php
                 if(isset($first_trace['file']))
@@ -136,13 +127,9 @@
 
         <div class="trace">
             <h1>Exception trace</h1>
-       
-                <?= $e->getTraceAsString(); ?>
-      
-            
+            <?= $e->getTraceAsString(); ?>
         </div>
         <div class="hint"></div>
-
     </main>
 </body>
 </html>

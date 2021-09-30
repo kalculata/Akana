@@ -1,4 +1,12 @@
 <?php
+    /*
+    * This file is part of the akana framework files.
+    *
+    * (c) Kubwacu Entreprise
+    *
+    * @author (kalculata) Huzaifa Nimushimirimana <nprincehuzaifa@gmail.com>
+    *
+    */
     define('STATUS_100_CONTINUE', 100);
     define('STATUS_101_SWITCHING_PROTOCOLS', 101);
     define('STATUS_200_OK', 200);

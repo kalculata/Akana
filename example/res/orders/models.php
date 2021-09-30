@@ -1,8 +1,8 @@
 <?php
     namespace users\Models;
 
-    use Akana\ORM\Models;
+    use Akana\Model;
 
-    class Order extends Models{
+    class Order extends Model{
         
     }

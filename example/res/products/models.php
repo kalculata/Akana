@@ -1,8 +1,8 @@
 <?php
     namespace products\Models;
 
-    use Akana\ORM\Models;
+    use Akana\Model;
 
-    class Product extends Models{
+    class Product extends Model{
         
     }

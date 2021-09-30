@@ -1,4 +1,12 @@
 <?php
+    /*
+    * This file is part of the akana framework files.
+    *
+    * (c) Kubwacu Entreprise
+    *
+    * @author (kalculata) Huzaifa Nimushimirimana <nprincehuzaifa@gmail.com>
+    *
+    */
     require '../config.php';
     require '../src/status.php';  
     require '../src/utils.php';
