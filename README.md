@@ -2,7 +2,7 @@
 Akana is a PHP framework used to create restful APIs. This tool will help you to generate files for a empty project, add resources in project, make database migrations, etc...
 
 # Installation
-- Clone to projet in your local `git clone https://www.github.com/kubwacu-entreprise/akana`
+- Clone to projet in your local `git clone http://www.github.com/kubwacu-entreprise/akana_framework/`
 - Create 'akana/' folder in computer.
 - Compile the project by following instructions given in 'Commands for compilation' section (use command 1).
 - Copy the executable file (.exe) and the folder 'bin/' into your folder.
