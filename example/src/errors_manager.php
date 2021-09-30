@@ -22,7 +22,7 @@
             "message" => "there is an internal server error, please contact us to report this issue"], 
             STATUS_500_INTERNAL_SERVER_ERROR
         );
-        switch($e->getName()){
+        switch($exception){
             case 'ControllerNotFoundException':
                 echo $general_response;
                 break;
@@ -108,7 +108,7 @@
 </head>
 <body>
     <header>
-        <h1><strong><?= $exception ?></strong>: <?= $message?></h1>
+        <h1><strong><?= $exception ?></strong>: <?= $e->getMessage() ?></h1>
         <ul>
             <?php
                 if(isset($first_trace['file']))
