@@ -3,7 +3,6 @@ akana.exe
 test.cpp
 test.exe
 akana.o
-assistant.o
-commandManager.o
 commands.o
 utils.o
+developper_message

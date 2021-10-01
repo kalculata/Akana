@@ -1,4 +1,6 @@
 <?php
+    // you must adapt those constants with your environment
+    
     define('DATABASE_TYPE', 'mysql');
     define('DATABASE_HOST', 'localhost');
     define('DATABASE_PORT', '3308');

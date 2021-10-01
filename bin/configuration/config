@@ -7,9 +7,8 @@
         'file' => 'root.php', 'class' => '\App\RootController']
     );
     define('APP_RESOURCES', [
-        'users',
-        'products',
-        'orders']);
+        // registre your resources here
+    ]);
     define('DATABASE', [
         'type'      => DATABASE_TYPE,
         'host'      => DATABASE_HOST,
