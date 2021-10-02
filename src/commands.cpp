@@ -42,7 +42,7 @@ void Commands::add_resource(string resource_name){
         return;
     }
 
-    if(Utils::folder_exist(resource_name)){
+    if(Utils::folder_exist("res/" + resource_name)){
         cout << endl << "Try with another name for the resource because there is already a folder "
                 "with the name '" << resource_name << "/' in the current directory." << endl << endl;
         return;

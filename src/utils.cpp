@@ -64,6 +64,10 @@ bool Utils::gen_project_struct(const string &project_name){
                 project_file << line + "\n";
     }
 
+    cout << project_name << "/.gitignore";
+    ofstream gitignore((project_name + "/.gitignore").c_str(), ios::app);
+    gitignore << ".vscode/\nsrc/\nenv.php";
+
     return true;
 }
 
