@@ -9,6 +9,13 @@
     use users\Models\User;
     use users\Serializers\UserSerializer;
 
+    // login/
+    class LoginController{
+        static public function post(){
+            return new Response(["token" => User::authenticate()]);
+        }
+    }
+
     // users/
     class UsersController{
         static function post(){

@@ -1,5 +1,4 @@
 <?php
-    $ENDPOINTS = [
-        '/' => 'ProductsController',
-        '/(product_id:int)/' => 'ManageProductController'
-    ];
+    define('ENDPOINTS', [
+       // create your endpoints here
+    ]);

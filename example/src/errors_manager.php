@@ -8,16 +8,24 @@
     *
     */
     use Akana\Response;
-    
+
     $exception = explode('\\', get_class($e))[2];
     $trace = $e->getTrace();
     $first_trace = $trace[0];
 
-    if(!DEBUG || $exception == 'SerializerException'){
+    if(!DEBUG || $exception == 'SerializerException' || $exception == 'JSONException'){
         if($exception == 'SerializerException'){
-            echo new Response(["message" => json_decode($e->getMessage())], $e->getCode());
+            if(json_decode($e->getMessage()) == null)
+                echo new Response(["message" => $e->getMessage()], $e->getCode());
+            else
+                echo new Response(["message" => json_decode($e->getMessage())], $e->getCode());
             return;
         }
+        else if($exception == 'JSONException'){
+            echo new Response(["message" => $e->getMessage()], $e->getCode());
+            return;
+        }
+
         $general_response = new Response([
             "message" => "there is an internal server error, please contact us to report this issue"], 
             STATUS_500_INTERNAL_SERVER_ERROR

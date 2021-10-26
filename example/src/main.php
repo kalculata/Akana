@@ -9,12 +9,12 @@
     */
     namespace Akana;
 
+    use Akana\Exceptions\AkanaException;
     use Akana\Exceptions\NoRootEndpointException;
     use Akana\Exceptions\HttpVerbNotAuthorizedException;
     use Akana\Exceptions\EmptyAppResourcesException;
     use Akana\Exceptions\ResourceNotFoundException;
     use Akana\Exceptions\EndpointNotFoundException;
-    use Akana\Exceptions\MethodNotStaticException;
     use Akana\Response;
     use ErrorException;
 
@@ -79,8 +79,8 @@
                                     return call_user_func_array(array($controller, HTTP_VERB), $endpoint_details['args']);
                                 }
                                 catch(ErrorException $e){
-                                    $message = "method '".HTTP_VERB."' in controller '".$controller."' is not static.";
-                                throw new MethodNotStaticException($message);
+                                    $message = str_replace("call_user_func_array() expects parameter 1 to be a valid callback, ", "", $e->getMessage());
+                                    throw new AkanaException($message);
                                 }
                             } 
                         }

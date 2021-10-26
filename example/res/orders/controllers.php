@@ -5,25 +5,8 @@
     require '../res/orders/serializers.php';
 
     use Akana\Response;
-    
-    // orders/
-    class OrdersController{
-        static function post(){
-            return new Response(['message' => 'make an order']);
-        }
 
-        static function get(){
-            return new Response(['message' => 'get list of all orders']);
-        }
-    }
+    // to import your models: use orders\Models\ModelExample;
+    // to import your serializers: use orders\Serializers\SerializerExample;
 
-    // orders/<order_id>/
-    class ManageOrderController{
-        static function get($order_id){
-            return new Response(['message' => 'get a specific order']);
-        }
-
-        static function patch($order_id){
-            return new Response(['message' => 'modify a specific order']);
-        }
-    }
+    // create your controllers here

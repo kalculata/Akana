@@ -9,7 +9,14 @@
     define('APP_RESOURCES', [
         'users',
         'products',
-        'orders']);
+        'orders',
+        'messages'
+    ]);
+    define('AUTHENTIFICATION', [
+        'file' => 'res\users\models.php',
+        'model' => 'users\Models\User',
+        'active' => true
+    ]);
     define('DATABASE', [
         'type'      => DATABASE_TYPE,
         'host'      => DATABASE_HOST,

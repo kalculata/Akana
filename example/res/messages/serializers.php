@@ -1,5 +1,5 @@
 <?php
-    namespace products\Serializers;
+    namespace messages\Serializers;
 
     use Akana\Serializer;
 

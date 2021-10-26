@@ -1,4 +1,5 @@
 .vscode/
+test/
 akana.exe
 test.cpp
 test.exe

@@ -34,20 +34,33 @@
             }
         }
 
-        static public function insert_query_data(array $data, array $params): array{
+        // prepare data for insert query
+        static public function prepare_insertion(array $data, array $model, $token): array{
             $query_data = [];
             $columns = NULL;
             $values = NULL;
             $counter = 0;
             
+            if($token != null){
+                $token_table = $model['table'].'__token';
+                $database_con = new Database();
+                $database_con = $database_con->get_database_con();
+                
+                $database_con->exec("INSERT INTO ".$token_table."(token, update_at) VALUES('".$token."', NOW())");
+                $token_id = $database_con->lastInsertId();
+
+                $data += ['token' => $token_id];
+            }
+      
             foreach($data as $k => $v){
                 if($v != NULL){
 
-                    if($params[$k]['type'] == "str") $v = '"'.$v.'"';
+                    if($model['params'][$k]['type'] == "str" || $model['params'][$k]['type'] == "email") 
+                        $v = '"'.$v.'"';
 
-                    if($counter == 0){$columns = $k; $values = $v;}
+                    if($counter == 0) {$columns = $k; $values = $v;}
                     
-                    else{$columns .= ",".$k; $values .= ",".$v;}
+                    else {$columns .= ",".$k; $values .= ",".$v;}
                     
                 }
                 $counter++;
@@ -57,15 +70,16 @@
 
             return $query_data;
         }
-        static public function update_query_data(array $data, array $params): string{
+
+        // prepare data for update query
+        static public function prepare_update(array $data, array $params): string{
             $query_data = NULL;
             $counter = 0;
             
             foreach($data as $k => $v){
                 if($v != NULL){
-                    if($params[$k]['type'] == "str"){
+                    if($params[$k]['type'] == "str" || $params[$k]['type'] == "email")
                         $v = '"'.$v.'"';
-                    }
 
                     if($counter == 0){
                         $query_data = $k."=".$v;
@@ -78,6 +92,24 @@
             }
 
             return $query_data;
+        }
+
+        // prepare data for filter
+        static function prepare_filters(array $filters): string{
+            $filters_string = "";
+            $counter = 0;
+
+            foreach($filters as $k=>$v){
+                if($counter == 0){
+                    $filters_string .= (gettype($v) == "integer")? $k."=".$v : $k."='".$v."'";
+                }
+                else{
+                    $filters_string .= (gettype($v) == "integer")? " AND ".$k."=".$v : " AND ".$k."='".$v."'";
+                }
+                $counter++;
+            }
+
+            return $filters_string;
         }
 
         public function save(string $table, array $query_data): int{
@@ -97,7 +129,7 @@
             }
         }
 
-        // get one object in database using id or other column
+        // get one object in database using pk or other column
         public function get($table, $col, $val){
             try{
                 $query = 'SELECT * FROM '.$table.' WHERE '.$col.'=:val';
@@ -105,8 +137,9 @@
 
                 $q = $this->_database_con->prepare($query);
                 $q->execute([':val'=> $val]);
+                $count = $q->rowCount();
                 
-                if($q->rowCount() > 0){
+                if($count == 1){
                     while($data = $q->fetch())
                         $output_data = $data;
                         
@@ -114,12 +147,16 @@
 
                     return $output_data;
                 }
+                else if($count > 1){
+                    throw new DatabaseException("many data for get method");
+                }
                 
             }
             catch(Exception $e){
                 throw new DatabaseException($e->getMessage());
             }
         }
+
         // get all objets in table
         public function get_all(string $table){
             try{
@@ -141,6 +178,28 @@
                 throw new DatabaseException($e->getMessage());
             }
         }
+
+        // get many objects with filters
+        public function filter(string $table, array $filters){
+            try{
+                $query = 'SELECT * FROM '.$table.' WHERE '.self::prepare_filters($filters);
+                $output_data = [];
+
+                $q = $this->_database_con->query($query);
+                
+                if($q->rowCount() > 0){
+                    while($data = $q->fetch())
+                        array_push($output_data, $data);
+                        
+                    $q->closeCursor();
+                }
+
+                return $output_data;
+            }
+            catch(Exception $e){
+                throw new DatabaseException($e->getMessage());
+            }
+        }   
 
         public function delete(string $table, int $pk): bool{
             try {

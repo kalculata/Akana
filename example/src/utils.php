@@ -37,7 +37,7 @@
             if(empty($request_data) && !empty($_POST))
                 $request_data = $_POST;  
 
-            return $request_data;
+            return ($request_data != null)? $request_data : [];
         }
 
         static function remove_char(string $word, $index=0): string{
@@ -81,6 +81,28 @@
                 array_push($values, $v);
 
             return $values;
+        }
+
+        static function generate_token($table): string{
+            $token_table = $table."__token";
+            $chars = ['0','1','2','3','4','5','6','7','8','9',
+            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+            
+            do{
+                $token = "";
+
+                while(strlen($token) < 50){
+                    $index = rand(0, count($chars) - 1);
+                    $token .= $chars[$index];
+                }
+
+                $db_con = new Database();
+                $db_con = $db_con->get_database_con();
+                $q = $db_con->query("SELECT * FROM ".$token_table." WHERE token='".$token."'");
+            } while($q->rowCount() > 0);
+
+            return $token;
         }
     }
 
@@ -129,7 +151,7 @@
             return [];
         }
         static function is_dynamic(string $endpoint): bool{
-            return (preg_match('#\([a-zA-Z0-9_]+:int\)|\([a-zA-Z0-9_]+:str\)+#', $endpoint))? true: false;
+            return preg_match('#\([a-zA-Z0-9_]+:int\)|\([a-zA-Z0-9_]+:str\)+#', $endpoint);
         }
         static function get_args($native_endpoint, $pattern_matches): array{
             $pattern = "#\([a-zA-Z0-9_]+:#";
@@ -157,5 +179,11 @@
             $regex = preg_replace('#\(([a-zA-Z0-9_]+):str\)#', '(?<$1>[a-zA-Z0-9_-]+)', $regex);
 
             return $regex;
+        }
+    }
+
+    abstract class Validator{
+        static public function email($email): bool{
+            return preg_match('#^[a-zA-Z0-9_\-]+@[a-zA-Z0-9_\-]+\.[a-zA-Z]{3}$#', $email);;
         }
     }
