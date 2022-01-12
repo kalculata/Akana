@@ -159,8 +159,6 @@ void Utils::execute_command(string command, int arguments_length, char* argument
         }
     }
 
-    else if(command == "runserver") Commands::runserver();
-    
     else if(command == "help") Commands::help();
 
     else if(command == "about") Commands::about();
