@@ -80,4 +80,9 @@
     class SerializationException extends CustomException{
         protected $code = STATUS_500_INTERNAL_SERVER_ERROR;
     }
+
+    class AuthentificationException extends CustomException{
+        protected $code = STATUS_500_INTERNAL_SERVER_ERROR;
+    }
+
  

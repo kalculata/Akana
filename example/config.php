@@ -1,5 +1,5 @@
 <?php
-    require '../env.php';
+    require API_ROOT.'/env.php';
 
     define('ROOT', false);
     define('DEBUG', true);
@@ -15,7 +15,7 @@
     define('AUTHENTIFICATION', [
         'file' => 'res\users\models.php',
         'model' => 'users\Models\User',
-        'active' => true
+        'state' => true
     ]);
     define('DATABASE', [
         'type'      => DATABASE_TYPE,

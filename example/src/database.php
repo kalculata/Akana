@@ -232,5 +232,22 @@
                 throw new DatabaseException($e->getMessage());
             }
         }
+
+        public function exec_sql(string $query){
+            $q = $this->_database_con->query($query);
+            $count = $q->rowCount();
+                
+            if($count == 1){
+                while($data = $q->fetch())
+                    $output_data = $data;
+                        
+                $q->closeCursor();
+
+                return $output_data;
+            }
+            else if($count > 1){
+                throw new DatabaseException("many data for get method");
+            }
+        }
         
     }

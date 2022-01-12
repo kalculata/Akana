@@ -179,7 +179,6 @@
             return $output_data;
         }
         
-
         static public function delete_all(): bool{
             $model = ModelUtils::get_model(get_called_class());
             $database_con = new DataBase();
@@ -212,7 +211,26 @@
             $token_class = $model['table'].'__token';
             $token = call_user_func_array([Token::class, 'get'], [$user->token, $token_class]);
 
-            return $token->token;
+            if($token != NULL){
+                return $token->token;
+            }
+            else{
+                return "";
+            }
+
+        }
+
+        static public function exec_sql(string $query){
+            $model = ModelUtils::get_model(get_called_class());
+            $database_con = new DataBase();
+            $data =  $database_con->exec_sql($query);
+
+            if($data){
+                $object = new $model['class'];
+                call_user_func_array([$object, 'hydrate_object'], [$model, $data]);
+
+                return $object;
+            }
         }
     }
 

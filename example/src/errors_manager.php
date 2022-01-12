@@ -9,6 +9,10 @@
     */
     use Akana\Response;
 
+    // var_dump($e->getMessage());
+
+    // return;
+
     $exception = explode('\\', get_class($e))[2];
     $trace = $e->getTrace();
     $first_trace = $trace[0];

@@ -1,8 +1,8 @@
 <?php
     namespace users\Controllers;
 
-    require '../res/users/models.php';
-    require '../res/users/serializers.php';
+    include_once '../res/users/models.php';
+    include_once '../res/users/serializers.php';
 
     use Akana\Response;
 
@@ -37,7 +37,7 @@
     
     // users/<user_id>/ 
     class ManageUserController{
-        static function get($user_id){
+        static function get($user_id): Response{
             $data = User::get($user_id);
 
             if(empty($data))
@@ -65,7 +65,7 @@
             );
         }
 
-        static function delete($user_id){
+        static function delete($user_id): Response{
             // get user from database using his id
             $data = User::get($user_id);
 

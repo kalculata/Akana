@@ -1,4 +1,4 @@
 <?php
-    define('ENDPOINTS', [
-       // create your endpoints here
-    ]);
+const ENDPOINTS = [
+    // create your endpoints here
+];

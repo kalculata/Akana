@@ -104,6 +104,20 @@
 
             return $token;
         }
+
+        static function get_auth_user(){
+            require_once API_ROOT.'/'.AUTHENTIFICATION['file'];
+
+            $auth_class = AUTHENTIFICATION['model'];
+            $auth_table = ModelUtils::get_table_name($auth_class);
+            $auth_table_token = $auth_table.'__token';
+
+            if(empty(AUTH_USER_TOKEN)) return null;
+            
+            $token = explode(" ", AUTH_USER_TOKEN)[1];
+
+            return call_user_func_array(array($auth_class, 'exec_sql'), ["select * from ".$auth_table." where token in (select pk from ".$auth_table_token." where token='".$token."');"]);
+        }
     }
 
     abstract class URI{
@@ -133,17 +147,28 @@
 
     abstract class Endpoint{
         static function details(string $resource, string $endpoint): array{
-            require '../res/'. $resource . '/endpoints.php';
+            require API_ROOT.'/res/'. $resource . '/endpoints.php';
             
+            $auth_state = AUTHENTIFICATION['state'];
+
             foreach(ENDPOINTS as $ep => $controller){
+                if(isset($controller[1]) && is_bool($controller[1])){
+                    $auth_state = $controller[1];
+                }
+
                 if(self::is_dynamic($ep) == true){
-                    if(preg_match_all('#^'. self::to_regex($ep) .'$#', $endpoint, $data))
-                        return ["controller" => $controller, "args" => self::get_args($ep, $data)];   
+                    if(preg_match_all('#^'. self::to_regex($ep) .'$#', $endpoint, $data)){
+                        return [
+                            "controller" => $controller[0], 
+                            "auth_state" => $auth_state,
+                            "args" => self::get_args($ep, $data)
+                        ]; 
+                    }  
                 }
 
                 else{
                     if($ep == $endpoint){
-                        return ["controller" => $controller, "args" =>  []];
+                        return ["controller" => $controller[0], "auth_state" => $auth_state, "args" =>  []];
                     }
                 }
             }

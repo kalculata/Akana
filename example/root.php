@@ -4,7 +4,7 @@
     use Akana\Response;
 
     class RootController{
-        static function get(){
+        static function get(): Response{
             return new Response([[
                 "Framework" => "Akana",
                 "Creaded by" => "Kubwacu Entreprise",
