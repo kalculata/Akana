@@ -6,21 +6,21 @@
 
     class Product extends Model{
         public $name;
-        public $type;
         public $size;
         public $price;
         public $likes;
         public $views;
         public $created_at;
+        public $description;
 
         public static $params = [
+            'description' => ['type'=>'str', 'min_length'=> 30, 'max_length'=>100], 
             'name' => ['type'=>'str', 'min_length'=> 3, 'max_length'=>50],
-            'type' => ['type'=>'str', 'choices'=>['t-shirt', 'watch', 'glass', 'shoes']],
-            'size' => ['type'=>'str', 'min_length'=> 3, 'max_length'=>50, 'nullable'=>true],
+            'size' => ['type'=>'str', 'min_length'=> 3, 'max_length'=>50],
             'price' => ['type'=>'int'],
-            'likes' => ['type'=>'int', 'default'=>0],
-            'views' => ['type'=>'int', 'default'=>0],
-            'created_at' => ['type'=> 'datetime', 'deafult'=> 'now'],
+            'likes' => ['type'=>'int', 'nullable' => true],
+            'views' => ['type'=>'int', 'nullable' => true],
+            'created_at' => ['type'=> 'datetime', 'default'=> 'now'],
         ];
     }
 
@@ -40,6 +40,6 @@
             'is_reply' => ['type'=>'bool', 'default'=>false],
             'content' => ['type'=>'str', 'max_length'=>'1000'],
             'like' => ['type'=>'int', 'default'=>0],
-            'created_at' => ['type'=> 'datetime', 'deafult'=> 'now'],
+            'created_at' => ['type'=> 'datetime', 'default'=> 'now'],
         ];
     }

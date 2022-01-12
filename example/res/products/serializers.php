@@ -3,4 +3,9 @@
 
     use Akana\Serializer;
 
-    // create your serializers here
+    class ProductSerializer extends Serializer{
+        public static $rules = [
+            'fields' => 'all'
+        ];
+    }
+

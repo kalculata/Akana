@@ -1,12 +1,24 @@
 <?php
     namespace products\Controllers;
 
-    require '../res/products/models.php';
-    require '../res/products/serializers.php';
+    require API_ROOT.'/res/products/models.php';
+    require API_ROOT.'/res/products/serializers.php';
 
     use Akana\Response;
+    use products\Models\Product;
+    use products\Serializers\ProductSerializer;
 
-    // to import your models: use products\Models\ModelExample;
-    // to import your serializers: use products\Serializers\SerializerExample;
+    class ProductsController{
+        static function post(){
+            $product = new Product();
+            $product->save();
+            $serializer = ProductSerializer::serialize($product);
+            return new Response($serializer['data']);
+        }
+        static function get(){
+            $data = Product::get_all();
+            $serializer = ProductSerializer::serialize($data);
 
-    // create your controllers here
+            return new Response($serializer['data'], STATUS_200_OK);
+        }
+    }
