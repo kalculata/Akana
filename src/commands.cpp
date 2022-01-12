@@ -62,10 +62,6 @@ void Commands::add_resource(string resource_name){
     cout << endl;
 }
 
-void Commands::runserver(){
-    std::cout << "Not available for moment wait for the version 1.2.5" << std::endl;
-}
-
 void Commands::about(){
     cout << endl << "Version    : " << Commands::getVersion() << endl;
     cout << "Author     : Kubwacu Entreprise" << endl;
