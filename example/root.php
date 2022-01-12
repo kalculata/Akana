@@ -8,8 +8,8 @@
             return new Response([[
                 "Framework" => "Akana",
                 "Creaded by" => "Kubwacu Entreprise",
-                "Version" => "1.2.4",
-                "Release at" => "1/10/2021"]], 
+                "Version" => "1.0.0",
+                "Release at" => "12/01/2021"]], 
             STATUS_200_OK);
         }
     }
