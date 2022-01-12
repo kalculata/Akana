@@ -29,9 +29,7 @@ void Commands::create_project(string project_name){
     cout << endl << "Your project has been successfully created." << endl;
     cout << endl << "To start the server" << endl;
     cout << "- cd " << project_name << "/" << endl;
-    cout << "- akana runserver" << endl;
-    cout << endl << "By default the server is started at the localhost address, port 1402 (127.0.0.1:1402), "
-                    "\nbut nothing prevents you from running it on the address and port you want." << endl << endl;
+    cout << "- php -S 127.0.0.1:1402 -t start" << endl;
 }
 
 void Commands::add_resource(string resource_name){
@@ -42,7 +40,7 @@ void Commands::add_resource(string resource_name){
         return;
     }
 
-    if(Utils::folder_exist(resource_name)){
+    if(Utils::folder_exist("res/" + resource_name)){
         cout << endl << "Try with another name for the resource because there is already a folder "
                 "with the name '" << resource_name << "/' in the current directory." << endl << endl;
         return;
@@ -60,10 +58,6 @@ void Commands::add_resource(string resource_name){
     cout << endl << "Now add your resource in APP_RESOURCES a constant array that list all resources in"
                     "\nyour application, find APP_RESOURCES in (/project_name/config.php)." << endl;
     cout << endl;
-}
-
-void Commands::runserver(){
-    std::cout << "Not available for moment wait for the version 1.2.5" << std::endl;
 }
 
 void Commands::about(){
@@ -88,7 +82,6 @@ void Commands::help(){
     cout << endl << "Commands: " << endl;
     cout << "   create-project <project_name>   : Create a new project." << endl;
     cout << "   add-resource <project_name>     : Add a resource in project." << endl;
-    cout << "   runserver <address:port>        : run the server." << endl;
     cout << "   about                           : Display the information about the framework." << endl;
     cout << "   version                         : Show the version of the framework." << endl;
     cout << "   help                            : Print help menu." << endl;

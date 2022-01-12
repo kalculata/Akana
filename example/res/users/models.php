@@ -1,22 +1,20 @@
 <?php
     namespace users\Models;
 
-    use Akana\Model;
+    use Akana\Models\AkanaUser;
 
-    class User extends Model{
+    class User extends AkanaUser{
         public $first_name;
         public $last_name;
-        public $email;
         public $phone;
-        public $password; 
+        public $email;
         public $created_at;
 
-        public static $params = [
-            "first_name" => ["type" => "str", "max_length" => 50],
-            "last_name" => ["type" => "str", "max_length" => 50],
-            "email" => ["type" => "str", "max_length" => 50],
-            "phone" => ["type" => "str", "max_length" => 20, 'nullable' => true],
-            "password" => ["type" => "str", "max_length" => 100],
-            "created_at" => ["type" => "datetime", "default" => "now"],
+        static public $params = [
+            'first_name' => ['type'=>'str', 'min_length'=> 3, 'max_length'=>50],
+            'last_name' => ['type'=>'str', 'min_length'=> 3, 'max_length'=>50],
+            'phone' => ['type'=> 'str', 'min_length'=> 8, 'max_length'=>30, 'nullable'=>true],
+            'email' => ['type'=> 'email', 'max_length'=>50, "unique"=>true],
+            'created_at' => ['type'=> 'datetime', 'default'=> 'now'],
         ];
     }

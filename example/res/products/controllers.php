@@ -1,53 +1,24 @@
 <?php
     namespace products\Controllers;
 
-    require '../res/products/models.php';
-    require '../res/products/serializers.php';
+    require API_ROOT.'/res/products/models.php';
+    require API_ROOT.'/res/products/serializers.php';
 
     use Akana\Response;
+    use products\Models\Product;
+    use products\Serializers\ProductSerializer;
 
-    // products/
     class ProductsController{
         static function post(){
-            return new Response(
-                [
-                    'message' => 'add new product'
-                ]
-            );
+            $product = new Product();
+            $product->save();
+            $serializer = ProductSerializer::serialize($product);
+            return new Response($serializer['data']);
         }
-
         static function get(){
-            return new Response(
-                [
-                    'message' => 'get list of all products'
-                ]
-            );
-        }
-    }
+            $data = Product::get_all();
+            $serializer = ProductSerializer::serialize($data);
 
-    // products/<product_id>/
-    class ManageProductController{
-        static function get($product_id){
-            return new Response(
-                [
-                    'message' => 'get a specific product'
-                ]
-            );
-        }
-
-        static function patch($product_id){
-            return new Response(
-                [
-                    'message' => 'modify a specific product'
-                ]
-            );
-        }
-
-        static function delete($product_id){
-            return new Response(
-                [
-                    'message' => 'delete a specific product'
-                ]
-            );
+            return new Response($serializer['data'], STATUS_200_OK);
         }
     }

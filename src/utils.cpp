@@ -34,6 +34,7 @@ bool Utils::gen_project_struct(const string &project_name){
         {project_name + "/config.php", "bin/configuration/config"},
         {project_name + "/env.php", "bin/configuration/env"},
         {project_name + "/root.php", "bin/configuration/root"},   
+        {project_name + "/api.php", "bin/configuration/api"},   
     };
 
     system(string("mkdir " + project_name + "\\res").c_str());
@@ -63,6 +64,10 @@ bool Utils::gen_project_struct(const string &project_name){
         while(getline(template_file, line))
                 project_file << line + "\n";
     }
+
+    cout << project_name << "/.gitignore";
+    ofstream gitignore((project_name + "/.gitignore").c_str(), ios::app);
+    gitignore << ".vscode/\nsrc/\nenv.php";
 
     return true;
 }
@@ -154,8 +159,6 @@ void Utils::execute_command(string command, int arguments_length, char* argument
         }
     }
 
-    else if(command == "runserver") Commands::runserver();
-    
     else if(command == "help") Commands::help();
 
     else if(command == "about") Commands::about();

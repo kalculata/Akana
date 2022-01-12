@@ -11,8 +11,6 @@ class Commands{
 
         static void add_resource(string resource_name);
 
-        static void runserver();
-
         static void about();
 
         static void version();
@@ -21,7 +19,7 @@ class Commands{
 
     private:
         static string getVersion(){
-            return "1.2.4 (Akana 1) (release at : 1/10/2021)";
+            return "Akana 1.0.0 (release at : 12/01/2022)";
         }
 };
 

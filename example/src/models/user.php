@@ -1,0 +1,24 @@
+<?php
+    /*
+    * This file is part of the akana framework files.
+    *
+    * (c) Kubwacu Entreprise
+    *
+    * @author (kalculata) Huzaifa Nimushimirimana <nprincehuzaifa@gmail.com>
+    *
+    */
+    namespace Akana\Models;
+
+    use Akana\Model;
+
+    class AkanaUser extends Model{
+        public $username;
+        public $password;
+        public $token;
+
+        public $akana_user_model_params = [
+            'username' => ['type'=>'str', 'min_length'=> 3, 'max_length'=>50, 'unique'=>true],
+            'password' => ['type'=> 'str', 'min_length'=> 8, 'max_length'=>50],
+            'token' => ['type'=> Token::class, 'unique'=>true, 'relation'=> Model::ONE2ONE],
+        ];
+    }

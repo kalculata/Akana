@@ -1,5 +1,5 @@
 <?php
-    require '../env.php';
+    require API_ROOT.'/env.php';
 
     define('ROOT', false);
     define('DEBUG', true);
@@ -7,7 +7,15 @@
         'file' => 'root.php', 'class' => '\App\RootController']
     );
     define('APP_RESOURCES', [
-        // registre your resources here
+        'users',
+        'products',
+        'orders',
+        'messages'
+    ]);
+    define('AUTHENTIFICATION', [
+        'file' => 'res\users\models.php',
+        'model' => 'users\Models\User',
+        'state' => true
     ]);
     define('DATABASE', [
         'type'      => DATABASE_TYPE,

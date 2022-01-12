@@ -3,6 +3,7 @@
             - env.php
             - root.php
             - config.php
+            - api.php
         
         home file:
             - src/html/home.php
