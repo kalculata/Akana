@@ -1,12 +1,10 @@
 <?php
     namespace [__resource_name__]\Controllers;
 
-    require '../res/[__resource_name__]/models.php';
-    require '../res/[__resource_name__]/serializers.php';
+    require_once '../res/[__resource_name__]/models.php';
+    require_once '../res/[__resource_name__]/serializers.php';
 
     use Akana\Response;
 
     // to import your models: use [__resource_name__]\Models\ModelExample;
     // to import your serializers: use [__resource_name__]\Serializers\SerializerExample;
-
-    // create your controllers here

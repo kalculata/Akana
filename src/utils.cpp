@@ -34,6 +34,7 @@ bool Utils::gen_project_struct(const string &project_name){
         {project_name + "/config.php", "bin/configuration/config"},
         {project_name + "/env.php", "bin/configuration/env"},
         {project_name + "/root.php", "bin/configuration/root"},   
+        {project_name + "/api.php", "bin/configuration/api"},   
     };
 
     system(string("mkdir " + project_name + "\\res").c_str());

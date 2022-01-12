@@ -74,7 +74,6 @@
                         else{
                             // echo "Authentification state for '".HTTP_VERB."': ";
                             // echo ($auth_state[HTTP_VERB] == true)? "On" : "Off";
-
                             if($auth_state[HTTP_VERB] == true){
                                 $auth_file = API_ROOT.'/'.AUTHENTIFICATION['file'];
                                 $auth_class = AUTHENTIFICATION['model'];
