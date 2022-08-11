@@ -24,7 +24,7 @@
     private function prepare_response(int $status = 200){
         http_response_code($status);
         header('Content-Type: application/json');
-        header('Access-Control-Allow-Origin: http://127.0.0.1:3000');
+        header('Access-Control-Allow-Origin: *');
         header ("Access-Control-Expose-Headers: Content-Length, X-JSON");
         header ("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
         header ("Access-Control-Allow-Headers: Content-Type, Authorization, Accept, Accept-Language, X-Authorization");

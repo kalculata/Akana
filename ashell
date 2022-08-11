@@ -4,9 +4,9 @@
 	$command = $argv[1];
 
   	$valid_commands = [
-		"runserver"
+			"runserver"
   	];
 
   	if(in_array($command, $valid_commands)) {
-		runserver($command);
+			runserver($command);
   	}
