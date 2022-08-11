@@ -1,0 +1,12 @@
+<?php
+	require_once __DIR__.'/akana/shell/runserver.php';
+
+	$command = $argv[1];
+
+  	$valid_commands = [
+		"runserver"
+  	];
+
+  	if(in_array($command, $valid_commands)) {
+		runserver($command);
+  	}
