@@ -1,4 +1,0 @@
-<?php
-   define('ENDPOINTS', [
-      '/' => ['ProductsController']
-   ]);

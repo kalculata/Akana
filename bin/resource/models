@@ -1,6 +1,0 @@
-<?php
-    namespace [__resource_name__]\Models;
-
-    use Akana\Model;
-
-    // create your models here
