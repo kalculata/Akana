@@ -44,4 +44,10 @@
 			}
 			return $my_args;
 		}
+
+		static function get_classes_in_file($file) {
+			$classes = get_declared_classes();
+			require_once $file;
+			return array_diff(get_declared_classes(), $classes);
+		}
 	}

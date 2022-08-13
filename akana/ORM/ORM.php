@@ -2,10 +2,23 @@
   namespace Akana\ORM;
 
   use PDO;
+  use ReflectionClass;
+  use ReflectionProperty;
 
   class ORM {
     const DESC = "DESC";
     const ASC = "ASC";
+
+    public function get_public_vars() {
+      $names = [];
+      $reflection = new ReflectionClass($this);
+      $vars = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
+
+      foreach ($vars as $public_var) {
+        array_push($names, $public_var->getName());
+      }  
+      return $names;
+    }
 
     protected static function typing($val) {
       $type = is_numeric($val)? "NaS" : "string";
@@ -16,6 +29,7 @@
 
       return $val;
     }
+
     protected static function get_cols($array) {
       $cols = "";
 

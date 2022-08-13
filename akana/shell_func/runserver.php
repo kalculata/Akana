@@ -3,9 +3,8 @@
 
   function runserver($args) {
     echo "\nStarting the server\n";
-    $env_file_exist = file_exists(__DIR__.'/../../env.yaml');
 
-    if(!$env_file_exist) {
+    if(!file_exists(__DIR__.'/../../env.yaml')) {
       echo "[WARNING] env.yaml file for environment variables doesn't exist. (if you don't need a database it doesn't affect your api\n";
     } else {
       $envs = spyc_load_file(__DIR__.'/../../env.yaml');
