@@ -49,11 +49,11 @@
         if(!Request::is_authorized($this->_http_verb, $controller)) {
           return new Response(["message" => "method '".$this->_http_verb."' is not authorized."], 400);
         }
-        $this->handler($controller, $this->_http_verb, $args);
+        $this->request_handler($controller, $this->_http_verb, $args);
       }
     }
 
-    private function handler($class, $func, $args) {
+    private function request_handler($class, $func, $args) {
       try{
         echo call_user_func_array(array($class, $func), $args);
       } catch(UnexpectedValueException $e) {
@@ -64,6 +64,11 @@
         echo new Response(["message" => $e->getMessage()], 500);
       }
     }
-  }
 
-  
+    static public function command_handler($command) {
+      require_once __DIR__.'/shell/runserver.php';
+
+      if($command == "runserver")
+        runserver();
+    }
+  }

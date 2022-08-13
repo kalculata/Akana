@@ -1,12 +1,10 @@
 <?php
-	require_once __DIR__.'/akana/shell/runserver.php';
+	require_once __DIR__.'/akana/Kernel.php';
 
 	$command = $argv[1];
+  $valid_commands = [
+		"runserver"
+  ];
 
-  	$valid_commands = [
-			"runserver"
-  	];
-
-  	if(in_array($command, $valid_commands)) {
-			runserver($command);
-  	}
+  if(in_array($command, $valid_commands))
+		Kernel::command_handler($command);

@@ -1,9 +1,4 @@
 .vscode/
-test/
-akana.exe
-test.cpp
-test.exe
-akana.o
-commands.o
-utils.o
-developper_message
+src/
+settings.yaml
+env.yaml
