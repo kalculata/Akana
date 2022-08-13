@@ -66,9 +66,14 @@
     }
 
     static public function command_handler($command, $args) {
-      require_once __DIR__.'/shell/runserver.php';
+      require_once __DIR__.'/shell_func/runserver.php';
+      require_once __DIR__.'/shell_func/help.php';
 
-      if($command == "runserver")
+      if($command == "help") {
+        help();
+      }
+      else if($command == "runserver") {
         runserver($args);
+      }
     }
   }
