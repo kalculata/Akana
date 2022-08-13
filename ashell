@@ -1,10 +1,11 @@
 <?php
 	require_once __DIR__.'/akana/Kernel.php';
 
+	use Akana\Utils;
+
 	$command = $argv[1];
-  $valid_commands = [
-		"runserver"
-  ];
+  $valid_commands = ["runserver"];
+	$args = Utils::get_args($argv);
 
   if(in_array($command, $valid_commands))
-		Kernel::command_handler($command);
+		Kernel::command_handler($command, $args);

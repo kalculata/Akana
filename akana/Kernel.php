@@ -65,10 +65,10 @@
       }
     }
 
-    static public function command_handler($command) {
+    static public function command_handler($command, $args) {
       require_once __DIR__.'/shell/runserver.php';
 
       if($command == "runserver")
-        runserver();
+        runserver($args);
     }
   }

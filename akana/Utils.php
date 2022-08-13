@@ -34,4 +34,14 @@
 
 			return $output;
 		}
+
+		static function get_args($argv) {
+			$my_args = array();
+			for ($i = 1; $i < count($argv); $i++) {
+				if (preg_match('/^--([^=]+)=(.*)/', $argv[$i], $match)) {
+					$my_args[$match[1]] = $match[2];
+				}
+			}
+			return $my_args;
+		}
 	}
