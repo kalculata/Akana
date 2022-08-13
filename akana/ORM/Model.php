@@ -16,22 +16,9 @@
     public function __construct($table_name) {
       $this->_db_env = spyc_load_file(__DIR__."/../../env.yaml")["database"];
       $this->_table_name = $table_name;
-      $this->_dbcon = $this->get_dbcon();
+      $this->_dbcon = self::get_dbcon();
 
       //TODO: check if table exist
-    }
-
-    private function get_dbcon(){
-      $db_url = $this->_db_env['type'].':host='.$this->_db_env['host'].''.$this->_db_env['port'].'; dbname='.$this->_db_env['name'];
-      
-      try{
-        return new PDO($db_url, $this->_db_env['login'], $this->_db_env['password'], array(
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ));
-      }
-      catch(PDOException $e){
-        throw new PDOException($e->getMessage());
-      }
     }
 
     public function insert($array) {
