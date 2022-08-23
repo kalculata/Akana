@@ -67,11 +67,11 @@
 
     static public function command_handler($command, $args) {
       if($command == "help") {
-        require_once __DIR__.'/shell_func/runserver.php';
+        require_once __DIR__.'/shell_func/help.php';
         help();
       }
       else if($command == "runserver") {
-        require_once __DIR__.'/shell_func/help.php';
+        require_once __DIR__.'/shell_func/runserver.php';
         runserver($args);
       }
       else if($command == "migrate") {

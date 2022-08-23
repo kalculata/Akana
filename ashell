@@ -1,4 +1,12 @@
 <?php
+	/*
+	* This file is part of the akana framework files.
+	*
+	* (c) Kubwacu Entreprise
+	*
+	* @author (kalculata) Huzaifa Nimushimirimana <nprincehuzaifa@gmail.com>
+	*
+	*/
 	require_once __DIR__.'/akana/Kernel.php';
 
 	use Akana\Utils;
