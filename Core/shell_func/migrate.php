@@ -4,6 +4,8 @@
 
   use Akana\Utils;
   use Akana\Shell\Utils as ShellUtils;
+  use Akana\ORM\ORM;
+  // use Akana\ORM\ManageMigration;
 
   function migrate($args) {
     if(!file_exists(__DIR__.'/../../settings.yaml')) {
@@ -39,17 +41,54 @@
     foreach($models as $model) {
       $obj = new $model();
       $vars = $obj->get_public_vars();
-      
-      // TODO:
-      // check database connection
-      // check if table exist
-      // if table exist
-      // - get table columns
-      // - check if model columns exist on the table
-      // - check diffence between model columns and table columns
-      // - generate sql code
-      foreach($vars as $var) {
-        echo $obj->$var->getType() . " - ";
+      $tmp = explode("\\", $model);
+      $model_name = strtolower($tmp[count($tmp) - 1]);
+      $resource = $args['resource'];
+    
+      $table = $resource."__$model_name";
+
+      $resource_tables = ManageMigration::get_tables($resource);
+      if(in_array($table, $resource_tables)) {
+        echo "Table $model_name of resouce $resource already exist";
+        $cols_to_add = array();
+        $cols_to_remove = array();
+        $cols_to_modify = array();
+      //    update
+
+      //   // get tables signature
+      //   $resource_tables_hash = ORM::get_tables_hash($resource);
+      //   $current_table_hash = $obj->gethash();
+
+      //   if(in_array($current_table_hash, $resource_tables_hash)) {
+      //     // rename table
+      //   }
+      } 
+
+      // Creation of the table and rename
+      else {
+        $hash = ManageMigration::table_hash($table);
+        $hashs = ManageMigration::get_hashes($resource);
+
+        if(in_array($hash, $hashs)) {
+          
+        } else {
+          $query = "CREATE TABLE $table (id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY";
+          foreach($vars as $var) { $query .= ", $var ".$obj->$var->get_sql(); }
+          $query .= ");";
+
+          $dbcon = ORM::get_dbcon();
+          // $dbcon->query($query);
+
+          echo $query ."\n";
+          echo "Table '$model_name' created";
+          // echo $query;
+        }
       }
+
+      // ACTIONS ON MIGRATE
+      // - update table
+      // - delete table
+      // - rename table
+
     }
   }
