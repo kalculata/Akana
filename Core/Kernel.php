@@ -4,7 +4,7 @@
   require_once __DIR__.'/Utils.php';
   require_once __DIR__.'/Router.php';
   require_once __DIR__.'/spyc.php';
-  require_once __DIR__.'/ORM/Model.php';
+  require_once __DIR__.'/ORM/Table.php';
 
   use Akana\Request;
   use Akana\Response;

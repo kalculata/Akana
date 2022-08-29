@@ -11,4 +11,5 @@ Akana is a PHP framework to create restful API easily and fast.
   - [ ] Rename Field
   - [ ] Change details for Field
 - [ ] Add command add_resource
-- [ ] Give a way to write direct SQL
+- [x] Give a way to write direct SQL
+- [ ] Command options management

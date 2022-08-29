@@ -8,7 +8,7 @@
   use Akana\ORM\ORM;
 
 
-  class Model extends ORM{
+  class Table extends ORM{
     private $_table_name;
     private $_dbcon;
     private $_db_env;
@@ -17,8 +17,6 @@
       $this->_db_env = spyc_load_file(__DIR__."/../../env.yaml")["database"];
       $this->_table_name = $table_name;
       $this->_dbcon = self::get_dbcon();
-
-      //TODO: check if table exist
     }
 
     public function insert($array) {
@@ -29,7 +27,7 @@
       $this->_dbcon->exec($query);
     }
 
-    public function all($order_by=Model::DESC) {
+    public function all($order_by=Table::DESC) {
       $query = "SELECT * FROM $this->_table_name";
 
       $query .= " ORDER BY id $order_by";
@@ -54,12 +52,12 @@
       return $data;
     }
 
-    public function filter($array, $order_by=Model::DESC) {
+    public function filter($array, $order_by=Table::DESC) {
       $query = "SELECT * FROM $this->_table_name";
 
       $counter = 0;
       foreach($array as $k=>$v){
-        $v = Model::typing($v);
+        $v = Table::typing($v);
 
         if($counter == 0) {
           $query .= " WHERE $k = $v"; 

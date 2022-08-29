@@ -53,21 +53,17 @@
       return $vals;
     }
 
-    public static function get_dbcon($_envs=NULL){
+    public static function get_dbcon(){
       $env_file_path = __DIR__.'/../../env.yaml';
       $env_file_exist = file_exists($env_file_path);
 
       if(!$env_file_exist) {
         throw new PDOException("env.yaml file not found.");
       }
-      if(!isset($_envs)) {
-        $envs = spyc_load_file($env_file_path);
-        $envs = $envs["database"];
-      }
-      else{
-        $envs = $_envs;
-      }
-
+      
+      $envs = spyc_load_file($env_file_path);
+      $envs = $envs["database"];
+      
       $db_url = $envs['type'].':host='.$envs['host'].''.$envs['port'].'; dbname='.$envs['name'];
       
       try{
@@ -78,5 +74,23 @@
       catch(PDOException $e){
         throw new PDOException($e->getMessage());
       }
+    }
+
+    public static function query($query) {
+      $results = [];
+      $dbcon = self::get_dbcon();
+      $qres = $dbcon->query($query);
+
+      while($data = $qres->fetch()) {
+        array_push($results, $data);
+      }
+
+      return $results;
+    }
+
+    public static function exec($query) {
+      $results = [];
+      $dbcon = self::get_dbcon();
+      $dbcon->exec($query);
     }
   }
