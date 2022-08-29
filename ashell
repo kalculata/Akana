@@ -12,7 +12,9 @@
 	use Akana\Utils;
 
 	$command = $argv[1];
-  $valid_commands = ["help", "runserver", "migrate"];
+  $valid_commands = [
+		"help", "runserver", "migrate", "add-resource"
+	];
 	$args = Utils::get_args($argv);
 
   if(in_array($command, $valid_commands)) {

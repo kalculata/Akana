@@ -14,7 +14,7 @@
     $settings = spyc_load_file(__DIR__.'/../../settings.yaml');
     $resources = $settings["resources"];
 
-    // check if resource option has benn provided
+    // check if resource option has been provided
     if(!key_exists("resource", $args)) {
       echo "[ERROR] resource option is required\n";
       return;

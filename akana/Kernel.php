@@ -78,5 +78,9 @@
         require_once __DIR__.'/shell_func/migrate.php';
         migrate($args);
       }
+      else if($command == "add-resource") {
+        require_once __DIR__.'/shell_func/add-resource.php';
+        add_resource($args);
+      }
     }
   }
