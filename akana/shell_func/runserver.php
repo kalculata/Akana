@@ -7,16 +7,24 @@
   function runserver($args) {
     echo "\nStarting the server\n";
 
-    try {
-      Utils::check_db_connectivity();
-    } catch(PDOException $e) {
-      echo "[ERROR] Failed to start the server due to: ". $e->getMessage().".\n";
-      return;
-    }
+    // initialize args
+    $host = "127.0.0.1:8000";
+    $checkdbcon = true;
 
-    $host = "127.0.0.1:8000";    
     if(key_exists("host", $args)) 
       $host = $args["host"];
+    if(key_exists("checkdbcon", $args))
+      $checkdbcon = ($args["checkdbcon"] == "true")? true : false;
+
+    if($checkdbcon) {
+      try {
+        Utils::check_db_connectivity();
+      } catch(PDOException $e) {
+        echo "[ERROR] Failed to start the server due to: ". $e->getMessage().".\n";
+        return;
+      }
+    }
+    
     $command = "php -S $host -t public/";
 
     system($command);
