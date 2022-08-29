@@ -19,6 +19,47 @@
     public function getDefault() { return $this->_default; }
     public function getNullable() { return $this->_nullable; }
 
+    public function get_sql() {
+      switch ($this->_type) {
+        case "integer":
+          $default = "";
+          $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
+          return "INTEGER($this->_limit)".$default.$nullable;
+          break;
+
+        case "string":
+          $default = "";
+          $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
+          return "VARCHAR($this->_limit)".$default.$nullable;
+          break;
+
+        case "text":
+          $default = "";
+          $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
+          return "TEXT".$default.$nullable;
+          break;
+
+        case "boolean":
+          $default = "";
+          $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
+          return "BOOLEAN".$default.$nullable;
+          break;
+
+        case "date":
+          $default = "";
+          $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
+          return "DATE".$default.$nullable;
+          break;
+
+        case "datetime":
+          $default = "";
+          $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
+          return "DATETIME".$default.$nullable;
+          break;
+       
+      }
+    }
+
     static public function integer(int $limit=11, int $default=null, bool $nullable=false) {
       return new Column("integer", $limit, $default, $nullable);
     }

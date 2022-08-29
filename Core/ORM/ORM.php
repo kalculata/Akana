@@ -53,7 +53,7 @@
       return $vals;
     }
 
-    public static function get_dbcon($_envs){
+    public static function get_dbcon($_envs=NULL){
       $env_file_path = __DIR__.'/../../env.yaml';
       $env_file_exist = file_exists($env_file_path);
 
