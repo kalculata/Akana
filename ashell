@@ -1,19 +1,11 @@
 <?php
-	/*
-	* This file is part of the akana framework files.
-	*
-	* (c) Kubwacu Entreprise
-	*
-	* @author (kalculata) Huzaifa Nimushimirimana <nprincehuzaifa@gmail.com>
-	*
-	*/
 	require_once __DIR__.'/Core/Kernel.php';
 
 	use Akana\Utils;
 
 	$command = $argv[1];
   $valid_commands = [
-		"help", "runserver", "migrate", "add-resource"
+		"help", "runserver", "migrate", "add_resource"
 	];
 	$args = Utils::get_args($argv);
 
