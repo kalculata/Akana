@@ -8,7 +8,7 @@
     echo "\nStarting the server\n";
 
     // initialize args
-    $host = "127.0.0.1:8000";
+    $host = "127.0.0.1:5000";
     $checkdbcon = true;
 
     if(key_exists("host", $args)) 
