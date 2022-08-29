@@ -34,7 +34,7 @@
 
     // return: controller - args
     static function endpoint_detail($resource, $endpoint) {
-      $rs_ep = spyc_load_file(__DIR__."/../src/$resource/routers.yaml");
+      $rs_ep = spyc_load_file(__DIR__."/../App/$resource/routers.yaml");
 
       foreach($rs_ep as $k => $v) {
         $args = [];
