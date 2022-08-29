@@ -1,11 +1,12 @@
 <?php
   require_once __DIR__.'/../ORM/Column.php';
+  require_once __DIR__.'/../ORM/Migration.php';
   require_once __DIR__.'/Utils.php';
 
   use Akana\Utils;
   use Akana\Shell\Utils as ShellUtils;
   use Akana\ORM\ORM;
-  // use Akana\ORM\ManageMigration;
+  use Akana\ORM\Migration;
 
   function migrate($args) {
     if(!file_exists(__DIR__.'/../../settings.yaml')) {
@@ -47,48 +48,49 @@
     
       $table = $resource."__$model_name";
 
-      $resource_tables = ManageMigration::get_tables($resource);
+      $resource_tables = Migration::get_tables($resource);
+
       if(in_array($table, $resource_tables)) {
-        echo "Table $model_name of resouce $resource already exist";
-        $cols_to_add = array();
-        $cols_to_remove = array();
-        $cols_to_modify = array();
-      //    update
+        echo "Table $model_name of resouce $resource already exist\n";
+        $cols = Migration::get_object_vars($obj);
+        $table_desc = Migration::get_table_desc($table);
+        $cols_to_add = [];
+        $cols_to_remove = [];
+        $cols_to_edit = [];
+        
+        foreach($cols as $col) {
+          if(!in_array($col, $table_desc)) {
+            array_push($cols_to_add, $col);
+          }
+        }
 
-      //   // get tables signature
-      //   $resource_tables_hash = ORM::get_tables_hash($resource);
-      //   $current_table_hash = $obj->gethash();
+        foreach($table_desc as $col) {
+          if($col != "id") {
+            if(!in_array($col, $cols)) {
+              array_push($cols_to_remove, $col);
+            }
+          }
+        }
 
-      //   if(in_array($current_table_hash, $resource_tables_hash)) {
-      //     // rename table
-      //   }
+        // TODO:
+        // - generate sql code to add and remove cols
       } 
 
       // Creation of the table and rename
       else {
-        $hash = ManageMigration::table_hash($table);
-        $hashs = ManageMigration::get_hashes($resource);
-
-        if(in_array($hash, $hashs)) {
-          
-        } else {
-          $query = "CREATE TABLE $table (id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY";
-          foreach($vars as $var) { $query .= ", $var ".$obj->$var->get_sql(); }
+          $query = "CREATE TABLE $table (`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY";
+          foreach($vars as $var) { $query .= ", `$var` ".$obj->$var->get_sql(); }
           $query .= ");";
 
           $dbcon = ORM::get_dbcon();
-          // $dbcon->query($query);
+          $dbcon->query($query);
 
-          echo $query ."\n";
           echo "Table '$model_name' created";
-          // echo $query;
-        }
       }
 
       // ACTIONS ON MIGRATE
       // - update table
       // - delete table
       // - rename table
-
     }
   }

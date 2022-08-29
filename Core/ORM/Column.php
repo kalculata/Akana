@@ -7,7 +7,7 @@
     private $_default;
     private $_nullable;
 
-    public function __construct(string $type, $limit, $default, bool $nullable) {
+    public function __construct(string $type, mixed $limit, mixed $default, bool $nullable) {
       $this->_type = $type;
       $this->_limit = $limit;
       $this->_default = $default;
@@ -22,39 +22,39 @@
     public function get_sql() {
       switch ($this->_type) {
         case "integer":
-          $default = "";
+          $default = ($this->_default != NULL)? " DEFAULT ".$this->_default : "";
           $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
-          return "INTEGER($this->_limit)".$default.$nullable;
+          return "INTEGER($this->_limit)".$nullable.$default;
           break;
 
         case "string":
-          $default = "";
+          $default = ($this->_default != NULL)? " DEFAULT '".$this->_default."'" : "";
           $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
-          return "VARCHAR($this->_limit)".$default.$nullable;
+          return "VARCHAR($this->_limit)".$nullable.$default;
           break;
 
         case "text":
-          $default = "";
+          $default = ($this->_default != NULL)? " DEFAULT '".$this->_default."'" : "";
           $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
-          return "TEXT".$default.$nullable;
+          return "TEXT".$nullable.$default;
           break;
 
         case "boolean":
-          $default = "";
+          $default = ($this->_default != NULL)? " DEFAULT ".$this->_default : "";
           $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
-          return "BOOLEAN".$default.$nullable;
+          return "BOOLEAN".$nullable.$default;
           break;
 
         case "date":
-          $default = "";
+          $default = ($this->_default != NULL)? $this->_default : "";
           $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
-          return "DATE".$default.$nullable;
+          return "DATETIME".$nullable.$default;
           break;
 
         case "datetime":
-          $default = "";
+          $default = ($this->_default != NULL)? $this->_default : "";;
           $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
-          return "DATETIME".$default.$nullable;
+          return "DATETIME".$nullable.$default;
           break;
        
       }
@@ -77,12 +77,12 @@
     }
 
     static public function date(bool $now_as_default=false, bool $nullable=false) {
-      $default = ($now_as_default)? "NOW" : "";
+      $default = ($now_as_default)? " DEFAULT CURRENT_TIMESTAMP" : NULL;
       return new Column("date", null, $default, $nullable);
     }
 
     static public function datetime(bool $now_as_default=false, bool $nullable=false) {
-      $default = ($now_as_default)? "NOW" : "";
+      $default = ($now_as_default)? " DEFAULT CURRENT_TIMESTAMP" : NULL;
       return new Column("datetime", null, $default, $nullable);
     }
   }
