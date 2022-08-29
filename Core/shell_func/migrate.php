@@ -34,7 +34,7 @@
       return;
     }
 
-    $models = Utils::get_classes_in_file(__DIR__.'/../../src/'.$args["resource"].'/models.php');
+    $models = Utils::get_classes_in_file(__DIR__.'/../../App/'.$args["resource"].'/models.php');
 
     foreach($models as $model) {
       $obj = new $model();
