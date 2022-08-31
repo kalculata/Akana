@@ -34,9 +34,16 @@
 
     // return: controller - args
     static function endpoint_detail($resource, $endpoint) {
-      $rs_ep = spyc_load_file(__DIR__."/../App/$resource/routers.yaml");
+      $settings = spyc_load_file(__DIR__."/../settings.yaml");
 
-      foreach($rs_ep as $k => $v) {
+      if($settings["global_router"] == false) {
+        $resource_endpoints = spyc_load_file(__DIR__."/../App/$resource/routers.yaml");
+      }
+      else {
+        $resource_endpoints = Router::get_endpoints($resource);
+      }
+
+      foreach($resource_endpoints as $k => $v) {
         $args = [];
         $k_cp = $k;
 

@@ -1,2 +1,4 @@
 resources:
   # Add your resources here as list
+
+global_router: true

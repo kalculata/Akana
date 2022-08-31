@@ -42,4 +42,20 @@ class Router {
     }
     return $args;
   }
+
+  static function get_endpoints($resource) {
+    $all_endpoints = spyc_load_file(__DIR__."/../App/routers.yaml");
+    $resource_endpoints = [];
+    $pattern = "/^$resource:/";
+
+    foreach($all_endpoints as $endpoint => $controller) {
+      if(preg_match($pattern, $controller)) {
+        $controller = explode(":", $controller)[1];
+        $endpoint = str_replace("/$resource", "", $endpoint);
+        $tmp = [$endpoint => $controller];
+        $resource_endpoints = array_merge($resource_endpoints, $tmp);
+      }
+    }
+    return $resource_endpoints;
+  }
 }
