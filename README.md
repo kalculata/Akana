@@ -33,3 +33,6 @@ Akana is a PHP framework to create restful API easily and fast.
   - [ ] not found
 - [ ] update method on Table class
 - [ ] public folder lowercase
+- [ ] use postgresql database
+- [ ] use sqlite database
+- [ ] use mangoDB database
