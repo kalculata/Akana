@@ -13,12 +13,14 @@
 
   class Kernel {
     private $_settings;
+    private $_resources;
     private $_uri;
     private $_http_verb;
     private $_request;
 
     public function __construct($request, $http_verb, $uri) {
-      $this->_settings = spyc_load_file(__DIR__.'/../settings.yaml');
+      $this->_settings = spyc_load_file(__DIR__.'/../config/settings.yaml');
+      $this->_resources = spyc_load_file(__DIR__.'/../config/resources.yaml');
       $this->_uri = $uri;
       $this->_http_verb = $http_verb;
       $this->_request = $request;
@@ -32,7 +34,7 @@
       $resource = Request::get_resource($this->_uri);
       $endpoint = Request::get_endpoint($this->_uri);
 
-      if(!in_array($resource, $this->_settings['resources'])) {
+      if(!in_array($resource, $this->_resources)) {
         return new Response(["message" => "Resource ".$this->_uri." not found."], 404);
       }
 

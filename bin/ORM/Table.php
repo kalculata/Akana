@@ -11,10 +11,8 @@
   class Table extends ORM{
     private $_table_name;
     private $_dbcon;
-    private $_db_env;
 
     public function __construct($table_name) {
-      $this->_db_env = spyc_load_file(__DIR__."/../../env.yaml")["database"];
       $this->_table_name = $table_name;
       $this->_dbcon = self::get_dbcon();
     }

@@ -2,6 +2,7 @@
   namespace Akana\ORM;
 
   use PDO;
+  use PDOException;
   use ReflectionClass;
   use ReflectionProperty;
 
@@ -53,21 +54,24 @@
       return $vals;
     }
 
-    public static function get_dbcon(){
-      $env_file_path = __DIR__.'/../../env.yaml';
-      $env_file_exist = file_exists($env_file_path);
+    public static function get_dbcon($vars = NULL){
+      $_vars = NULL;
 
-      if(!$env_file_exist) {
-        throw new PDOException("env.yaml file not found.");
+      if($vars != NULL) {
+        $_vars = $vars;
+      } else {
+        $db_config_file = __DIR__.'/../../config/db.yaml';
+
+        if(!file_exists($db_config_file)) {
+          throw new PDOException("config/db.yaml not found.");
+        }
+        $_vars = spyc_load_file($db_config_file);      
       }
       
-      $envs = spyc_load_file($env_file_path);
-      $envs = $envs["database"];
-      
-      $db_url = $envs['type'].':host='.$envs['host'].''.$envs['port'].'; dbname='.$envs['name'];
+      $db_url = $_vars['type'].':host='.$_vars['host'].''.$_vars['port'].'; dbname='.$_vars['name'];
       
       try{
-        return new PDO($db_url, $envs['login'], $envs['password'], array(
+        return new PDO($db_url, $_vars['login'], $_vars['password'], array(
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ));
       }
