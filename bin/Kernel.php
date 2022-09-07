@@ -41,7 +41,7 @@
       if(count($tmp) == 0){
         return new Response(["message" => "Endpoint '$endpoint' not found on resource '$resource'"], 404);
       } else {
-        include __DIR__."/../App/$resource/controller.php";
+        include __DIR__."/../app/$resource/controller.php";
 
         $controller = $tmp[0];
         $args = array_merge($tmp[1], array($this->_request));

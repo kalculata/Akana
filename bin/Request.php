@@ -37,7 +37,7 @@
       $settings = spyc_load_file(__DIR__."/../settings.yaml");
 
       if($settings["global_router"] == false) {
-        $resource_endpoints = spyc_load_file(__DIR__."/../App/$resource/routers.yaml");
+        $resource_endpoints = spyc_load_file(__DIR__."/../app/$resource/routers.yaml");
       }
       else {
         $resource_endpoints = Router::get_endpoints($resource);

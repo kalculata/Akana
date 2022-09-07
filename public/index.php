@@ -1,5 +1,5 @@
 <?php
-	require_once __DIR__.'/../Core/Kernel.php';
+	require_once __DIR__.'/../bin/Kernel.php';
 
 	use Akana\Request;
 

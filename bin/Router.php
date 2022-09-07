@@ -44,7 +44,7 @@ class Router {
   }
 
   static function get_endpoints($resource) {
-    $all_endpoints = spyc_load_file(__DIR__."/../App/routers.yaml");
+    $all_endpoints = spyc_load_file(__DIR__."/../app/routers.yaml");
     $resource_endpoints = [];
     $pattern = "/^$resource:/";
 
