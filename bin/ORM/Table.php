@@ -29,25 +29,19 @@
       $query = "SELECT * FROM $this->_table_name";
 
       $query .= " ORDER BY id $order_by";
-      $q = $this->_dbcon->query($query);
+      $stmt = $this->_dbcon->query($query);
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-      $results = [];
-      while($data = $q->fetch()){
-        array_push($results, $data);
-      }               
-      $q->closeCursor();
-      return $results;
+      return $stmt->fetchAll();
     }
 
     public function get($id) {
       $query = "SELECT * FROM $this->_table_name WHERE id=$id";
-      $q = $this->_dbcon->query($query);
 
-      while($data = $q->fetch()){
-        return $data;
-      }       
-      $q->closeCursor();
-      return $data;
+      $stmt = $this->_dbcon->query($query);
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+      return $stmt->fetch();
     }
 
     public function filter($array, $order_by=Table::DESC) {
@@ -76,7 +70,7 @@
       return $results;
     }
 
-    public function edit($id, $array) {
+    public function update($id, $array) {
 
     }
 
