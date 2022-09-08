@@ -59,8 +59,6 @@
       try{
         $controller_instance = new $class();
         echo call_user_func_array(array($controller_instance, $func), $args);
-      } catch(UnexpectedValueException $e) {
-        echo new Response(["message" => $e->getMessage()], 400); 
       } catch(InvalidArgumentException $e) {
         echo new Response(["message" => $e->getMessage()], 500);
       } catch(PDOException $e) {

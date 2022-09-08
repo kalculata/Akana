@@ -22,6 +22,7 @@
       $vals = self::get_vals($array);
       
       $query = "INSERT INTO $this->_table_name($cols) VALUES($vals)";
+
       $this->_dbcon->exec($query);
     }
 
@@ -71,11 +72,30 @@
     }
 
     public function update($id, $array) {
+      if(empty($array)){ return; }
+      $query = "UPDATE $this->_table_name SET";
 
+      $counter = 0;
+      foreach($array as $k=>$v){
+        if($k == "id") { continue; }
+
+        $v = ORM::typing($v);
+
+        if($counter == 0) {
+          $query .= " $k = $v"; 
+        } else {
+          $query .= ", $k = $v";
+        }
+        $counter++;
+      }
+
+      $query .= " WHERE id=$id";
+      $this->_dbcon->exec($query);
+      return $this->get($id);
     }
 
     public function delete($id) {
       $query = "DELETE FROM $this->_table_name WHERE id=$id";
-      $q = $this->_dbcon->exec($query);
+      $this->_dbcon->exec($query);
     }
   }

@@ -33,10 +33,12 @@
 
     protected static function get_cols($array) {
       $cols = "";
+      $array_length = array_key_exists("id", $array)? count($array) - 1 : count($array);
 
       $counter = 0;
       foreach($array as $k=>$v) {
-        $cols .= ($counter != count($array)-1)? "$k," : "$k";
+        if($k == "id") { continue; }
+        $cols .= ($counter != $array_length-1)? "$k," : "$k";
         $counter++;
       }
       return $cols;
@@ -44,11 +46,13 @@
 
     protected static function get_vals($array) {
       $vals = "";
+      $array_length = array_key_exists("id", $array)? count($array) - 1 : count($array);
 
       $counter = 0;
       foreach($array as $k=>$v) {
+        if($k == "id") { continue; }
         $v = ORM::typing($v);
-        $vals .= ($counter != count($array)-1)? $v."," : $v;
+        $vals .= ($counter != $array_length-1)? $v."," : $v;
         $counter++;
       }
       return $vals;

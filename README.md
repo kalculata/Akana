@@ -4,6 +4,8 @@ Akana is a PHP framework to create restful API easily and fast.
 
 ## TODO
 
+### Important
+
 - [x] Migration
   - [x] Create a table for a model
   - [ ] Create, Read, Modify, Delete data using model
@@ -15,25 +17,30 @@ Akana is a PHP framework to create restful API easily and fast.
   - [ ] One-to-one Relation
   - [ ] One-to-many Relation
   - [ ] Many-to-many Relation
+  - [ ] Track migrations history
 - [ ] Add command add_resource
-- [ ] Command options management
-- [ ] Create many controller files
-- [ ] Create many models files
 - [ ] Errors handle
   - [ ] Check if there is not resource
+  - [ ] NotFoundException
   
 - [ ] JWT and Authentication
 - [ ] dev and prod mod
 - [ ] Solve cross orgin bug
-- [ ] Http errors
-  - [ ] not found
-- [ ] update method on Table class
+- [ ] Route annotation
+- [ ] Retrieve query_args
+- [ ] Get created object after insertion into table
+- [ ] forbidden to add id column in models
+- [ ] update ORM::typing method
+
+### No important
+
+- [ ] Do validation before insert data into table
+- [ ] Command options management
+- [ ] Create many controller files
+- [ ] Create many models files
+- [ ] security
+- [ ] documentation
 - [ ] other database connectivity
   - [ ] use postgresql database
   - [ ] use sqlite database
   - [ ] use mangoDB database
-- [ ] Route annotation
-- [ ] Retrieve query_args
-- [ ] Get created object after insertion into table
-- [ ] Do validation before insert data into table
-- [ ] Remove id key of request data array
