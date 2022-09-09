@@ -9,7 +9,9 @@
   use Akana\ORM\Migration;
 
   function migrate($args) {
+    $changes = false;
     $resource_config_file = __DIR__.'/../../config/resources.yaml';
+
     if(!file_exists($resource_config_file)) {
       echo "[ERROR] config/resources.yaml file not found\n";
       return;
@@ -21,14 +23,13 @@
     if(!key_exists("resource", $args)) {
       echo "[ERROR] resource option is required\n";
       return;
-    }
-    
+    } 
     // check if the given resource exist
     if(!in_array($args["resource"], $resources)) {
       echo "[ERRO] resource '".$args["resource"]."' not found in settings";
       return;
     }
-
+    
     // check db connection
     try {
       ShellUtils::check_db_connectivity();
@@ -36,22 +37,27 @@
       echo "[ERROR] Failed to do migrations due to: ". $e->getMessage().".\n";
       return;
     }
+    
+    $resource = $args['resource'];
+    $tables_class = Utils::get_classes_in_file(__DIR__.'/../../App/'.$args["resource"].'/tables.php');
+    $local_tables = Migration::class_to_tables($tables_class, $resource);
+    $remote_tables = Migration::get_tables($resource);
 
-    $tables = Utils::get_classes_in_file(__DIR__.'/../../App/'.$args["resource"].'/tables.php');
-
-    foreach($tables as $table_class) {      
-      $tmp = explode("\\", $table_class);
-      $table_name = strtolower($tmp[count($tmp) - 1]);
-      $resource = $args['resource'];
-      $table_name = $resource."__$table_name";
-      $resource_tables = Migration::get_tables($resource);
-
-      if(!in_array($table_name, $resource_tables)) {
-        Migration::create_table($table_name, $table_class);
-      } 
-
-      else {
-        echo "Table '$table_name' already exist\n";
+    foreach($local_tables as $class => $table_name) {      
+      if(!in_array($table_name, $remote_tables)) {
+        Migration::create_table($table_name, $class);
+        $changes = true;
       }
+    }
+
+    foreach($remote_tables as $table_name) {
+      if(!in_array($table_name, $local_tables)) {
+        Migration::delete_table($table_name);
+        $changes = true;
+      }
+    }
+
+    if(!$changes) {
+      echo "\nNo changes in tables of resource '$resource'\n";
     }
   }

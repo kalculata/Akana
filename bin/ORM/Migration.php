@@ -61,4 +61,24 @@
 
       echo "Table '$table_name' created";
     }
+
+    static public function delete_table($table_name) {
+      $query = "DROP TABLE $table_name";
+      $dbcon = ORM::get_dbcon();
+      $dbcon->exec($query);
+
+      echo "Table '$table_name' deleted";
+    }
+
+    static public function class_to_tables(array $classes, $resource) {
+      $tables = [];
+
+      foreach($classes as $class) {
+        $tmp = explode("\\", $class);
+        $table_name = $resource."__".strtolower($tmp[count($tmp) - 1]);
+        $tables = array_merge($tables, [$class => $table_name]);
+      }
+
+      return $tables;
+    }
   }
