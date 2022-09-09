@@ -37,60 +37,21 @@
       return;
     }
 
-    $models = Utils::get_classes_in_file(__DIR__.'/../../App/'.$args["resource"].'/models.php');
+    $tables = Utils::get_classes_in_file(__DIR__.'/../../App/'.$args["resource"].'/tables.php');
 
-    foreach($models as $model) {
-      $obj = new $model();
-      $vars = $obj->get_public_vars();
-      $tmp = explode("\\", $model);
-      $model_name = strtolower($tmp[count($tmp) - 1]);
+    foreach($tables as $table_class) {      
+      $tmp = explode("\\", $table_class);
+      $table_name = strtolower($tmp[count($tmp) - 1]);
       $resource = $args['resource'];
-    
-      $table = $resource."__$model_name";
-
+      $table_name = $resource."__$table_name";
       $resource_tables = Migration::get_tables($resource);
 
-      if(in_array($table, $resource_tables)) {
-        echo "Table $model_name of resouce $resource already exist\n";
-        $cols = Migration::get_object_vars($obj);
-        $table_desc = Migration::get_table_desc($table);
-        $cols_to_add = [];
-        $cols_to_remove = [];
-        $cols_to_edit = [];
-        
-        foreach($cols as $col) {
-          if(!in_array($col, $table_desc)) {
-            array_push($cols_to_add, $col);
-          }
-        }
-
-        foreach($table_desc as $col) {
-          if($col != "id") {
-            if(!in_array($col, $cols)) {
-              array_push($cols_to_remove, $col);
-            }
-          }
-        }
-
-        // TODO:
-        // - generate sql code to add and remove cols
+      if(!in_array($table_name, $resource_tables)) {
+        Migration::create_table($table_name, $table_class);
       } 
 
-      // Creation of the table and rename
       else {
-          $query = "CREATE TABLE $table (`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY";
-          foreach($vars as $var) { $query .= ", `$var` ".$obj->$var->get_sql(); }
-          $query .= ");";
-
-          $dbcon = ORM::get_dbcon();
-          $dbcon->query($query);
-
-          echo "Table '$model_name' created";
+        echo "Table '$table_name' already exist\n";
       }
-
-      // ACTIONS ON MIGRATE
-      // - update table
-      // - delete table
-      // - rename table
     }
   }

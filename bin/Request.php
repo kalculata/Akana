@@ -5,11 +5,12 @@
   use Akana\Router;
 
   class Request {
-    static function get_resource(string $uri): string{
+    static function extract_resource(string $uri): string{
       return explode('/', $uri)[1];
     }
     
-    static function get_endpoint(string $uri): string{
+    static function extract_endpoint(string $uri): string{
+      $uri = explode('?', $uri)[0];
       $tmp = explode('/', $uri);
       $resource = $tmp[1];
       $endpoint = '';
@@ -71,18 +72,25 @@
     }
 
     static public function get_request_body(): array{
-        $json_data = file_get_contents('php://input');
+        $json_body = file_get_contents('php://input');
 
-        if(self::json_valid($json_data) == false) {
+        if(self::json_valid($json_body) == false) {
           throw new UnexpectedValueException("body request contain errors");
         }
     
-        $request_data = json_decode($json_data, true);
+        $body = json_decode($json_body, true);
 
-        if(empty($request_data) && !empty($_POST))
-            $request_data = $_POST;  
+        if(empty($body) && !empty($_POST)) {
+          $body = $_POST;
+        }
 
-        return ($request_data != null)? $request_data : [];
+        $body = ($body != null)? $body : [];
+        $query_params = $_GET;
+
+        return [
+          "body" => $body,
+          "query_params" => $query_params
+        ];
     }
 
     static public function is_authorized($http_verb, $class) {

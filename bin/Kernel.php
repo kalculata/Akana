@@ -31,8 +31,8 @@
     }
 
     private function prepare() {
-      $resource = Request::get_resource($this->_uri);
-      $endpoint = Request::get_endpoint($this->_uri);
+      $resource = Request::extract_resource($this->_uri);
+      $endpoint = Request::extract_endpoint($this->_uri);
 
       if(!in_array($resource, $this->_resources)) {
         return new Response(["message" => "Resource ".$this->_uri." not found."], 404);

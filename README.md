@@ -17,7 +17,7 @@ Akana is a PHP framework to create restful API easily and fast.
   - [ ] One-to-one Relation
   - [ ] One-to-many Relation
   - [ ] Many-to-many Relation
-  - [ ] Track migrations history
+  - [ ] Track migrations history (transition, migrate all)
 - [ ] Add command add_resource
 - [ ] Errors handle
   - [ ] Check if there is not resource
@@ -27,14 +27,13 @@ Akana is a PHP framework to create restful API easily and fast.
 - [ ] dev and prod mod
 - [ ] Solve cross orgin bug
 - [ ] Route annotation
-- [ ] Retrieve query_args
 - [ ] Get created object after insertion into table
 - [ ] forbidden to add id column in models
 - [ ] update ORM::typing method
 
 ### No important
 
-- [ ] Do validation before insert data into table
+- [ ] Do validation before insert and update data into table (schema)
 - [ ] Command options management
 - [ ] Create many controller files
 - [ ] Create many models files

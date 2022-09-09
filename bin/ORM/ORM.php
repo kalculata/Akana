@@ -10,6 +10,12 @@
     const DESC = "DESC";
     const ASC = "ASC";
 
+    protected $_columns;
+
+    public function getTableColumns() {
+      return $this->_columns;
+    }
+
     public function get_public_vars() {
       $names = [];
       $reflection = new ReflectionClass($this);
