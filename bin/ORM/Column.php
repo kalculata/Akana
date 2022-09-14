@@ -79,12 +79,12 @@
       return new Column($name, "boolean", null, $default, $nullable);
     }
 
-    static public function date(string $name, bool $now_as_default=false, bool $nullable=false) {
+    static public function date(string $name, bool $now_as_default=true, bool $nullable=false) {
       $default = ($now_as_default)? " DEFAULT CURRENT_TIMESTAMP" : NULL;
       return new Column($name, "date", null, $default, $nullable);
     }
 
-    static public function datetime(string $name, bool $now_as_default=false, bool $nullable=false) {
+    static public function datetime(string $name, bool $now_as_default=true, bool $nullable=false) {
       $default = ($now_as_default)? " DEFAULT CURRENT_TIMESTAMP" : NULL;
       return new Column($name, "datetime", null, $default, $nullable);
     }

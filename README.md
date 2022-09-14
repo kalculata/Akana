@@ -25,6 +25,7 @@ Akana is a PHP framework to create restful API easily and fast.
 - [ ] Errors handle
   - [ ] Check if there is not resource
   - [ ] NotFoundException
+  - [ ] check if every registred resources has it folder then create it
 
 - [ ] JWT and Authentication
 - [ ] dev and prod mod
@@ -35,6 +36,8 @@ Akana is a PHP framework to create restful API easily and fast.
 - [ ] Get created object after insertion into table
 - [ ] forbidden to add id column in models
 - [ ] update ORM::typing method
+- [ ] choice field
+- [ ] bidirection relation
 
 ### No important
 
@@ -44,6 +47,8 @@ Akana is a PHP framework to create restful API easily and fast.
 - [ ] Create many models files
 - [ ] security
 - [ ] documentation
+- [ ] cli console
+- [ ] route alias
 - [ ] other database connectivity
   - [ ] use postgresql database
   - [ ] use sqlite database
