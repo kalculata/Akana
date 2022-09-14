@@ -53,7 +53,7 @@
       $table_obj = new $table_class();
 
       $query = "CREATE TABLE $table_name (`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY";
-      foreach($table_obj->getTableColumns() as $col) { $query .= ", ".$col->get_sql(); }
+      foreach($table_obj->getTableColumns() as $col) { $query .= ", ".$col->get_sql($table_name); }
       $query .= ");";
 
       $dbcon = ORM::get_dbcon();

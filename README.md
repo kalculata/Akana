@@ -21,7 +21,7 @@ Akana is a PHP framework to create restful API easily and fast.
   - [ ] Track migrations history (transition, migrate all)
   - [ ] warning before execute migrations instructions
   - [ ] safety for drop command (save state of table)
-  - [ ] Check if columns is empty
+  - [ ] Check if columns on orm is empty
 
 - [ ] Add command add_resource
 - [ ] Errors handle
@@ -43,6 +43,7 @@ Akana is a PHP framework to create restful API easily and fast.
 - [ ] update ORM::typing method
 - [ ] choice field
 - [ ] bidirection relation
+- [ ] is valid method on table class
 
 ### No important
 

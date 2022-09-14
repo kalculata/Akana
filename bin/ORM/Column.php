@@ -37,7 +37,8 @@
     public function getRelClass() { return $this->_rel_class; }
     public function getUnique() { return $this->_unique; }
 
-    public function get_sql() {
+    public function get_sql($table_name) {
+      $not_empty_constraint = " CONSTRAINT $table_name"."_"."$this->_name"."_not_empty CHECK(LENGTH($this->_name) > 0)";
       $nullable = ($this->_nullable)? " NULL" : " NOT NULL";
       $unique = ($this->_unique)? " UNIQUE" : "";
 
@@ -53,10 +54,12 @@
           break;
 
         case "string":
+          if(!$this->_nullable) { $nullable .= $not_empty_constraint; }
           return "`$this->_name` VARCHAR($this->_limit)".$nullable.$default.$unique;
           break;
 
         case "text":
+          if(!$this->_nullable) { $nullable .= $not_empty_constraint; }
           return "`$this->_name` TEXT".$nullable.$default.$unique;
           break;
 
