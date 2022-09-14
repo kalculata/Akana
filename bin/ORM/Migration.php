@@ -74,11 +74,19 @@
       $tables = [];
 
       foreach($classes as $class) {
-        $tmp = explode("\\", $class);
-        $table_name = $resource."__".strtolower($tmp[count($tmp) - 1]);
-        $tables = array_merge($tables, [$class => $table_name]);
+        $tables = array_merge($tables, [$class => self::class_to_table($class)]);
       }
 
       return $tables;
+    }
+
+    static public function class_to_table($class) {
+      // TODO: throw exception if tables file doesn't have namespace file
+      
+      $tmp = explode("\\", $class);
+      $resource = strtolower($tmp[1]);
+      $table_name = $resource."__".strtolower($tmp[count($tmp) - 1]);
+
+      return $table_name;
     }
   }

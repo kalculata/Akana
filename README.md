@@ -16,16 +16,21 @@ Akana is a PHP framework to create restful API easily and fast.
   - [ ] Rename table
   - [ ] Change details for Field
   - [ ] One-to-one Relation
-  - [ ] One-to-many Relation
+  - [x] One-to-many Relation
   - [ ] Many-to-many Relation
   - [ ] Track migrations history (transition, migrate all)
   - [ ] warning before execute migrations instructions
   - [ ] safety for drop command (save state of table)
+  - [ ] Check if _columns is empty
+
 - [ ] Add command add_resource
 - [ ] Errors handle
   - [ ] Check if there is not resource
   - [ ] NotFoundException
+
+- [ ] borderCheck
   - [ ] check if every registred resources has it folder then create it
+  - [ ] every tables file must have a namespace (correct)
 
 - [ ] JWT and Authentication
 - [ ] dev and prod mod

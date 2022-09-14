@@ -77,7 +77,7 @@
       }
       else if($command == "migrate") {
         require_once __DIR__.'/shell_func/migrate.php';
-        migrate($args);
+        setup($args);
       }
       else if($command == "add_resource") {
         require_once __DIR__.'/shell_func/add_resource.php';

@@ -8,8 +8,7 @@
   use Akana\ORM\ORM;
   use Akana\ORM\Migration;
 
-  function migrate($args) {
-    $changes = false;
+  function setup($args) {
     $resource_config_file = __DIR__.'/../../config/resources.yaml';
 
     if(!file_exists($resource_config_file)) {
@@ -20,16 +19,26 @@
     $resources = spyc_load_file($resource_config_file);
 
     // check if resource option has been provided
-    if(!key_exists("resource", $args)) {
-      echo "[ERROR] resource option is required\n";
-      return;
-    } 
-    // check if the given resource exist
-    if(!in_array($args["resource"], $resources)) {
-      echo "[ERRO] resource '".$args["resource"]."' not found in settings";
-      return;
+    if(key_exists("resource", $args)) {
+      // check if the given resource exist
+      if(!in_array($args["resource"], $resources)) {
+        echo "[ERRO] resource '".$args["resource"]."' not found in settings";
+        return;
+      }
+
+      migrate($args['resource']);
+    } else {
+      foreach($resources as $resource) {
+        migrate($resource);
+      }
     }
+
     
+  }
+
+  function migrate($resource) {
+    $changes = false;
+
     // check db connection
     try {
       ShellUtils::check_db_connectivity();
@@ -38,8 +47,7 @@
       return;
     }
     
-    $resource = $args['resource'];
-    $tables_class = Utils::get_classes_in_file(__DIR__.'/../../App/'.$args["resource"].'/tables.php');
+    $tables_class = Utils::get_classes_in_file(__DIR__.'/../../App/'.$resource.'/tables.php');
     $local_tables = Migration::class_to_tables($tables_class, $resource);
     $remote_tables = Migration::get_tables($resource);
 
@@ -58,6 +66,6 @@
     }
 
     if(!$changes) {
-      echo "\nNo changes in tables of resource '$resource'\n";
+      echo "0 change in resource '$resource'\n";
     }
   }

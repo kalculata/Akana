@@ -3,13 +3,6 @@
 
 
 	class Utils {
-		// static function read($file): string {
-		// 	$myfile = fopen($file, "r") or die("Unable to open file!");
-		// 	$contents = fread($myfile, filesize($file));
-		// 	fclose($myfile);
-		// 	return $contents;
-		// }
-
 		static function remove_char(string $word, $index=0): string{
 			$output = "";
 			$word_length = strlen($word);
