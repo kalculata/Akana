@@ -37,7 +37,7 @@
     static function endpoint_detail($resource, $endpoint) {
       $settings = spyc_load_file(__DIR__."/../config/settings.yaml");
 
-      if($settings["single_router"] == false) {
+      if($settings["global_routers"] == false) {
         $resource_endpoints = spyc_load_file(__DIR__."/../app/$resource/routers.yaml");
       }
       else {

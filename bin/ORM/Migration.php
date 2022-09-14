@@ -59,7 +59,7 @@
       $dbcon = ORM::get_dbcon();
       $dbcon->query($query);
 
-      echo "Table '$table_name' created";
+      echo "Table '$table_name' created\n";
     }
 
     static public function delete_table($table_name) {
@@ -67,7 +67,7 @@
       $dbcon = ORM::get_dbcon();
       $dbcon->exec($query);
 
-      echo "Table '$table_name' deleted";
+      echo "Table '$table_name' deleted\n";
     }
 
     static public function class_to_tables(array $classes, $resource) {
