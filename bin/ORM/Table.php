@@ -49,6 +49,10 @@
     }
 
     public function filter($array, $order_by=Table::DESC) {
+      return and_filter($array, $order_by);
+    }
+
+    public function and_filter($array, $order_by=Table::DESC) {
       $query = "SELECT * FROM $this->_table_name";
 
       $counter = 0;
@@ -62,16 +66,34 @@
         }
         $counter++;
       }
-
       $query .= " ORDER BY id $order_by";
-      $q = $this->_dbcon->query($query);
 
-      $results = [];
-      while($data = $q->fetch()){
-        array_push($results, $data);
-      }               
-      $q->closeCursor();
-      return $results;
+      $stmt = $this->_dbcon->query($query);
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+      return $stmt->fetchAll();
+    }
+
+    public function or_filter($array, $order_by=Table::DESC) {
+      $query = "SELECT * FROM $this->_table_name";
+
+      $counter = 0;
+      foreach($array as $k=>$v){
+        $v = Table::typing($v);
+
+        if($counter == 0) {
+          $query .= " WHERE $k = $v"; 
+        } else {
+          $query .= " OR $k = $v";
+        }
+        $counter++;
+      }
+      $query .= " ORDER BY id $order_by";
+
+      $stmt = $this->_dbcon->query($query);
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+      return $stmt->fetchAll();
     }
 
     public function update($id, $array) {
