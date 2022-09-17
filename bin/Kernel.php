@@ -4,7 +4,9 @@
   require_once __DIR__.'/Utils.php';
   require_once __DIR__.'/Router.php';
   require_once __DIR__.'/spyc.php';
+  require_once __DIR__."/ORM/ORM.php";
   require_once __DIR__.'/ORM/Table.php';
+  require_once __DIR__.'/ORM/Column.php';
 
   use Akana\Request;
   use Akana\Response;
@@ -63,6 +65,8 @@
         echo new Response(["message" => $e->getMessage()], 500);
       } catch(PDOException $e) {
         echo new Response(["message" => $e->getMessage()], 500);
+      } catch(Exception $e) {
+        echo new Response(get_object_vars(json_decode($e->getMessage())), 400);
       }
     }
 

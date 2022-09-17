@@ -112,4 +112,37 @@
     static public function oneToMany(string $name, string $rel_class, int $default=null, bool $nullable=false) {
       return new Column($name, self::ONE_TO_MANY, null, $default, $nullable, $rel_class);
     }
+
+    // --- UTILS ---
+    static public function getRequiredCols(array $columns) {
+      $required_columns = [];
+
+      foreach($columns as $col) {
+        if(!$col->getNullable() && $col->getDefault() == NULL) {
+          array_push($required_columns, $col->getName());
+        }
+      }
+
+      return $required_columns;
+    }
+
+    static public function getColsName(array $columns) {
+      $cols_name = [];
+
+      foreach($columns as $col) {
+        array_push($cols_name, $col->getName());
+      }
+
+      return $cols_name;
+    }
+
+    static public function check_type($field, $value, $cols) {
+      foreach($cols as $col) {
+        if($field == $col->getName()) {
+          if(gettype($value) != $col->getType()) {
+            return "Field '$field' must be of type '".$col->getType()."'";
+          }
+        }
+      }
+    }
   }
