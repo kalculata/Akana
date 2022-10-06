@@ -1,8 +1,10 @@
 <?php
   namespace Akana\Database;
 
+
   use Akana\ORM\Column;
   use Akana\ORM\Migration;
+  
 
   class SqlGenerator {
     public static function table_creation($table_name, $table_class) {

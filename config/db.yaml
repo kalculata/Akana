@@ -1,6 +1,6 @@
-# type: mysql
-# host: localhost
-# port: :3306
-# name: your_database
-# login: your_user 
-# password: your_password
+type: mysql
+host: localhost
+port: 3306
+name: hahandi_local_db
+login: your_user 
+password: your_password

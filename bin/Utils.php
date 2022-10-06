@@ -2,13 +2,40 @@
 namespace Akana;
 
 
+use Akana\Database\Connectivity;
+
+
 class Utils {
 	private $_resources;
+	private $_db_credintial;
 
 	public function __construct() {
-		$resource_file = __DIR__.'/../config/resources.yaml';
+		$resources     = __DIR__.'/../config/resources.yaml';
+		$db_credintial = __DIR__.'/../config/db.yaml';
 
-		$this->_resources = !file_exists($resource_file)? NULL : spyc_load_file($resource_file);
+		$this->_db_credintial = !file_exists($db_credintial)? NULL : spyc_load_file($db_credintial);
+		$this->_resources = !file_exists($resources)? NULL : spyc_load_file($resources);
+	}
+
+	public function getDBCredintial() {
+		return $this->_db_credintial;
+	}
+
+	public function checkDBConnectivity() {
+		if($this->_db_credintial == NULL) {
+      echo "[WARNING] config/db.yaml file not found.\n";
+    } 
+		else {
+			$vars = $this->_db_credintial;
+
+      if(!empty($vars)) {
+        if(key_exists("type", $vars) && key_exists("host", $vars) && key_exists("port", $vars) && key_exists("name", $vars) && key_exists("login", $vars) && key_exists("password", $vars)) {
+            Connectivity::get();
+        } else {
+          echo "[WARNING] A connection with database fail because some database variables are missed in env.yaml.\n";
+        }
+      }
+    }
 	}
 		// static function remove_char(string $word, $index=0): string{
 		// 	$output = "";

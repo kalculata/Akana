@@ -1,4 +1,5 @@
 <?php 
+require_once __DIR__.'/database/connectivity.php';
 require_once __DIR__.'/handler/command.php';
 require_once __DIR__.'/Utils.php';
 require_once __DIR__.'/spyc.php';
