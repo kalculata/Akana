@@ -1,9 +1,4 @@
 <?php
 	require_once __DIR__.'/Kernel.php';
-
-	use Akana\Utils;
-
-	$command = $argv[1];
-	$args = Utils::get_args($argv);
-
-	Kernel::command_handler($command, $args);
+	
+	Kernel::command($command);
