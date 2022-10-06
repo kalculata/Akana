@@ -1,7 +1,9 @@
-<?php
+<?php 
+  require_once __DIR__.'/handler/command.php';
+  require_once __DIR__.'/Utils.php';
+
   require_once __DIR__.'/Request.php';
   require_once __DIR__.'/Response.php';
-  require_once __DIR__.'/Utils.php';
   require_once __DIR__.'/Router.php';
   require_once __DIR__.'/spyc.php';
   require_once __DIR__."/ORM/ORM.php";
@@ -10,17 +12,23 @@
   require_once __DIR__.'/ORM/Migration.php';
 
 
+  use Akana\Handler\Command;
+  use Akana\Utils;
+
   use Akana\Request;
   use Akana\Response;
-  use Akana\Utils;
+
+
+  define('utils', new Utils());
+
 
   class Kernel {
     static public function request() {
 
     }
 
-    static public function command() {
-      
+    static public function command(Command $command) {
+      $command->run();
     }
   }
 
@@ -81,44 +89,38 @@
   //     }
   //   }
 
-  //   static public function command_handler($command, $args) {
-  //     # check if config/resources.yaml file exist
-  //     $resource_config_file = __DIR__.'/../config/resources.yaml';
-  //     if(!file_exists($resource_config_file)) {
-  //       echo "[ERROR] config/resources.yaml file not found\n";
-  //       return;
-  //     } 
-  //     define('RESOURCES', spyc_load_file($resource_config_file));
+    static public function command_handler($command, $args) {
+ 
       
-  //     switch($command) {
-  //       case "help":
-  //         require_once __DIR__.'/commands/help.php';
-  //         help();
-  //         break;
+      switch($command) {
+        case "help":
+          require_once __DIR__.'/commands/help.php';
+          help();
+          break;
 
-  //       case "runserver":
-  //         require_once __DIR__.'/commands/runserver.php';
-  //         runserver($args);
-  //         break;
+        case "runserver":
+          require_once __DIR__.'/commands/runserver.php';
+          runserver($args);
+          break;
 
-  //       case "migrate":
-  //         require_once __DIR__.'/commands/migrate.php';
-  //         setup($args);
-  //         break;
+        case "migrate":
+          require_once __DIR__.'/commands/migrate.php';
+          setup($args);
+          break;
         
-  //       case "export_db":
-  //         require_once __DIR__.'/commands/export_db.php';
-  //         break;
+        case "export_db":
+          require_once __DIR__.'/commands/export_db.php';
+          break;
 
-  //       case "add_resource":
-  //         require_once __DIR__.'/commmands/add_resource.php';
-  //         addResource($args);
-  //         break;
+        case "add_resource":
+          require_once __DIR__.'/commmands/add_resource.php';
+          addResource($args);
+          break;
 
-  //       default:
-  //         echo "command $command not found";
-  //         break;
-  //     }
+        default:
+          echo "command $command not found";
+          break;
+      }
 
-  //   }
+    }
   // }

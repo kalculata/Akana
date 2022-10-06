@@ -1,4 +1,9 @@
 <?php
 	require_once __DIR__.'/Kernel.php';
+	require_once __DIR__.'/handler/command.php';
+
 	
-	Kernel::command($command);
+	use Akana\Handler\Command;
+
+
+	Kernel::command(new Command($argv));
