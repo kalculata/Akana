@@ -65,31 +65,6 @@
       return $vals;
     }
 
-    public static function get_dbcon($vars = NULL){
-      $_vars = NULL;
-
-      if($vars != NULL) {
-        $_vars = $vars;
-      } else {
-        $db_config_file = __DIR__.'/../../config/db.yaml';
-
-        if(!file_exists($db_config_file)) {
-          throw new PDOException("config/db.yaml not found.");
-        }
-        $_vars = spyc_load_file($db_config_file);      
-      }
-      
-      $db_url = $_vars['type'].':host='.$_vars['host'].''.$_vars['port'].'; dbname='.$_vars['name'];
-      
-      try{
-        return new PDO($db_url, $_vars['login'], $_vars['password'], array(
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ));
-      }
-      catch(PDOException $e){
-        throw new PDOException($e->getMessage());
-      }
-    }
 
     public static function query($query) {
       $results = [];
