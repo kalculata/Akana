@@ -17,8 +17,8 @@ define('utils', new Utils());
 
 
 class Kernel {
-  static public function request(string $http_verb, string $uri, RequestBody $body) {
-    RequestHandler($http_verb, $uri, $body);
+  static public function request() {
+    new RequestHandler();
   }
 
   static public function command(Command $command) {

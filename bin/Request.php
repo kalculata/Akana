@@ -4,24 +4,9 @@
   use UnexpectedValueException;
   use Akana\Router;
 
-  class Request {
-    static function extract_resource(string $uri): string{
-      return explode('/', $uri)[1];
-    }
-    
+  class Request { 
     static function extract_endpoint(string $uri): string{
-      $uri = explode('?', $uri)[0];
-      $tmp = explode('/', $uri);
-      $resource = $tmp[1];
-      $endpoint = '';
-            
-      foreach($tmp as $value){
-        if($value != $resource AND !empty($value)) {
-          $endpoint .= '/' . $value;
-        }
-      }
-
-      return $endpoint . '/';
+      
     }
     
     static public function get_args(string $endpoint, string $endpoint_rx) {

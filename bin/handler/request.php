@@ -1,19 +1,62 @@
 <?php
-namespace Akana\Handler\RequestHandler;
+namespace Akana\Handler;
 
 
 use Akana\RequestBody;
 
 
 class RequestHandler {
+  private $_http_verb;
+  private $_resource;
+  private $_endpoint;
   private $_uri;
 
-  public function __construct(string $http_verb, string $uri, RequestBody $body) {
+  public function __construct() {	
+	// $request = Request::get_request_body();
+	// $app = new Kernel($request, $http_verb, $uri);
+	// $app->start();
 
+    $this->_uri = $this->getUri();
+    $this->_resource = $this->extractResourceFromUri();
+    $this->_endpoint = $this->extractEndpointFromUri();
+    $this->_http_verb = strtolower($_SERVER['REQUEST_METHOD']);
+
+    echo $this->_uri . ' : uri ';
+    echo $this->_resource . ' : resource ';
+    echo $this->_endpoint . ' : endpoint';
   }
 
-  private function extractResourceFromUri():string {
+  private function getUri() {
+    if(isset($_GET["uri"]) && !empty($_GET["uri"])) {
+      $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
+
+      if($uri == '/public/') ;
+        return $_GET["uri"];
+    } 
+    
+    return $_SERVER['REQUEST_URI'];
+  }
+
+  private function extractResourceFromUri(): string {
     return explode('/', $this->_uri)[1];
+  }
+
+  private function extractEndpointFromUri(): string {
+    $uri = explode('?', $this->_uri)[0];
+    $tmp = explode('/', $this->_uri);
+
+    $endpoint = '';
+    for($i=2; $i<count($tmp); $i++) {
+      $endpoint .= '/' . $tmp[$i];
+    }
+
+    if(substr($this->_uri, strlen($this->_uri)-1) == '/') {
+      return $endpoint;
+    }
+    else {
+      return $endpoint . '/';
+    }
+
   }
 }
 
