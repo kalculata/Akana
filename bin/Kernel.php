@@ -7,6 +7,8 @@
   require_once __DIR__."/ORM/ORM.php";
   require_once __DIR__.'/ORM/Table.php';
   require_once __DIR__.'/ORM/Column.php';
+  require_once __DIR__.'/ORM/Migration.php';
+
 
   use Akana\Request;
   use Akana\Response;
@@ -71,21 +73,43 @@
     }
 
     static public function command_handler($command, $args) {
-      if($command == "help") {
-        require_once __DIR__.'/shell_func/help.php';
-        help();
+      # check if config/resources.yaml file exist
+      $resource_config_file = __DIR__.'/../config/resources.yaml';
+      if(!file_exists($resource_config_file)) {
+        echo "[ERROR] config/resources.yaml file not found\n";
+        return;
+      } 
+      define('RESOURCES', spyc_load_file($resource_config_file));
+      
+      switch($command) {
+        case "help":
+          require_once __DIR__.'/commands/help.php';
+          help();
+          break;
+
+        case "runserver":
+          require_once __DIR__.'/commands/runserver.php';
+          runserver($args);
+          break;
+
+        case "migrate":
+          require_once __DIR__.'/commands/migrate.php';
+          setup($args);
+          break;
+        
+        case "export_db":
+          require_once __DIR__.'/commands/export_db.php';
+          break;
+
+        case "add_resource":
+          require_once __DIR__.'/commmands/add_resource.php';
+          addResource($args);
+          break;
+
+        default:
+          echo "command $command not found";
+          break;
       }
-      else if($command == "runserver") {
-        require_once __DIR__.'/shell_func/runserver.php';
-        runserver($args);
-      }
-      else if($command == "migrate") {
-        require_once __DIR__.'/shell_func/migrate.php';
-        setup($args);
-      }
-      else if($command == "add_resource") {
-        require_once __DIR__.'/shell_func/add_resource.php';
-        addResource($args);
-      }
+
     }
   }

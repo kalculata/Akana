@@ -31,7 +31,7 @@
       $type = is_numeric($val)? "NaS" : "string";
 
       if($type == "string") {
-        $val = "\"$val\"";
+        $val = "'$val'";
       }
 
       return $val;
@@ -57,6 +57,7 @@
       $counter = 0;
       foreach($array as $k=>$v) {
         if($k == "id") { continue; }
+
         $v = ORM::typing($v);
         $vals .= ($counter != $array_length-1)? $v."," : $v;
         $counter++;
@@ -93,13 +94,16 @@
     public static function query($query) {
       $results = [];
       $dbcon = self::get_dbcon();
-      $qres = $dbcon->query($query);
 
-      while($data = $qres->fetch()) {
-        array_push($results, $data);
+      try{
+      $stmt = $dbcon->query($query);
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+      return $stmt->fetchAll();
       }
-
-      return $results;
+      catch(PDOException $e) {
+        echo $e->getMessage()." ".$query;
+      }
     }
 
     public static function exec($query) {

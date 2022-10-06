@@ -8,7 +8,10 @@
   use Akana\Utils;
 
 
-  class Table extends ORM{
+  const tab_jt = new Table("junction_tables");
+
+
+  class Table extends ORM {
     private $_table_name;
     private $_dbcon;
 
@@ -22,17 +25,17 @@
       $vals = self::get_vals($array);
       
       $query = "INSERT INTO $this->_table_name($cols) VALUES($vals)";
-
       $this->_dbcon->exec($query);
       $id = $this->_dbcon->lastInsertId();
 
       return self::get($id);
     }
 
-    public function all($order_by=Table::DESC) {
+    public function all(string $order_by= "id", $way=Table::ASC, $limit = null) {
       $query = "SELECT * FROM $this->_table_name";
 
-      $query .= " ORDER BY id $order_by";
+      $query .= " ORDER BY $order_by $way";
+      $query .= ($limit != null)? " LIMIT $limit" : ""; 
       $stmt = $this->_dbcon->query($query);
       $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -48,11 +51,15 @@
       return $stmt->fetch();
     }
 
-    public function filter($array, $order_by=Table::DESC) {
-      return and_filter($array, $order_by);
+    public function last() {
+      return self::all("id", self::DESC, 1)[0];
     }
 
-    public function and_filter($array, $order_by=Table::DESC) {
+    public function filter($array, $order_by=Table::ASC) {
+      return self::and_filter($array, $order_by);
+    }
+
+    public function and_filter($array, $order_by=Table::ASC) {
       $query = "SELECT * FROM $this->_table_name";
 
       $counter = 0;
@@ -74,7 +81,7 @@
       return $stmt->fetchAll();
     }
 
-    public function or_filter($array, $order_by=Table::DESC) {
+    public function or_filter($array, $order_by=Table::ASC) {
       $query = "SELECT * FROM $this->_table_name";
 
       $counter = 0;
@@ -97,7 +104,7 @@
     }
 
     public function update($id, $array) {
-      if(empty($array)){ return; }
+      if(empty($array)){ return $this->get($id); }
       $query = "UPDATE $this->_table_name SET";
 
       $counter = 0;
@@ -150,7 +157,6 @@
       $model_obj = new $model_class();
       $model_cols = $model_obj->getTableColumns();
 
-      
       # Remove uncessary fields
       $model_cols_name = Column::getColsName($model_cols);
       foreach($data as $k => $v) {
@@ -176,10 +182,38 @@
         }
       }
 
+      # check relation column 
+      foreach ($model_cols as $col) {
+        if($col->getType() == 'json' && key_exists($col->getName(), $clean_data)) {
+          $clean_data[$col->getName()] = str_replace("'", "\"",  $clean_data[$col->getName()]);
+        }
+        if($col->getType() == "ONE_TO_ONE") {
+          $tab_x = new Table($this->_table_name);
+          $id = $data[$col->getName()];
+
+          if(count($tab_x->filter([$col->getName() => $id])) > 0) {
+            array_push($errors["errors"], "key $id of field '$field' already exist on '$this->_table_name'");
+          }
+        }
+      }
+
       if(!empty($errors["errors"])) {
         throw new Exception(json_encode($errors));
       }
 
       return $clean_data;
+    }
+
+    public static function add_to(string $relation, int $key1, int $key2) {
+      $tmp = tab_jt->filter(['relation_name' => $relation]);
+      if(count($tmp) == 0) {
+        throw new Exception("error on relation many to many");
+      }
+      $jt_info = $tmp[0];
+
+      $jt_name = "jt_".$jt_info['table_a']."_".$jt_info['table_b'];
+      $query = "INSERT INTO $jt_name VALUES($key1, $key2);";
+
+      self::exec($query);
     }
   }

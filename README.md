@@ -4,56 +4,56 @@ Akana is a PHP framework to create restful API easily and fast.
 
 ## TODO
 
-### Important
-- Add limit option on all function
-- check relation value that exist or greater than 0
-- on delete
-- [x] Migration
-  - [x] Create a table for a model
-  - [x] Delete a table
+### Pending
+
+- [ ] delete many to many columns
+- [ ] Respect dependecy order while generate code for exporting db
+- [ ] Command management
+
+### Others
+
+- [ ] using Schema while fetch data
+- [ ] JWT and Authentication
+- [ ] export_db command option: structure - data
+- [ ] Annotion engine (Route(endpoint), Secure())
+- [ ] Route annotation
+- [ ] rebuild migrations system
+- [ ] exceptions
+- [ ] warning before execute migrations instructions
+- [ ] what happen if user delete a model or field link with other delete
+- [ ] reserve some table name "junction_table"
+- [ ] Avoid using alias many time in many to many relation
+- [ ] Migration
   - [ ] Update table
     - [ ] delete column
     - [ ] add a column
     - [ ] rename field
   - [ ] Rename table
   - [ ] Change details for Field
-  - [ ] One-to-one Relation
-  - [x] One-to-many Relation
-  - [ ] Many-to-many Relation
   - [ ] Track migrations history (transition, migrate all)
-  - [ ] warning before execute migrations instructions
   - [ ] safety for drop command (save state of table)
   - [ ] Check if columns on orm is empty
-
 - [ ] Add command add_resource
 - [ ] Errors handle
   - [ ] Check if there is not resource
   - [ ] NotFoundException
-
 - [ ] borderCheck
   - [ ] check if every registred resources has it folder then create it
   - [ ] every tables file must have a namespace (correct)
-
-- [ ] JWT and Authentication
 - [ ] dev and prod mod
   - [ ] hide pdo exception message in prod mode
   - [ ] forbidden migrate command in prod mode
 - [ ]  Solve cross orgin bug
-- [ ] Route annotation
 - [ ] forbidden to add id column in models
 - [ ] update ORM::typing method
 - [ ] choice field
 - [ ] bidirection relation
-
-### No important
-
-- [ ] Do validation before insert and update data into table (schema)
-- [ ] Command options management
 - [ ] Create many controller files
 - [ ] Create many models files
 - [ ] security
 - [ ] documentation
 - [ ] cli console
+- [ ] on checl type emprove json column type validation
 - [ ] route alias
 - [ ] other database connectivity
   - [ ] use postgresql database

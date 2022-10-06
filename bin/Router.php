@@ -24,7 +24,7 @@ class Router {
     $endpoint_vars = [];
 
     if(preg_match_all($pattern, $ep, $data_from_ep)) {
-      if(preg_match_all("#\([A-Za-z0-9]+:(int|str)\)#", $ep_vanilla, $endpoint_vars)) {
+      if(preg_match_all("#\([A-Za-z0-9_]+:(int|str)\)#", $ep_vanilla, $endpoint_vars)) {
         $endpoint_vars = $endpoint_vars[0];
 
         foreach($endpoint_vars as $val) {
