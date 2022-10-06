@@ -1,22 +1,22 @@
 <?php 
 require_once __DIR__.'/handler/command.php';
 require_once __DIR__.'/Utils.php';
-
-require_once __DIR__.'/Request.php';
-require_once __DIR__.'/Response.php';
-require_once __DIR__.'/Router.php';
 require_once __DIR__.'/spyc.php';
-require_once __DIR__."/ORM/ORM.php";
-require_once __DIR__.'/ORM/Table.php';
-require_once __DIR__.'/ORM/Column.php';
-require_once __DIR__.'/ORM/Migration.php';
+
+// require_once __DIR__.'/Request.php';
+// require_once __DIR__.'/Response.php';
+// require_once __DIR__.'/Router.php';
+// require_once __DIR__."/ORM/ORM.php";
+// require_once __DIR__.'/ORM/Table.php';
+// require_once __DIR__.'/ORM/Column.php';
+// require_once __DIR__.'/ORM/Migration.php';
 
 
 use Akana\Handler\Command;
 use Akana\Utils;
 
-use Akana\Request;
-use Akana\Response;
+// use Akana\Request;
+// use Akana\Response;
 
 
 define('utils', new Utils());
