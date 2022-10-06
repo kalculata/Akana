@@ -24,5 +24,4 @@ if($require_dbcon) {
 }
 
 $command = "php -S $host -t public/";
-echo $command;
 system($command);

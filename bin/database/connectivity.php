@@ -18,8 +18,6 @@ class Connectivity {
 
     $db_url     = "$type:host=$host".""."$port; dbname=$name";
     
-    echo $db_url;
-
     try{
       return new PDO($db_url, $login, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
     }
