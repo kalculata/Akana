@@ -1,7 +1,19 @@
 <?php
-class RequestHandler {
-  static public function run() {
+namespace Akana\Handler\RequestHandler;
 
+
+use Akana\RequestBody;
+
+
+class RequestHandler {
+  private $_uri;
+
+  public function __construct(string $http_verb, string $uri, RequestBody $body) {
+
+  }
+
+  private function extractResourceFromUri():string {
+    return explode('/', $this->_uri)[1];
   }
 }
 
