@@ -3,7 +3,8 @@ namespace Akana\Handler;
 
 
 const commands_desc = [
-  'help' => 'Display help menu'
+  'help' => 'Display help menu',
+  'runserver' => 'Start server'
 ];
 
 
@@ -15,38 +16,16 @@ class Command {
   } 
   
   public function run() {
-    if($this->_name == "help") { $this->help(); }
-
-    // switch($this->_name) {
- 
-    //   case "runserver":
-    //     require_once __DIR__.'/commands/runserver.php';
-    //     runserver($args);
-    //     break;
-
-    //   case "migrate":
-    //     require_once __DIR__.'/commands/migrate.php';
-    //     setup($args);
-    //     break;
-      
-    //   case "export_db":
-    //     require_once __DIR__.'/commands/export_db.php';
-    //     break;
-
-    //   case "add_resource":
-    //     require_once __DIR__.'/commmands/add_resource.php';
-    //     addResource($args);
-    //     break;
-
-    //   default:
-    //     echo "command $command not found";
-    //     break;
-    // }
+    if     ($this->_name == "help"     ) { $this->help(); }   
+    else if($this->_name == "runserver") { require_once __DIR__.'/commands/runserver.php'; }
+    else if($this->_name == "export_db") { require_once __DIR__.'/commands/export_db.php'; }
+    else if($this->_name == "migrate"  ) { require_once __DIR__.'/commands/migrate.php'; }
+    else                                 { echo "command $command not found"; }
   }
 
   public function help() {
     foreach(commands_desc as $command => $desc) {
-      echo "$command      $desc";
+      echo "$command : $desc\n";
     }
   }
 }
