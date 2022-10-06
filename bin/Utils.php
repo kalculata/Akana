@@ -1,15 +1,15 @@
 <?php
-	namespace Akana;
+namespace Akana;
 
-	
-	class Utils {
-		private $_resources;
 
-		public function __construct() {
-			$resource_file = __DIR__.'/../config/resources.yaml';
+class Utils {
+	private $_resources;
 
-			$this->_resources = !file_exists($resource_file)? NULL : spyc_load_file($resource_file);
-		}
+	public function __construct() {
+		$resource_file = __DIR__.'/../config/resources.yaml';
+
+		$this->_resources = !file_exists($resource_file)? NULL : spyc_load_file($resource_file);
+	}
 		// static function remove_char(string $word, $index=0): string{
 		// 	$output = "";
 		// 	$word_length = strlen($word);
