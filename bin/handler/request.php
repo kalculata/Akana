@@ -2,7 +2,11 @@
 namespace Akana\Handler;
 
 
+require_once __DIR__.'/../response.php';
+
+
 use Akana\RequestBody;
+use Akana\Response;
 
 
 class RequestHandler {
@@ -12,18 +16,12 @@ class RequestHandler {
   private $_uri;
 
   public function __construct() {	
-	// $request = Request::get_request_body();
-	// $app = new Kernel($request, $http_verb, $uri);
-	// $app->start();
-
     $this->_uri = $this->getUri();
     $this->_resource = $this->extractResourceFromUri();
     $this->_endpoint = $this->extractEndpointFromUri();
     $this->_http_verb = strtolower($_SERVER['REQUEST_METHOD']);
 
-    echo $this->_uri . ' : uri ';
-    echo $this->_resource . ' : resource ';
-    echo $this->_endpoint . ' : endpoint';
+    $this->validate();
   }
 
   private function getUri() {
@@ -58,6 +56,12 @@ class RequestHandler {
     }
 
   }
+
+  private function validate() {
+    if(!in_array($resource, $this->_resources)) {
+      echo new Response(["message" => "Resource ".$this->_uri." not found."], 404);
+    }
+  }
 }
 
 // class Kernel {
@@ -83,9 +87,7 @@ class RequestHandler {
 //     $resource = Request::extract_resource($this->_uri);
 //     $endpoint = Request::extract_endpoint($this->_uri);
 
-//     if(!in_array($resource, $this->_resources)) {
-//       return new Response(["message" => "Resource ".$this->_uri." not found."], 404);
-//     }
+//     
 
 //     $tmp = Request::endpoint_detail($resource, $endpoint);
 

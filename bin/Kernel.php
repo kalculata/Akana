@@ -1,15 +1,12 @@
 <?php 
-require_once __DIR__.'/database/connectivity.php';
 require_once __DIR__.'/handler/command.php';
 require_once __DIR__.'/handler/request.php';
-require_once __DIR__.'/request_body.php';
 require_once __DIR__.'/Utils.php';
 require_once __DIR__.'/spyc.php';
 
 
 use Akana\Handler\RequestHandler;
 use Akana\Handler\Command;
-use Akana\RequestBody;
 use Akana\Utils;
 
 

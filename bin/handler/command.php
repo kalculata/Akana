@@ -2,6 +2,12 @@
 namespace Akana\Handler;
 
 
+require_once __DIR__.'/../database/connectivity.php';
+
+
+use Akana\Database\Connectivity;
+
+
 class Command {
   private $_name;
   private $_subcommand;
