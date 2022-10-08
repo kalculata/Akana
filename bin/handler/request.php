@@ -75,6 +75,11 @@ class RequestHandler {
 
   }
 
+  public function run() {
+    $controller_obj = new $this->_controller_class();
+    echo call_user_func_array(array($controller_obj, $this->_http_verb), $this->_args);
+  }
+
   private function getUri() {
     if(isset($_GET["uri"]) && !empty($_GET["uri"])) {
       $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
@@ -112,23 +117,4 @@ class RequestHandler {
     $authorized_verbs = get_class_methods($class);
     return in_array($http_verb, $authorized_verbs);
   }
-
 }
-
-//       $this->request_handler($controller, $this->_http_verb, $args);
-//     }
-//   }
-
-//   private function request_handler($class, $func, $args) {
-//     try{
-//       $controller_instance = new $class();
-//       echo call_user_func_array(array($controller_instance, $func), $args);
-//     } catch(InvalidArgumentException $e) {
-//       echo new Response(["message" => $e->getMessage()], 500);
-//     } catch(PDOException $e) {
-//       echo new Response(["message" => $e->getMessage()], 500);
-//     } catch(Exception $e) {
-//       echo new Response(get_object_vars(json_decode($e->getMessage())), 400);
-//     }
-//   }
-// }
