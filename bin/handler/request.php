@@ -18,7 +18,7 @@ class RequestHandler {
   private string $_endpoint;
   private string $_uri;
   private string $_controller;
-  private string $_args;
+  private array $_args;
 
   public function __construct() {	
     $this->_uri = $this->getUri();
@@ -26,18 +26,27 @@ class RequestHandler {
     $this->_endpoint = $this->extractEndpointFromUri();
     $this->_http_verb = strtolower($_SERVER['REQUEST_METHOD']);
 
-    if(!$this->validate()) { return; }
+    // check if resource exist
+    if(!in_array($this->_resource, utils->getResources())) {
+      echo (utils->dev_mod == 'debug')?
+        new Response(['message' => 'resource '.$this->_resource.' not found'], HTTP_404_NOT_FOUND):
+        new Response(['message' => $this->_uri.' not found.'], HTTP_404_NOT_FOUND);
+      return false;
+    }
 
+    // get endpoint info and check if it exist
     $endpoint_info = new Endpoint($this->_resource, $this->_endpoint);
     if(!$endpoint_info->isExist()) {
-      if(utils->dev_mod == 'debug')
-        echo new Response(['message' => 'endpoint '.$this->_endpoint.' not found on resource '.$this->_resource], HTTP_404_NOT_FOUND);
-      else
-        echo new Response(['message' => $this->_uri.' not found'], HTTP_404_NOT_FOUND);
+      echo (utils->dev_mod == 'debug')?
+        new Response(['message' => 'endpoint '.$this->_endpoint.' not found on resource '.$this->_resource], HTTP_404_NOT_FOUND):
+        new Response(['message' => $this->_uri.' not found'], HTTP_404_NOT_FOUND);
+      return;
     }
 
     $this->_controller = $endpoint_info->getController();
     $this->_args = $endpoint_info->getArgs();
+
+    var_dump($this->_args);
 
   }
 
@@ -75,14 +84,7 @@ class RequestHandler {
   }
 
   private function validate() {
-    if(!in_array($this->_resource, utils->getResources())) {
-      if(utils->dev_mod == 'debug')
-        echo new Response(['message' => 'resource '.$this->_resource.' not found'], HTTP_404_NOT_FOUND);
-      else
-        echo new Response(['message' => $this->_uri.' not found.'], HTTP_404_NOT_FOUND);
-      
-        return false;
-    }
+    
     return true;
   }
 }
@@ -105,11 +107,6 @@ class RequestHandler {
 
 //   private function prepare() {    
 
-//     $tmp = Request::endpoint_detail($resource, $endpoint);
-
-//     if(count($tmp) == 0){
-//       return new Response(["message" => "Endpoint '$endpoint' not found on resource '$resource'"], 404);
-//     } else {
 //       include __DIR__."/../app/$resource/controller.php";
 
 //       $controller = $tmp[0];
