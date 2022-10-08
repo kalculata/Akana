@@ -1,8 +1,9 @@
 <?php
 namespace Akana;
+
 class Endpoint {
-  private string $_controller;
-  private array $_args;
+  private string $_controller = "";
+  private array $_args = [];
   private bool $_is_exist = true;
 
   public function __construct($resource, $endpoint) {
@@ -20,8 +21,8 @@ class Endpoint {
       $k_cp = $k;
 
       $pattern = '#^'.$k.'$#';
-      if(Router::is_dynamic($k)) {
-        $k = Router::to_regex($k);
+      if(self::isDynamic($k)) {
+        $k = self::toRegex($k);
         $pattern = "#^$k$#";
         $args = Router::get_args($k_cp, $endpoint, $pattern);
       }
@@ -56,5 +57,23 @@ class Endpoint {
       $endpoints = array_merge($endpoints, $tmp);
     }
     return $endpoints;
+  }
+
+  private static function isDynamic(string $endpoint): bool {
+    return preg_match('#\([a-zA-Z0-9_]+:int\)|\([a-zA-Z0-9_]+:str\)+#', $endpoint);
+  }
+
+  private static function toRegex(string $dynamic_endpoint): string {
+    $regex = $dynamic_endpoint;
+    
+    $regex = preg_replace('#\/#', '\/', $regex);
+    $regex = preg_replace('#\(([a-zA-Z0-9_]+):int\)#', '(?<$1>[0-9]+)', $regex);
+    $regex = preg_replace('#\(([a-zA-Z0-9_]+):str\)#', '(?<$1>[a-zA-Z0-9_-]+)', $regex);
+
+    return $regex;
+  }
+
+  private static function extractArgs() {
+
   }
 }

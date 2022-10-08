@@ -4,19 +4,7 @@ namespace Akana;
 use Akana\Utils;
 
 class Router {
-  static function is_dynamic(string $endpoint): bool{
-    return preg_match('#\([a-zA-Z0-9_]+:int\)|\([a-zA-Z0-9_]+:str\)+#', $endpoint);
-  }
 
-  static function to_regex(string $dynamic_endpoint): string{
-    $regex = $dynamic_endpoint;
-    
-    $regex = preg_replace('#\/#', '\/', $regex);
-    $regex = preg_replace('#\(([a-zA-Z0-9_]+):int\)#', '(?<$1>[0-9]+)', $regex);
-    $regex = preg_replace('#\(([a-zA-Z0-9_]+):str\)#', '(?<$1>[a-zA-Z0-9_-]+)', $regex);
-
-    return $regex;
-  }
 
   static function get_args($ep_vanilla, $ep, $pattern): array{
     $args = [];

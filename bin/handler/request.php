@@ -4,6 +4,7 @@ namespace Akana\Handler;
 
 require_once __DIR__.'/../response.php';
 require_once __DIR__.'/../endpoint.php';
+require_once __DIR__.'/../status.php';
 
 
 use Akana\RequestBody;
@@ -25,14 +26,14 @@ class RequestHandler {
     $this->_endpoint = $this->extractEndpointFromUri();
     $this->_http_verb = strtolower($_SERVER['REQUEST_METHOD']);
 
-    $this->validate();
+    if(!$this->validate()) { return; }
 
     $endpoint_info = new Endpoint($this->_resource, $this->_endpoint);
     if(!$endpoint_info->isExist()) {
       if(utils->dev_mod == 'debug')
-        echo new Response(['message' => 'endpoint '.$this->_endpoint.' not found on resource '.$this->_resource], 404);
+        echo new Response(['message' => 'endpoint '.$this->_endpoint.' not found on resource '.$this->_resource], HTTP_404_NOT_FOUND);
       else
-        echo new Response(['message' => $this->_uri.' not found.'], 404);
+        echo new Response(['message' => $this->_uri.' not found'], HTTP_404_NOT_FOUND);
     }
 
     $this->_controller = $endpoint_info->getController();
@@ -75,8 +76,14 @@ class RequestHandler {
 
   private function validate() {
     if(!in_array($this->_resource, utils->getResources())) {
-      echo new Response(["message" => $this->_uri." not found."], 404);
+      if(utils->dev_mod == 'debug')
+        echo new Response(['message' => 'resource '.$this->_resource.' not found'], HTTP_404_NOT_FOUND);
+      else
+        echo new Response(['message' => $this->_uri.' not found.'], HTTP_404_NOT_FOUND);
+      
+        return false;
     }
+    return true;
   }
 }
 
