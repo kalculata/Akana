@@ -58,8 +58,8 @@ class RequestHandler {
   }
 
   private function validate() {
-    if(!in_array($resource, $this->_resources)) {
-      echo new Response(["message" => "Resource ".$this->_uri." not found."], 404);
+    if(!in_array($this->_resource, utils->getResources())) {
+      echo new Response(["message" => $this->_uri." not found."], 404);
     }
   }
 }
@@ -83,11 +83,7 @@ class RequestHandler {
 //     echo $this->prepare();
 //   }
 
-//   private function prepare() {
-//     $resource = Request::extract_resource($this->_uri);
-//     $endpoint = Request::extract_endpoint($this->_uri);
-
-//     
+//   private function prepare() {    
 
 //     $tmp = Request::endpoint_detail($resource, $endpoint);
 

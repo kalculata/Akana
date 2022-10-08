@@ -17,6 +17,10 @@ class Utils {
 		$this->_resources = !file_exists($resources)? NULL : spyc_load_file($resources);
 	}
 
+	public function getResources() {
+		return $this->_resources;
+	}
+
 	public function getDBCredintial() {
 		return $this->_db_credintial;
 	}
