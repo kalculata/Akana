@@ -1,30 +1,28 @@
 <?php
 namespace Akana\Handler;
 
-
 require_once __DIR__.'/../response.php';
 require_once __DIR__.'/../endpoint.php';
-require_once __DIR__.'/../status.php';
 require_once __DIR__.'/../request.php';
+require_once __DIR__.'/../status.php';
 
-
-use Akana\RequestBody;
 use Akana\Response;
-use Akana\Request;
 use Akana\Endpoint;
+use Akana\Request;
 
 
 class RequestHandler {
+  private string $_controller_class;
   private string $_http_verb;
+  private Request $_request;
   private string $_resource;
   private string $_endpoint;
   private string $_uri;
-  private string $_controller;
   private array $_args;
-  private Request $request;
 
   public function __construct() {	
     $this->_uri = $this->getUri();
+    $this->_request = new Request();
     $this->_resource = $this->extractResourceFromUri();
     $this->_endpoint = $this->extractEndpointFromUri();
     $this->_http_verb = strtolower($_SERVER['REQUEST_METHOD']);
@@ -46,7 +44,7 @@ class RequestHandler {
       return;
     }
 
-    $this->_controller = $endpoint_info->getController();
+    $this->_controller_class = $endpoint_info->getController();
     $this->_args = $endpoint_info->getArgs();
     $controller_file = __DIR__.'/../../app/'.$this->_resource.'/controller.php';
 
@@ -59,6 +57,19 @@ class RequestHandler {
     }
 
     require_once $controller_file;
+
+    // check if controller class exist
+    if(!class_exists($this->_controller_class)) {
+      echo (utils->dev_mod == 'debug')?
+        new Response(['message' => 'controller '.$this->_controller_class.' not found'], HTTP_501_NOT_IMPLEMENTED):
+        new Response(['message' => 'internal server error'], HTTP_500_INTERNAL_SERVER_ERROR);
+      return;
+    }
+
+    // verify if used http verb is authorized
+    if(!self::httpIsAuthorized($this->_http_verb, $this->_controller_class)) {
+      return new Response(['message' => 'method '.strtoupper($this->_http_verb).' is not authorized'], HTTP_406_NOT_ACCEPTABLE);
+    }
 
     $this->_args = array_merge($this->_args, array($this->_request));
 
@@ -97,38 +108,13 @@ class RequestHandler {
 
   }
 
-  private function validate() {
-    
-    return true;
+  private function httpIsAuthorized($http_verb, $class) {
+    $authorized_verbs = get_class_methods($class);
+    return in_array($http_verb, $authorized_verbs);
   }
+
 }
 
-// class Kernel {
-//   private $_settings;
-//   private $_resources;
-//   private $_uri;
-//   private $_http_verb;
-//   private $_request;
-
-//   public function __construct($request, $http_verb, $uri) {
-//     $this->_settings = spyc_load_file(__DIR__.'/../config/settings.yaml');
-//     $this->_resources = spyc_load_file(__DIR__.'/../config/resources.yaml');
-//     $this->_uri = $uri;
-//     $this->_http_verb = $http_verb;
-//     $this->_request = $request;
-//   }
-
-
-//   private function prepare() {    
-
-//       include __DIR__."/../app/$resource/controller.php";
-
-//       $controller = $tmp[0];
-//       $args = array_merge($tmp[1], array($this->_request));
-      
-//       if(!Request::is_authorized($this->_http_verb, $controller)) {
-//         return new Response(["message" => "method '".$this->_http_verb."' is not authorized."], 400);
-//       }
 //       $this->request_handler($controller, $this->_http_verb, $args);
 //     }
 //   }
