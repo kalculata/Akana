@@ -7,9 +7,8 @@ class Endpoint {
   private bool $_is_exist = true;
 
   public function __construct($resource, $endpoint) {
-    $settings = utils->getSettings();
     $resource_endpoints = self::getResourceEndpoints($resource);
-    
+
     foreach($resource_endpoints as $k => $v) {
       $args = [];
       $k_cp = $k;

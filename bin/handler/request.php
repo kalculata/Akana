@@ -5,10 +5,12 @@ namespace Akana\Handler;
 require_once __DIR__.'/../response.php';
 require_once __DIR__.'/../endpoint.php';
 require_once __DIR__.'/../status.php';
+require_once __DIR__.'/../request.php';
 
 
 use Akana\RequestBody;
 use Akana\Response;
+use Akana\Request;
 use Akana\Endpoint;
 
 
@@ -19,6 +21,7 @@ class RequestHandler {
   private string $_uri;
   private string $_controller;
   private array $_args;
+  private Request $request;
 
   public function __construct() {	
     $this->_uri = $this->getUri();
@@ -34,7 +37,7 @@ class RequestHandler {
       return false;
     }
 
-    // get endpoint info and check if it exist
+    // get endpoint info and check if it exists
     $endpoint_info = new Endpoint($this->_resource, $this->_endpoint);
     if(!$endpoint_info->isExist()) {
       echo (utils->dev_mod == 'debug')?
@@ -45,8 +48,19 @@ class RequestHandler {
 
     $this->_controller = $endpoint_info->getController();
     $this->_args = $endpoint_info->getArgs();
+    $controller_file = __DIR__.'/../../app/'.$this->_resource.'/controller.php';
 
-    var_dump($this->_args);
+    // check if controller file exists
+    if(!file_exists($controller_file)) {
+      echo (utils->dev_mod == 'debug')?
+        new Response(['message' => "file $controller_file not found"], HTTP_501_NOT_IMPLEMENTED):
+        new Response(['message' => 'internal server error'], HTTP_500_INTERNAL_SERVER_ERROR);
+      return;
+    }
+
+    require_once $controller_file;
+
+    $this->_args = array_merge($this->_args, array($this->_request));
 
   }
 
