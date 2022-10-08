@@ -8,14 +8,8 @@ class Endpoint {
 
   public function __construct($resource, $endpoint) {
     $settings = utils->getSettings();
-
-    if($settings['global_routers'] == false) {
-      $endpoints = spyc_load_file(__DIR__."/../app/$resource/routers.yaml");
-    }
-    else {
-      $resource_endpoints = self::getResourceEndpoints($resource);
-    }
-
+    $resource_endpoints = self::getResourceEndpoints($resource);
+    
     foreach($resource_endpoints as $k => $v) {
       $args = [];
       $k_cp = $k;
@@ -24,7 +18,7 @@ class Endpoint {
       if(self::isDynamic($k)) {
         $k = self::toRegex($k);
         $pattern = "#^$k$#";
-        $args = Router::get_args($k_cp, $endpoint, $pattern);
+        $args = self::extractArgs($k_cp, $endpoint, $pattern);
       }
     
       if(preg_match($pattern, $endpoint)) {
@@ -73,7 +67,28 @@ class Endpoint {
     return $regex;
   }
 
-  private static function extractArgs() {
+  private static function extractArgs($ep_vanilla, $ep, $pattern) {
+    $args = [];
+    $data_from_ep = [];
+    $endpoint_vars = [];
 
+    if(preg_match_all($pattern, $ep, $data_from_ep)) {
+      if(preg_match_all("#\([A-Za-z0-9_]+:(int|str)\)#", $ep_vanilla, $endpoint_vars)) {
+        $endpoint_vars = $endpoint_vars[0];
+
+        foreach($endpoint_vars as $val) {
+          $val = str_replace("(", "", $val);
+          $val = str_replace(")", "", $val);
+          $val = explode(":", $val);
+          $var = $val[0];
+          $type =$val[1];
+          $val = $data_from_ep[$var][0];
+
+          $val =  ($type == "int")? intval($val): $val;
+          array_push($args, $val);
+        }
+      }
+    }
+    return $args;
   }
 }
