@@ -1,14 +1,14 @@
 <?php
 class Endpoint {
   public function __construct($resource, $endpoint) {
-    $settings = spyc_load_file(__DIR__."/../config/settings.yaml");
+    $settings = utils->getSettings();
 
-      if($settings["global_routers"] == false) {
-        $resource_endpoints = spyc_load_file(__DIR__."/../app/$resource/routers.yaml");
-      }
-      else {
-        $resource_endpoints = Router::get_endpoints($resource);
-      }
+    if($settings["global_routers"] == false) {
+      $endpoints = spyc_load_file(__DIR__."/../app/$resource/routers.yaml");
+    }
+    else {
+      $resource_endpoints = self::get_endpoints($resource);
+    }
 
       foreach($resource_endpoints as $k => $v) {
         $args = [];
@@ -27,5 +27,21 @@ class Endpoint {
       }
 
       return [];
+  }
+
+  private static function getResourceEndpoint(string $resource) {
+    $all_endpoints = spyc_load_file(__DIR__."/../config/routers.yaml");
+    $endpoints = [];
+
+    if(!array_key_exists($resource, $all_endpoints)) { return []; }
+    $resource_endpoints = $all_endpoints[$resource];
+    if(empty($resource_endpoints)) { return []; }
+
+    foreach($resource_endpoints as $endpoint => $controller) {
+      $endpoint = $endpoint;
+      $tmp = [$endpoint => $controller];
+      $endpoints = array_merge($endpoints, $tmp);
+    }
+    return $endpoints;
   }
 }

@@ -6,24 +6,27 @@ use Akana\Database\Connectivity;
 
 
 class Utils {
+	private $_settings;
 	private $_resources;
 	private $_db_credintial;
 
 	public function __construct() {
 		$resources     = __DIR__.'/../config/resources.yaml';
 		$db_credintial = __DIR__.'/../config/db.yaml';
+		$settings 		 = __DIR__.'/../config/settings.yaml';
 
 		$this->_db_credintial = !file_exists($db_credintial)? NULL : spyc_load_file($db_credintial);
 		$this->_resources = !file_exists($resources)? NULL : spyc_load_file($resources);
+		$this->_settings = !file_exists($settings)? NULL : spyc_load_file($settings);
 	}
 
-	public function getResources() {
-		return $this->_resources;
-	}
+	public function getResources() { return $this->_resources; }
 
 	public function getDBCredintial() {
 		return $this->_db_credintial;
 	}
+
+	public function getSettings() { return $this->_settings; }
 
 	public function checkDBConnectivity() {
 		if($this->_db_credintial == NULL) {

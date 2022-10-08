@@ -25,7 +25,7 @@ class RequestHandler {
 
     $this->validate();
 
-    $endpoint_info = new EndpointInfo($this->_resource, $this->_endpoint);
+    $endpoint_info = new Endpoint($this->_resource, $this->_endpoint);
   }
 
   private function getUri() {

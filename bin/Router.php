@@ -44,18 +44,6 @@ class Router {
   }
 
   static function get_endpoints($resource) {
-    $all_endpoints = spyc_load_file(__DIR__."/../config/routers.yaml");
-    $endpoints = [];
-
-    if(!array_key_exists($resource, $all_endpoints)) { return []; }
-    $resource_endpoints = $all_endpoints[$resource];
-    if(empty($resource_endpoints)) { return []; }
-
-    foreach($resource_endpoints as $endpoint => $controller) {
-      $endpoint = $endpoint;
-      $tmp = [$endpoint => $controller];
-      $endpoints = array_merge($endpoints, $tmp);
-    }
-    return $endpoints;
+    
   }
 }
