@@ -22,13 +22,11 @@ class Utils {
 		$this->dev_mod = $this->_settings['dev_mod'];
 	}
 
-	public function getResources() { return $this->_resources; }
+	public function getDBCredintial() { return $this->_db_credintial; }
 
-	public function getDBCredintial() {
-		return $this->_db_credintial;
-	}
+	public function getResources() 		{ return $this->_resources; }
 
-	public function getSettings() { return $this->_settings; }
+	public function getSettings() 		{ return $this->_settings; }
 
 	public function checkDBConnectivity() {
 		if($this->_db_credintial == NULL) {

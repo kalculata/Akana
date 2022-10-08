@@ -27,6 +27,21 @@ class RequestHandler {
     $this->_endpoint = $this->extractEndpointFromUri();
     $this->_http_verb = strtolower($_SERVER['REQUEST_METHOD']);
 
+    $this->validate();
+  }
+
+  public function run() {
+    $controller_obj = new $this->_controller_class();
+    echo call_user_func_array(array($controller_obj, $this->_http_verb), $this->_args);
+  }
+
+  private function validate() {
+    // check if body is valid
+    if($this->_request->error != NULL) {
+      echo $this->_request->error;
+      return;
+    }
+
     // check if resource exist
     if(!in_array($this->_resource, utils->getResources())) {
       echo (utils->dev_mod == 'debug')?
@@ -68,26 +83,27 @@ class RequestHandler {
 
     // verify if used http verb is authorized
     if(!self::httpIsAuthorized($this->_http_verb, $this->_controller_class)) {
-      return new Response(['message' => 'method '.strtoupper($this->_http_verb).' is not authorized'], HTTP_406_NOT_ACCEPTABLE);
+      echo new Response(['message' => 'method '.strtoupper($this->_http_verb).' is not authorized on '.$this->_uri], HTTP_406_NOT_ACCEPTABLE);
+      return;
     }
 
     $this->_args = array_merge($this->_args, array($this->_request));
 
-  }
-
-  public function run() {
-    $controller_obj = new $this->_controller_class();
-    echo call_user_func_array(array($controller_obj, $this->_http_verb), $this->_args);
+    // execute request
+    $this->run();
   }
 
   private function getUri() {
     if(isset($_GET["uri"]) && !empty($_GET["uri"])) {
       $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
 
-      if($uri == '/public/') ;
-        return $_GET["uri"];
+      if($uri == '/public/') { 
+        define('bridge', true);
+        return $_GET["uri"]; 
+      }
     } 
     
+    define('bridge', false);
     return $_SERVER['REQUEST_URI'];
   }
 
