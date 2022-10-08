@@ -5,9 +5,7 @@
   use Akana\Router;
 
   class Request { 
-    static function extract_endpoint(string $uri): string{
-      
-    }
+
     
     static public function get_args(string $endpoint, string $endpoint_rx) {
       $pattern = "/\[\]/";
@@ -20,32 +18,7 @@
 
     // return: controller - args
     static function endpoint_detail($resource, $endpoint) {
-      $settings = spyc_load_file(__DIR__."/../config/settings.yaml");
-
-      if($settings["global_routers"] == false) {
-        $resource_endpoints = spyc_load_file(__DIR__."/../app/$resource/routers.yaml");
-      }
-      else {
-        $resource_endpoints = Router::get_endpoints($resource);
-      }
-
-      foreach($resource_endpoints as $k => $v) {
-        $args = [];
-        $k_cp = $k;
-
-        $pattern = '#^'.$k.'$#';
-        if(Router::is_dynamic($k)) {
-          $k = Router::to_regex($k);
-          $pattern = "#^$k$#";
-          $args = Router::get_args($k_cp, $endpoint, $pattern);
-        }
       
-        if(preg_match($pattern, $endpoint)) {
-          return array("App\\$resource\\$v", $args);
-        }
-      }
-
-      return [];
     }
 
     static private function json_valid($data=NULL): bool{

@@ -3,10 +3,12 @@ namespace Akana\Handler;
 
 
 require_once __DIR__.'/../response.php';
+require_once __DIR__.'/../endpoint.php';
 
 
 use Akana\RequestBody;
 use Akana\Response;
+use Akana\EndpointInfo;
 
 
 class RequestHandler {
@@ -22,6 +24,8 @@ class RequestHandler {
     $this->_http_verb = strtolower($_SERVER['REQUEST_METHOD']);
 
     $this->validate();
+
+    $endpoint_info = new EndpointInfo($this->_resource, $this->_endpoint);
   }
 
   private function getUri() {
@@ -79,9 +83,6 @@ class RequestHandler {
 //     $this->_request = $request;
 //   }
 
-//   public function start() {
-//     echo $this->prepare();
-//   }
 
 //   private function prepare() {    
 
