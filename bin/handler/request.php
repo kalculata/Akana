@@ -36,7 +36,7 @@ class RequestHandler {
   }
 
   private function validate() {
-    // check if body is valid
+    // check if json body is valid
     if($this->_request->error != NULL) {
       echo $this->_request->error;
       return;
