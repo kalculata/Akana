@@ -8,14 +8,16 @@ require_once __DIR__.'/../endpoint.php';
 
 use Akana\RequestBody;
 use Akana\Response;
-use Akana\EndpointInfo;
+use Akana\Endpoint;
 
 
 class RequestHandler {
-  private $_http_verb;
-  private $_resource;
-  private $_endpoint;
-  private $_uri;
+  private string $_http_verb;
+  private string $_resource;
+  private string $_endpoint;
+  private string $_uri;
+  private string $_controller;
+  private string $_args;
 
   public function __construct() {	
     $this->_uri = $this->getUri();
@@ -26,6 +28,16 @@ class RequestHandler {
     $this->validate();
 
     $endpoint_info = new Endpoint($this->_resource, $this->_endpoint);
+    if(!$endpoint_info->isExist()) {
+      if(utils->dev_mod == 'debug')
+        echo new Response(['message' => 'endpoint '.$this->_endpoint.' not found on resource '.$this->_resource], 404);
+      else
+        echo new Response(['message' => $this->_uri.' not found.'], 404);
+    }
+
+    $this->_controller = $endpoint_info->getController();
+    $this->_args = $endpoint_info->getArgs();
+
   }
 
   private function getUri() {

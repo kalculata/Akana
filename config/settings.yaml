@@ -1,1 +1,2 @@
 global_routers: true
+dev_mod: debug
